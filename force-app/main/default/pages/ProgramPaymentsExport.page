@@ -1,0 +1,181 @@
+<apex:page lightningStylesheets="true" standardController="nu_dse__Program__c" standardStylesheets="false" sidebar="false"  showHeader="false" extensions="ProgramPaymentsExportController">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+        <script type="text/JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"/>
+        
+        <head>
+            <style>
+            .head{
+                font-size:1.3em;
+            }
+        .slds-scope .slds-icon-standard-account {
+            background-color: #7f8de1;
+            width: 35px;
+            height: 33px;
+            margin-right: 10px;
+            margin-top: 3px;
+        }
+        .wk_btn{
+            margin: 10px 45% !important;
+        }
+        
+        </style>
+        </head>
+        
+        <apex:outputPanel id="script">
+            
+            
+            <script language="javascript">
+                
+                
+                
+                function downloadCSV(){
+                var data = new Array();
+                var data = {!data};
+                var file = '';
+                
+                for(var i=0; i<data.length; i++){
+                    file += data[i] + '\n';
+                }
+                
+                var hiddenElement = document.createElement('a');
+                hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(file);
+                hiddenElement.target = '_self'; // 
+                hiddenElement.download = "{!Program.FirstName__c} {!Program.LastName__c}.csv";  // CSV file Name* you can change it.[only name not .csv] 
+                document.body.appendChild(hiddenElement); // Required for FireFox browser
+                hiddenElement.click();
+            }
+            function copyUrl(){                  //Sumit verma copy url to clip board dated-10/07/2019
+                var orignal = "{!$Label.EscrowLink }"; //predefine value
+                var newurl =  window.location.search  // ?search query 
+                var ret = newurl.replace('&core.apexpages.devmode.url=1',''); // remove excess value from url
+                var finale = orignal.concat(ret);// predifine value + search id
+                //var url = window.location.href
+                 var dummy = $('<input>').val(finale).appendTo('body').select();
+                    document.execCommand('copy');
+                    document.body.removeChild(dummy);  
+                    console.log("copied",finale)
+                    //  var ref = "apex/ProgramPaymentsExport" + ret;
+                // location.reload(true);
+                //window.top.location.href = '/' + ref ;
+                // console.log("above",window.top.location.href)
+              
+            }
+
+            </script>
+        <apex:pageMessages ></apex:pageMessages>   
+    </apex:outputPanel>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <apex:slds />
+        <script type="text/javascript" src="/js/functions.js"></script>
+    <div class = "slds-scope">
+        <apex:form styleClass="slds-card">
+            <apex:variable var="count" value="{!0}"   />
+            <div class="header">
+                <left><img src="{!$Resource.SFSLogo}" width="125" height="100"/></left>
+            </div>
+            <!--<apex:actionFunction name="callDoInIt" action="{!doInIt}"/>-->
+            <apex:actionFunction name="additionalDraft" action="{!additionalDraft}"/>
+            <apex:pageBlock id="block">
+                <div class="slds-p-bottom_small">
+                    <apex:pageBlockSection columns="1">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel styleClass="slds-card__header-title slds-truncate">Client Name: </apex:outputLabel>    
+                           <!-- <apex:outputText styleClass="slds-card__header-title slds-truncate" value="{!Program.nu_dse__Account__r.FirstName} {!Program.nu_dse__Account__r.LastName}"/>-->
+                            <apex:outputText styleClass="slds-card__header-title slds-truncate" value="{!Program.FirstName__c} {!Program.LastName__c}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel styleClass="slds-card__header-title slds-truncate">Funds will be available on: </apex:outputLabel>
+                            <apex:outputText styleClass="slds-card__header-title slds-truncate" value="{!PaymentProcessingDay}{!if(Program.nu_dse__Payment_Frequency__c == 'Twice Monthly',' and ' + SecondPaymentProcessingDay,'')} Each Month"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel styleClass="slds-card__header-title slds-truncate">Available Balance: </apex:outputLabel>
+                            <apex:outputText styleClass="slds-card__header-title slds-truncate" value="{!if(Program.nu_dse__Trust_Account_Balance__c != null,Program.nu_dse__Trust_Account_Balance__c,0)}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                </div>
+                <apex:pageBlockTable styleClass="slds-table slds-table--bordered slds-table--striped slds-table--cell-buffer wk_table" id="table" value="{!PaymentWrapperList}" var="PayWrap">
+                    <apex:column headerClass="slds-text-heading--label " styleClass="slds-truncate wk_table" value="{!PayWrap.month}" headerValue="Month"/>
+                    <!--<apex:column headerClass="slds-text-heading--label " styleClass="slds-truncate wk_table" value="{!PayWrap.monthlyDraft}" headerValue="{!if(Program.nu_dse__Payment_Frequency__c == 'Twice Monthly','First Monthly Draft','Monthly Draft')}">
+                        <apex:facet name="header">
+                            {!if(Program.nu_dse__Payment_Frequency__c == 'Twice Monthly','First ','')}Monthly<BR/>
+                            Draft
+                        </apex:facet>
+                    </apex:column>
+                    <apex:column headerClass="slds-text-heading--label " styleClass="slds-truncate wk_table" value="{!PayWrap.SecondMonthlyDraft}" headerValue="Second Monthly Draft" rendered="{!if(Program.nu_dse__Payment_Frequency__c == 'Twice Monthly',True,False)}">
+                        <apex:facet name="header">
+                            Second Monthly<BR/>
+                            Draft
+                        </apex:facet>
+                    </apex:column>-->
+                    <apex:repeat value="{!NumberofMonthlyDraft}" var="index">
+                        <apex:column headerClass="slds-text-heading--label " styleClass="slds-truncate wk_table">
+                            <apex:facet name="header">
+                                Monthly Draft {!index+1}<!--{!Drafts}-->
+                            </apex:facet>
+                            <apex:outputText value="{!if((PayWrap.numberOfMonthlyDraft > index),PayWrap.MonthlyDraftMap[index],'')}"/>
+                        </apex:column>
+                    </apex:repeat>
+                    <apex:column rendered="{!if(isAdhocPaymentExists,true,false)}">
+                        <apex:facet name="header">
+                            Adhoc Payments
+                        </apex:facet>
+                        <apex:outputText value="{!PayWrap.TotalAdhocPayment}"/>
+                    </apex:column>
+                    <apex:column headerClass="slds-text-heading--label " styleClass="slds-truncate wk_table">
+                        <apex:facet name="header">
+                            Additional Draft
+                        </apex:facet>
+                        <apex:inputText value="{!PayWrap.AdditionalDaft}" styleClass="slds-input" size="10">
+                            <apex:actionSupport event="onchange" action="{!additionalDraft}" reRender="table, script">
+                                <apex:param name="month" assignTo="{!ChangedMonth}" value="{!PayWrap.month}"/>
+                            </apex:actionSupport>
+                        </apex:inputText>
+                    </apex:column>
+                    <apex:column headerClass="slds-text-heading--label " styleClass="slds-truncate wk_table">
+                        <apex:facet name="header">
+                            New Settlement
+                        </apex:facet>
+                        <apex:inputText value="{!PayWrap.NewSettlement}" styleClass="slds-input" size="10">
+                            <apex:actionSupport event="onchange" action="{!additionalDraft}" reRender="table, script">
+                                <apex:param name="month" assignTo="{!ChangedMonth}" value="{!PayWrap.month}"/>
+                            </apex:actionSupport>
+                        </apex:inputText>
+                    </apex:column>
+                    <apex:repeat value="{!OfferNamesMap}" var="offer">
+                        <apex:column headerClass="slds-text-heading--label " styleClass="slds-truncate wk_table">
+                            <apex:facet name="header">
+                                {!OfferNamesMap[Offer][0]}<BR/>{!OfferNamesMap[Offer][1]}<BR/>{!OfferNamesMap[Offer][2]}<BR/>{!OfferSourceMap[Offer]}
+                            </apex:facet>
+                            <apex:outputText value="{!if(contains(PayWrap.keyValues,offer),PayWrap.SettlementOfferAmounts[offer],'')}"/>
+                        </apex:column>
+                        <apex:column rendered="{!if(contains(FeeKeyValues,offer),true,false)}" headerClass="slds-text-heading--label " styleClass="slds-truncate wk_table">
+                            <apex:facet name="header">
+                                {!OfferNamesMap[Offer][0]}<BR/>{!OfferNamesMap[Offer][1]}<BR/>{!OfferNamesMap[Offer][2]}<BR/>Fee
+                            </apex:facet>
+                            <apex:outputText value="{!if(contains(PayWrap.FeekeyValues,offer),PayWrap.FeeOfferAmounts[offer],'')}"/>
+                        </apex:column>
+                    </apex:repeat>
+                    <apex:column headerClass="slds-text-heading--label " styleClass="slds-truncate wk_table" value="{!PayWrap.RunningBalance}" style="{!if(PayWrap.RunningBalance>0,'','color: red')}" headerValue="Running Balance"/>
+                    <apex:column headerClass="slds-text-heading--label " styleClass="slds-truncate wk_table" value="{!PayWrap.AvailableFunds}" style="{!if(PayWrap.AvailableFunds>0,'','color: red')}" headerValue="Funds Available from Montly Draft">
+                        <apex:facet name="header">
+                            Funds Available from<BR/>
+                            Monthly Draft
+                        </apex:facet>
+                    </apex:column>
+                </apex:pageBlockTable>
+                <apex:pageBlockButtons Styleclass="slds-align_absolute-center  slds-p-vertical_x-small">
+                    <apex:commandButton value="Export in Excel Sheet" styleClass="slds-button slds-button--brand slds-button--neutral slds-not-selected" action="{!additionalDraft}" id="abc" oncomplete="downloadCSV();" reRender="script"/>
+                    <apex:commandButton value="Copy link for Attorney" onclick="copyUrl()" styleClass="slds-button slds-button--brand slds-button--neutral slds-not-selected" reRender="script" />                  
+                    <apex:commandButton value="Close Page" action="{!cancel}" styleClass="slds-button slds-button--brand slds-button--neutral slds-not-selected"/>                  
+                    
+                </apex:pageBlockButtons>
+                
+                
+                
+                
+            </apex:pageBlock>
+            
+        </apex:form>
+    </div>
+</html>
+</apex:page>

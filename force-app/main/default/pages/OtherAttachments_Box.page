@@ -1,0 +1,113 @@
+<apex:page sidebar="false" showheader="false" controller="uploadBoxFilesNew" action="{!getAccessToken}" id="pg">
+    <apex:form id="form">
+        <html lang="en-US">
+
+        <head>
+            <meta charset="utf-8" />
+            <title>Documents Library</title>
+
+            <!-- polyfill.io only loads the polyfills your browser needs -->
+            <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=es6,Intl"></script>
+
+            <!-- Latest version of the explorer css for your locale -->
+            <link rel="stylesheet" href="https://cdn01.boxcdn.net/platform/elements/11.0.2/en-US/explorer.css" />
+            <style>
+                  .avActiveButton {
+                    border-radius: 10px !important;
+                    font-size: 16px !important;
+                    margin-right: 0.1in !important;
+                    width: auto !important;
+                    height: 25px !important;
+                    border-color: #75b2dd !important;
+                    overflow: hidden !important;
+                    text-overflow: ellipsis !important;
+                    padding-left: 10px ! important;
+                    padding-right: 10px ! important;
+                    color: #333;
+                    margin: 1px;
+                    padding: 2px 3px;
+                    border: 1px solid #b5b5b5;
+                    border-bottom-color: #7f7f7f;
+                    background: #e8e8e9 url('/img/alohaSkin/btn_sprite.png') repeat-x right top;
+                    font-weight: bold;
+                    font-size: .9em;
+                    -moz-border-radius: 3px;
+                    -webkit-border-radius: 3px;
+                    border-radius: 3px;
+                    font-family: Arial, Helvetica, sans-serif;
+                    cursor: pointer;
+                }
+                .avActiveLightningButton{
+                    padding-left: 16px !important;
+                    padding-right: 16px !important;
+                    text-align: center !important;
+                    vertical-align: middle !important;
+                    background: none !important;
+                    background-color: #0070d2 !important;
+                    border: 1px solid #0070d2 !important;
+                    color: white!important;
+                    position: relative !important;
+                    display: inline-block !important;
+                    border-radius: 4px!important;
+                    font-size: inherit !important;
+                    height: 30px!important;
+                    cursor: pointer;
+                }
+                .avActiveLightningButton:hover{
+                    outline: 0 !important;
+                    color: white !important;
+                    box-shadow: 0 0 3px #0070D2 !important;
+                } 
+            </style>
+        </head>
+
+        <body>
+            <input type="button" id="btnRefresh" name="btnRefresh" class="avActiveLightningButton" value="Refresh" style="display:none; float:right;"
+                onclick="refreshToken(true);" />
+
+            <div id="myDiv" class="container" style="height:600px"></div>
+                
+       <!-- <div id="attachmentSpinner" class="slds-spinner_container slds-is-relative" style="display:none;" >
+                <div role="status" class="slds-spinner slds-spinner--large slds-spinner--brand">
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div> -->
+            <!-- Latest version of the explorer js for your locale -->
+            <script src="https://cdn01.boxcdn.net/platform/elements/11.0.2/en-US/explorer.js"></script>
+            <script>
+
+                uploadBoxFile();
+                function uploadBoxFile() {
+                    var accessToken = '{!accessToken}';
+                    console.log('+++accessToken++' + accessToken);
+                    var folderId = '{!folderid}';
+                    console.log('+++folderId++' + folderId);
+                    var contentExplorer = new Box.ContentExplorer();
+                    contentExplorer.show(folderId, accessToken, {
+                        mode: 'no-cors', container: '.container', canDownload: false, canShare: false, canDownload: true, sortBy: 'name', canSetShareAccess: false, logoUrl: 'https://s3.amazonaws.com/stratfs/sfs-logo-white.png', canRename: false, canDelete: false
+                    });
+                    showRefreshButton();
+                }
+
+                function showRefreshButton() {
+                    var emptyDiv = document.getElementById("myDiv").querySelectorAll(".buik-empty");
+
+                    if (emptyDiv.length > 0) {
+                        document.getElementById("btnRefresh").style.display = "block";
+                    }
+                }
+                function refreshToken(newToken) {
+                    getBOXFolders(newToken);
+                }
+                
+
+            </script>
+        </body>
+
+        </html>
+        <apex:actionFunction name="getBOXFolders" action="{!getAccessToken}" oncomplete="uploadBoxFile();" rerender="form" status="myStatus">
+            <apex:param name="getNewToken" assignTo="{!generateNewToken}" value="" />
+        </apex:actionFunction>
+    </apex:form>
+</apex:page>

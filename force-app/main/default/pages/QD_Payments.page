@@ -1,0 +1,1265 @@
+<apex:page controller="QD_AccountReview_CC" id="CCF_Form" tabStyle="Quick_Doc__c" sidebar="false" showHeader="false">
+    <script>
+    function loadtable(){
+    document.getElementById("spinner").style.display='inline';
+    }
+    function stoptable(){
+    document.getElementById("spinner").style.display='none';
+    }
+    
+    </script>
+    <style type="text/css">
+        table, td {
+        border: 2px solid black;
+        }
+        
+        tr th:nth-child(odd) {
+        text-align: center;
+        }
+        tr th:nth-child(even) {
+        text-align: center;
+        }
+        
+    </style>
+   <apex:slds /> 
+    <head>
+        <Title>CUSTOMER SERVICE - QUICK DOC TOOL</Title>
+    </head>
+    <body>
+    <apex:form style="background-color: #f2f2f2;" id="fm">
+        
+    <div class="slds-color__background_gray-12" id="mainpanel">
+    
+        <apex:actionFunction name="textload"  action="{!CustomerServicePage}"/>
+    <div class="slds-grid">
+        <div class="slds-col"> </div>
+        <!-- <div class="slds-col"> <apex:commandButton value="CLEAR ALL VALUES" action="{!clearAll}" onclick="loadtable();" html-name="options" styleClass="btn slds-button slds-button--brand slds-not-selected"    id="btn3" /></div>
+        -->
+         <div class="slds-col slds-text-heading_large ">CUSTOMER SERVICE</div>
+    </div>
+    <br/>
+    <div class="slds-grid" id="subpanel">
+    <div class="slds-col">
+    
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+            <div class="slds-p-horizontal_small" >
+                <label class="slds-form-element__label slds-float_right slds-text-heading_medium" for="text-input-id-1" ><b>Payments</b></label>
+            </div>
+    </div>    
+       
+    
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Call Type*</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_1-of-5 slds-combobox-picklist">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-m-right--xx-large slds-combobox-picklist">
+                    <apex:inputField html-name="options" styleClass="slds-input" id="divsup41"  value="{!QD1.Call_Type_Payments__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage_Payment}"/> <!-- rerender="idADD,idTaskTool,idSettlement,idEstimate,idProvides"/> -->
+                    </apex:inputField>
+                    
+                </span>   
+            </div>
+        </div>
+        </div>
+    </div> 
+    
+    <apex:outputPanel id="idErrorMsg" >
+    <apex:outputLabel value="Error:You must enter a value" rendered="{!showmsa}" styleclass="slds-p-left_xx-large" style="color: Red; padding-left: 218px;">
+    </apex:outputLabel>
+    
+    </apex:outputPanel>  
+    
+    <apex:actionRegion >
+    
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+              <div class="slds-p-horizontal_medium slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Account*</b></label>
+        </div>
+              <div class="slds-form-element__control slds-p-horizontal_small slds-size_1-of-5 slds-combobox-picklist">           
+              <c:SLDSDynamicLookup SLDSResourceName="{!$Resource.slds}" ObjectApiName="Account" DisplayFieldApiNames="Name,Type" DisplayFieldsPattern="Name" LabelName="Set Account" SetValueToField="{!QD1.Account__c}"/>
+                
+              </div>  
+              
+              
+    </div>
+       </apex:actionRegion>
+       
+   <apex:outputPanel id="idShowMsgError">
+    <apex:outputLabel value="Error:You must enter a value" rendered="{!showms}" styleclass="slds-p-left_xx-large" style="color: Red; padding-left: 218px;">
+    </apex:outputLabel>
+</apex:outputPanel>
+   
+    
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Caller</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup4"  value="{!QD1.Applicant__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup4" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Applicant</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; 
+            <div class="slds-form-element__control slds-col ">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup3"  value="{!QD1.Co_Applicant__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup3" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Co-Applicant</span>
+                    </apex:outputLabel>
+                </span> 
+            </div>
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="slds-form-element__control slds-col ">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup8"  value="{!QD1.Other_Than_POA__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup8" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Other Than POA</span>
+                    </apex:outputLabel>
+                </span> 
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="slds-form-element__control slds-col ">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup9"  value="{!QD1.Creditor__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup9" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Creditor</span>
+                    </apex:outputLabel>
+                </span> 
+            </div>
+        </div>
+        </div>
+    </div>
+    
+     <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Social Security Verified</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col ">
+                <span class="slds-checkbox slds-m-right--x-large">
+                    <apex:inputCheckbox html-name="options" id="divsup7"  value="{!QD1.Verified_Last_4_Digtit_SSN__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup7" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Verified Last 4 Digit SSN</span>
+                    </apex:outputLabel>
+                </span> 
+            </div>
+            &nbsp; &nbsp;
+   
+            
+            <div class="slds-form-element__control slds-col ">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup121"  value="{!QD1.Read_Mini_Miranda__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup121" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Read Mini Miranda</span>
+                    </apex:outputLabel>
+                </span> 
+            </div>
+            
+            
+            <div class="slds-form-element__control slds-col ">
+                <span class="slds-checkbox slds-m-right--xx-large slds-m-left--large">
+                    <apex:inputCheckbox html-name="options" id="divsup10"  value="{!QD1.Verified_Mini_Miranda__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup10" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Verified Mini Miranda</span>
+                    </apex:outputLabel>
+                </span> 
+            </div>
+            
+        </div>
+        </div>
+    </div>
+    <apex:outputpanel id="idTaskTool">
+    <apex:outputPanel rendered="{!IF((QD1.Call_Type_Payments__c == 'Task Tool'),true,false)}">
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Task Tool</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_1-of-7">
+        <div class="slds-form-element slds-grid">        
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-m-right--xx-large">
+                    <apex:outputLabel >
+                        <span class="slds-form-element__label">Draft Date</span>
+                    </apex:outputLabel>
+                    <apex:inputField html-name="options" id="divsup600" value="{!QD1.Draft_Date__c}" styleClass="slds-input">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="idTaskDate"/>
+                    </apex:inputField>
+                    
+                </span>   
+            </div>
+            
+            
+        </div>
+        </div>
+        
+    </div>  
+    <apex:outputPanel id="idTaskDate">
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b></b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_1-of-7 ">
+        <div class="slds-form-element slds-grid">        
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-m-right--xx-large">
+                    <apex:outputLabel >
+                        <span class="slds-form-element__label">Task Date</span>
+                    </apex:outputLabel>
+                    <apex:inputField html-name="options" id="divsup60" value="{!QD1.Task_Date__c}" styleClass="slds-input">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputField>
+                    
+                </span>   
+            </div>
+             
+        </div>
+        </div>
+       
+    </div>
+    </apex:outputPanel>
+    </apex:outputPanel>
+    </apex:outputpanel>
+    
+    <apex:outputPanel id="idNSF">
+    <apex:outputPanel rendered="{!IF((QD1.Call_Type_Payments__c == 'NSF'),true,false)}">
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>NSF</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup140" value="{!QD1.Account_NSF__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup140" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Account NSF</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+     
+            
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--large slds-m-left--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup150" value="{!QD1.Recorded_Authorization_NSF__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup150" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Recorded Authorization</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;&nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-left--small slds-m-right--small">
+                    <apex:inputCheckbox html-name="options" id="divsup15001" value="{!QD1.Uploaded_Authorization_NSF__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup15001" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Uploaded Authorization</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox">
+                    <apex:inputCheckbox html-name="options" id="divsup15000" value="{!QD1.Task_Set_For_Payments_NSF__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup15000" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Task Set For Payments</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+        </div>
+        </div>
+    </div>
+    
+
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b></b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup14000" value="{!QD1.Able_To_Reschedule__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" rerender="idReschedule,idMsgPanel,Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup14000" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Able To Reschedule</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            
+          </div>
+        </div>
+    </div>
+    </apex:outputPanel>
+    </apex:outputPanel> 
+
+        <apex:outputPanel id="idReschedule">
+    <apex:outputPanel rendered="{!IF((QD1.Call_Type_Payments__c == 'NSF' && QD1.Able_To_Reschedule__c),true,false)}">
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="slds-p-horizontal_small slds-size_1-of-8 slds-m-left--xx-large" >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Date Requested</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_1-of-7 slds-combobox-picklist">                        
+            <apex:inputField value="{!QD1.Date_Requested_NSF__c}"  styleClass="slds-input" style="background-color: #f4ce42">
+                <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+            </apex:inputField> 
+                
+        </div>
+    </div>
+    </apex:outputPanel>
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="idSKIP">
+    <apex:outputPanel rendered="{!IF((QD1.Call_Type_Payments__c == 'Skip Draft'),true,false)}">
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>SKIP</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--large">
+                    <apex:inputCheckbox html-name="options" id="divsup1400" value="{!QD1.Client_Requested_Skip__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" rerender="idDateSkipped,idMsgPanel,Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup1400" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Client Requested Skip</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--large slds-m-left--x-large">
+                    <apex:inputCheckbox html-name="options" id="divsup1150" value="{!QD1.Recorded_Authorization_SKIP__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup1150" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Recorded Authorization</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;&nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-left--small slds-m-right--small">
+                    <apex:inputCheckbox html-name="options" id="divsup115001" value="{!QD1.Uploaded_Authorization_SKIP__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup115001" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Uploaded Authorization</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox">
+                    <apex:inputCheckbox html-name="options" id="divsup115000" value="{!QD1.Task_Set_For_Payments_SKIP__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup115000" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Task Set For Payments</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+        </div>
+        </div>
+    </div>
+    </apex:outputPanel>
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="idDateSkipped">
+    <apex:outputPanel rendered="{!IF((QD1.Call_Type_Payments__c == 'Skip Draft' && QD1.Client_Requested_Skip__c),true,false)}">
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="slds-p-horizontal_small slds-size_1-of-8 slds-m-left--xx-large" >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Date Skipped</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_1-of-7 slds-combobox-picklist">                        
+            <apex:inputField value="{!QD1.Date_Skipped__c}"  styleClass="slds-input" style="background-color: #f4ce42">
+                <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+            </apex:inputField> 
+                
+        </div>
+    </div>
+    </apex:outputPanel>
+    </apex:outputPanel>
+    
+    
+    <apex:outputPanel id="idDraftDate">
+    <apex:outputPanel rendered="{!IF((QD1.Call_Type_Payments__c == 'Change Draft Date'),true,false)}">
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Change Draft Date</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup114000" value="{!QD1.Change_Draft_Date_Just_1_Time__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="idChangeDraftDate,idMsgPanel,Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup114000" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Change Draft Date Just 1 Time</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+           
+          </div>
+        </div>
+    </div>
+    
+    <apex:outputPanel id="idChangeDraftDate">
+    <apex:outputPanel rendered="{!IF((QD1.Call_Type_Payments__c == 'Change Draft Date' && QD1.Change_Draft_Date_Just_1_Time__c),true,false)}">
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="slds-p-horizontal_small slds-size_1-of-8 slds-m-left--xx-large" >
+         <!--   <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Creditor Name</b></label>  -->
+            <apex:outputLabel value="Current Date" styleClass="slds-form-element__label slds-float_right"></apex:outputLabel>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_1-of-7 slds-combobox-picklist">                        
+            <apex:inputfield value="{!QD1.Current_Date_Draft__c}"  styleClass="slds-input" style="background-color: #f4ce42">
+                <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+            </apex:inputfield> 
+                
+        </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="slds-p-horizontal_small slds-size_1-of-8" >
+          <!--  <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Date Sent</b></label>  -->
+          <apex:outputLabel value="Date Requested" styleClass="slds-form-element__label slds-float_right"></apex:outputLabel>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_1-of-7 slds-combobox-picklist">                        
+            
+            <apex:inputField value="{!QD1.Date_Requested_Draft__c}"  styleClass="slds-input" style="background-color: #f4ce42">
+                <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+            </apex:inputField> 
+                
+        </div>
+               
+    </div>
+    </apex:outputPanel>
+    </apex:outputPanel>
+    
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b></b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup11" value="{!QD1.Change_Draft_Day_s_All__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" rerender="idChangeDraftDayAll,idMsgPanel,Panel1Id" />
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup11" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Change Draft Day(s) - All</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            
+          </div>
+        </div>
+    </div>
+    
+    <apex:outputPanel id="idChangeDraftDayAll">
+    <apex:outputPanel rendered="{!IF((QD1.Call_Type_Payments__c == 'Change Draft Date' && QD1.Change_Draft_Day_s_All__c),true,false)}">
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="slds-p-horizontal_small slds-size_1-of-8 slds-m-left--xx-large" >
+         <!--   <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Creditor Name</b></label>  -->
+            <apex:outputLabel value="Current Date" styleClass="slds-form-element__label slds-float_right"></apex:outputLabel>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_1-of-7 slds-combobox-picklist" >                        
+            <apex:inputfield value="{!QD1.Current_Date_Draft1__c}"  styleClass="slds-input" style="background-color: #f4ce42; z-index:1">
+                <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+            </apex:inputfield> 
+                
+        </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="slds-p-horizontal_small slds-size_1-of-8" >
+          <!--  <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Date Sent</b></label>  -->
+          <apex:outputLabel value="Date Requested" styleClass="slds-form-element__label slds-float_right"></apex:outputLabel>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_1-of-7 slds-combobox-picklist" style="z-index:5;">                        
+            
+            <apex:inputField value="{!QD1.Date_Requested_Draft1__c}"  styleClass="slds-input" style="background-color: #f4ce42; z-index:1">
+                <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+            </apex:inputField> 
+                
+        </div>
+               
+    </div>
+    </apex:outputPanel>
+    </apex:outputPanel>
+    
+    
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b></b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+           <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--large">
+                    <apex:inputCheckbox html-name="options" id="divsup12" value="{!QD1.Recorded_Authorization_DRAFTDATE__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup12" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Recorded Authorization</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-left--small slds-m-right--x-large">
+                    <apex:inputCheckbox html-name="options" id="divsup32" value="{!QD1.Uploaded_Authorization_DRAFTDATE__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup32" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Uploaded Authorization</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox">
+                    <apex:inputCheckbox html-name="options" id="divsup42" value="{!QD1.Task_Set_For_Payments_DRAFTDATE__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup42" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Task Set For Payments</span>
+                    </apex:outputLabel>
+                </span>   
+            </div> 
+            
+          </div>
+        </div>
+    </div>
+    </apex:outputPanel>
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="idDraftAmount">
+    <apex:outputPanel rendered="{!IF((QD1.Call_Type_Payments__c == 'Change Draft Amount'),true,false)}">
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Change Draft Amount</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup1000" value="{!QD1.Change_Draft_Amount_All__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" rerender="idAllAmount,idMsgPanel,Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup1000" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Change Draft Amount (All)</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            
+          </div>
+        </div>
+    </div>
+    
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b></b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup111" value="{!QD1.Change_Draft_Amount_1_Time__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" rerender="idAllAmount,idMsgPanel,Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup111" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Change Draft Amount (1 Time)</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            
+          </div>
+        </div>
+    </div>
+    
+    
+    <apex:outputPanel id="idAllAmount">
+    <apex:outputPanel rendered="{!IF((QD1.Call_Type_Payments__c == 'Change Draft Amount' && (QD1.Change_Draft_Amount_1_Time__c || QD1.Change_Draft_Amount_All__c)),true,false)}">
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="slds-p-horizontal_small slds-size_1-of-8 slds-m-left--xx-large" >
+         <!--   <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Creditor Name</b></label>  -->
+            <apex:outputLabel value="Amount" styleClass="slds-form-element__label slds-float_right"></apex:outputLabel>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_1-of-7 slds-combobox-picklist">                        
+            <apex:inputText value="{!DraftAmount}"  styleClass="slds-input" style="background-color: #f4ce42">
+                <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+            </apex:inputtext> 
+                
+        </div>
+     </div>  
+     </apex:outputPanel> 
+    </apex:outputPanel>
+    
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b></b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+           <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--large">
+                    <apex:inputCheckbox html-name="options" id="divsup1211" value="{!QD1.Recorded_Authorization_DRAFTAMOUNT__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup1211" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Recorded Authorization</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-left--small slds-m-right--x-large">
+                    <apex:inputCheckbox html-name="options" id="divsup321" value="{!QD1.Uploaded_Authorization_DRAFTAMOUNT__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup321" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Uploaded Authorization</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox">
+                    <apex:inputCheckbox html-name="options" id="divsup421" value="{!QD1.Task_Set_For_Payments_DRAFTAMOUNT__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup421" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Task Set For Payments</span>
+                    </apex:outputLabel>
+                </span>   
+            </div> 
+            
+          </div>
+        </div>
+    </div>
+    </apex:outputPanel>
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="idBank">
+    <apex:outputPanel rendered="{!IF((QD1.Call_Type_Payments__c == 'Change Bank'),true,false)}">
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Change Bank</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+           <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup12110" value="{!QD1.Changing_Bank_Info__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup12110" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Changing Bank Info</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-left--small slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup3210" value="{!QD1.Send_Voided_Check__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup3210" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Send Voided Check</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-left--small slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup4217" value="{!QD1.Task_For_ATD__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup4217" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Task For ATD</span>
+                    </apex:outputLabel>
+                </span>   
+            </div> 
+            &nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-left--x-large">
+                    <apex:inputCheckbox html-name="options" id="divsup4213" value="{!QD1.Task_For_ACH__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup4213" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Task For ACH</span>
+                    </apex:outputLabel>
+                </span>   
+            </div> 
+            
+          </div>
+        </div>
+    </div>
+    </apex:outputPanel>
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="idRefund">
+    <apex:outputPanel rendered="{!IF((QD1.Call_Type_Payments__c == 'Refund Request'),true,false)}">
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Refund Request</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup1119" value="{!QD1.Request_Refund__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" rerender="idRefunndSubPanel,idMsgPanel,Panel1Id" />
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup1119" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Request Refund</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            
+          </div>
+        </div>
+    </div>
+    
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b></b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+           <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--large">
+                    <apex:inputCheckbox html-name="options" id="divsup12011" value="{!QD1.Recorded_Authorization_REFUND__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup12011" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Recorded Authorization</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-left--small slds-m-right--x-large">
+                    <apex:inputCheckbox html-name="options" id="divsup3021" value="{!QD1.Uploaded_Authorization_REFUND__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup3021" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Uploaded Authorization</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox">
+                    <apex:inputCheckbox html-name="options" id="divsup4021" value="{!QD1.Task_Set_For_Payments_REFUND__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup4021" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Task Set For Payments</span>
+                    </apex:outputLabel>
+                </span>   
+            </div> 
+            
+          </div>
+        </div>
+    </div>
+    </apex:outputPanel>
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="idRefunndSubPanel">
+    <apex:outputPanel rendered="{!IF((QD1.Call_Type_Payments__c == 'Refund Request' && QD1.Request_Refund__c),true,false)}">
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="slds-p-horizontal_small slds-size_1-of-8 slds-m-left--xx-large" >
+         <!--   <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Creditor Name</b></label>  -->
+            <apex:outputLabel value="Reason" styleClass="slds-form-element__label slds-float_right"></apex:outputLabel>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_1-of-7 slds-combobox-picklist">                        
+            <apex:inputText value="{!RefundReason}"  styleClass="slds-input" style="background-color: #f4ce42">
+                <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+            </apex:inputtext> 
+                
+        </div>
+     </div>  
+     </apex:outputPanel> 
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="idADD">
+    <apex:outputPanel rendered="{!IF((QD1.Call_Type_Payments__c == 'Add/Remove debt'),true,false)}">
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Add/Remove Debt</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+           <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup120011" value="{!QD1.Remove_Debt__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="idAddRemoveDebt,idMsgPanel,Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup120011" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Remove Debt</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+           <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--large slds-m-left--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup120111" value="{!QD1.Recorded_Authorization_ADD__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup120111" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Recorded Authorization</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-left--small slds-m-right--small">
+                    <apex:inputCheckbox html-name="options" id="divsup31021" value="{!QD1.Uploaded_Authorization_ADD__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup31021" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Uploaded Authorization</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox">
+                    <apex:inputCheckbox html-name="options" id="divsup41021" value="{!QD1.Task_Set_For_Payments_ADD__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup41021" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Task Set For Payments</span>
+                    </apex:outputLabel>
+                </span>   
+            </div> 
+            
+          </div>
+        </div>
+    </div>
+    
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b></b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+           <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup1204011" value="{!QD1.Add_Debt__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="idAddRemoveDebt,idMsgPanel,Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup1204011" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Add Debt</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--xx-small slds-m-left--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup1201111" value="{!QD1.Request_Written_Confirmation__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup1201111" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Request Written Confirmation</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--small">
+                    <apex:inputCheckbox html-name="options" id="divsup310121" value="{!QD1.Send_In_Statements__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup310121" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Send In Statements</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            
+            
+          </div>
+        </div>
+    </div>
+    </apex:outputPanel>
+    </apex:outputPanel>
+   
+   <apex:outputPanel id="idAddRemoveDebt"> 
+    <apex:outputPanel rendered="{!IF((QD1.Call_Type_Payments__c == 'Add/Remove debt' && (QD1.Add_Debt__c || QD1.Remove_Debt__c)),true,false)}">
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="slds-p-horizontal_small slds-size_1-of-8 slds-m-left--xx-large" >
+         <!--   <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Creditor Name</b></label>  -->
+            <apex:outputLabel value="Creditor Name" styleClass="slds-form-element__label slds-float_right"></apex:outputLabel>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_1-of-7 slds-combobox-picklist">                        
+            <apex:inputText value="{!CreditorName}" styleClass="slds-input" style="background-color: #f4ce42">
+                <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+            </apex:inputtext> 
+                
+        </div>
+        
+        <div class="slds-p-horizontal_small slds-size_1-of-8" >
+          <!--  <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Date Sent</b></label>  -->
+          <apex:outputLabel value="Last 4 Account #" styleClass="slds-form-element__label slds-float_right"></apex:outputLabel>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_1-of-7 slds-combobox-picklist">                        
+            
+            <apex:inputText value="{!Last4Account}"  styleClass="slds-input" style="background-color: #f4ce42">
+                 <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+            </apex:inputtext> 
+                
+        </div>
+        
+        <div class="slds-p-horizontal_small slds-size_1-of-8" >
+          <!--  <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Date Sent</b></label>  -->
+          <apex:outputLabel value="Amount" styleClass="slds-form-element__label slds-float_right"></apex:outputLabel>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_1-of-7 slds-combobox-picklist">                        
+            
+            <apex:inputText value="{!AmountDebt}"  styleClass="slds-input" style="background-color: #f4ce42">
+                 <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+            </apex:inputtext> 
+                
+        </div>
+        
+    </div>
+    </apex:outputPanel>
+    
+   </apex:outputPanel> 
+    <apex:outputPanel id="idSettlement">
+    <apex:outputPanel rendered="{!IF((QD1.Call_Type_Payments__c == 'Default on Active Settlement'),true,false)}">
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Default On Active Settlement</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup1140001" value="{!QD1.Default_On_Active_Settlement__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" rerender="idDefualtSubPanel,idMsgPanel,Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup1140001" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Default On Active Settlement</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            
+          </div>
+        </div>
+    </div>
+    </apex:outputPanel>
+    </apex:outputPanel>
+
+    <apex:outputPanel id="idDefualtSubPanel">     
+
+    <apex:outputPanel rendered="{!IF((QD1.Call_Type_Payments__c == 'Default on Active Settlement' && QD1.Default_On_Active_Settlement__c),true,false)}">
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="slds-p-horizontal_small slds-size_1-of-8 slds-m-left--xx-large" >
+         <!--   <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Creditor Name</b></label>  -->
+            <apex:outputLabel value="Creditor Name" styleClass="slds-form-element__label slds-float_right"></apex:outputLabel>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_1-of-7 slds-combobox-picklist">                        
+        <!--    <apex:outputText value="{!CreditorName11}" styleClass="slds-input" style="background-color: #f4ce42" html-placeholder="Chase"/>   -->
+            <apex:inputText value="{!CreditorName11}"  styleClass="slds-input" style="background-color: #f4ce42">
+                 <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+            </apex:inputtext>     
+        </div>
+        
+        <div class="slds-p-horizontal_small slds-size_1-of-8" >
+          <!--  <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Date Sent</b></label>  -->
+          <apex:outputLabel value="Last 4 Account #" styleClass="slds-form-element__label slds-float_right"></apex:outputLabel>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_1-of-7 slds-combobox-picklist">                        
+            
+            <apex:inputText value="{!Last4Account1}"  styleClass="slds-input" style="background-color: #f4ce42">
+                 <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+            </apex:inputtext> 
+                
+        </div>
+        
+    </div>
+    </apex:outputPanel>
+    
+    </apex:outputPanel>
+
+    
+    <apex:outputPanel id="idEstimate">
+    <apex:outputPanel rendered="{!IF((QD1.Call_Type_Payments__c == 'Estimate to Complete'),true,false)}">
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Estimate To Complete</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+           <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup212110" value="{!QD1.Request_Estimate__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup212110" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Request Estimate</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-left--large slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup23210" value="{!QD1.Task_Payments__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup23210" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Task Payments</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-left--xx-large slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup24217" value="{!QD1.Provided_Estimate__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup24217" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Provided Estimate</span>
+                    </apex:outputLabel>
+                </span>   
+            </div> 
+           
+            
+          </div>
+        </div>
+    </div>
+    
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b></b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup11140001" value="{!QD1.Provides_Additional_Funds__c}">
+                        <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="idProvides,idMsgPanel,Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup11140001" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Provides Additional Funds</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            
+          </div>
+        </div>
+    </div>
+    </apex:outputPanel>
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="idProvides">
+    <apex:outputPanel rendered="{!IF((QD1.Call_Type_Payments__c == 'Estimate to Complete' && QD1.Provides_Additional_Funds__c),true,false)}">
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="slds-p-horizontal_small slds-size_1-of-8 slds-m-left--xx-large" >
+         <!--   <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Creditor Name</b></label>  -->
+            <apex:outputLabel value="Amount" styleClass="slds-form-element__label slds-float_right"></apex:outputLabel>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_1-of-7 slds-combobox-picklist">                        
+            <apex:inputText value="{!AmountEstimate}"  styleClass="slds-input" style="background-color: #f4ce42">
+                 <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+            </apex:inputtext> 
+                
+        </div>
+        
+        <div class="slds-p-horizontal_small slds-size_1-of-8" >
+          <!--  <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Date Sent</b></label>  -->
+          <apex:outputLabel value="Draft Date" styleClass="slds-form-element__label slds-float_right"></apex:outputLabel>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_1-of-7 slds-combobox-picklist">                        
+            
+            <apex:inputField id="date" value="{!QD1.Draft_Date_Estimate__c}"  styleClass="slds-input" style="background-color: #f4ce42">
+                 <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+            </apex:inputfield> 
+                
+        </div>
+        
+    </div>
+    
+    </apex:outputPanel> 
+    </apex:outputPanel>
+    <br/><br/>
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Additional Information</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_2-of-5 slds-combobox-picklist">                        
+            <apex:inputField value="{!QD1.Additional_Information__c}" styleClass="slds-input"> 
+                <apex:actionSupport event="onchange" action="{!CustomerServicePage}" reRender="Panel1Id"/>
+            </apex:inputField>
+        </div>
+    </div>
+    
+    </div>
+ <!--  <div class="slds-col" id="contactpanel"> 
+        
+    </div> -->
+    </div>
+    
+   
+    <br/>
+    
+   
+    
+     <apex:outputPanel id="idMsgPanel" style="z-index:-1">
+    <apex:outputPanel rendered="{!msgPanel}"> <br/><br/><br/>
+        <div class="demo-only" style="height: 4rem; z-index:-1;">
+            <div class="slds-notify_container slds-is-relative">
+                <div class="slds-notify slds-notify_toast slds-theme--warning" role="alert" style="background-color: #f4ce42;">
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <span class="slds-icon_container slds-icon-utility-info" title="Info">
+                        <svg class="slds-icon slds-icon_small">
+                          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.slds, '/assets/icons/utility-sprite/svg/symbols.svg#info')}" />
+                        </svg>
+                      </span>&nbsp;&nbsp;
+                      <div class="slds-notify__content">
+                          <b> Fields Marked in Yellow are required. </b>
+                      </div>
+          
+                </div>
+          </div>
+        </div>
+        </apex:outputPanel>
+   </apex:outputPanel>
+    
+    
+   
+    <center>
+        <apex:commandButton value="Clear All Values" action="{!clearAll}" onclick="loadtable();" html-name="options" styleClass="btn slds-button slds-button--brand slds-not-selected"   style="text-decoration:black;padding:1px;;width:9pc;background:#0070d2;" id="btn3" />
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <apex:commandButton value="Save" rerender="idErrorMsg,idShowMsgError" action="{!saveQDPayments}"  html-name="options" styleClass="btn slds-button slds-button--brand slds-not-selected"   style="text-decoration:black;padding:1px;;width:9pc;background:#0070d2;" id="btn8" />
+        
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <apex:commandButton value="Cancel" immediate="true" action="{!CancelQD}" onclick="loadtable();" html-name="options" styleClass="btn slds-button slds-button--brand slds-not-selected"   style="text-decoration:black;padding:1px;;width:9pc;background:#0070d2;" id="btn5" />
+    
+    </center>
+    <br/>
+    <div class="demo-only" id="spinner"  style="display:none;">
+      <div role="status" class="slds-spinner slds-spinner_brand slds-spinner_large">
+        <span class="slds-assistive-text">Loading</span>
+        <div class="slds-spinner__dot-a"></div>
+        <div class="slds-spinner__dot-b"></div>
+      </div>
+    </div>
+    <apex:outputPanel id="Panel1Id">
+    <apex:outputPanel rendered="{!showPanel}">
+    <!--<table  class="slds-table slds-table_bordered slds-table_cell-buffer">-->
+    <apex:pageBlock >  
+
+        <apex:pageBlockTable value="{!quickDocScripts2}" var="n" style="border:2px solid black;">
+   <!--     <apex:column value="{!n.Description__c}" width="50%" style="padding-left: 10px; padding-right:10px; border:2px solid black;" headerValue="Script Pane"/>  -->
+        <apex:column value="{!n.Notes__c}" style="padding-left: 10px; padding-right:10px; border:2px solid black; " headerValue="Notes Pane"/>  
+        </apex:pageBlockTable>
+        
+    </apex:pageBlock>
+    </apex:outputPanel>
+    </apex:outputPanel>
+    <br/>
+    
+    </div>
+    
+    </apex:form>
+    <apex:includeScript value="{!$Resource.SLDSDynamicLookupScript}"/> 
+    </body>
+    
+</apex:page>

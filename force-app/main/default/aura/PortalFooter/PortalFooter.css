@@ -1,0 +1,149 @@
+.THIS.footer-styles{
+    background: #232526;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    opacity:0.9;
+    padding:1.2rem; 
+    color:white !important;
+}
+
+.THIS .slds-m-top--medium{
+   font-size:15px !important;
+}
+.THIS .submitbutton{    
+  	background: transparent !important;
+    padding:0.3rem;
+    border: 1px solid lightgrey;
+    border-radius:4px;
+    color:#36b2c1 !important;
+    
+}
+
+.THIS a{
+    color:white ;
+}
+
+.THIS .subheadingText{
+    color: #36b2c1;
+    font-size:17px;
+}
+
+.THIS .iconColor .slds-icon {
+    fill : whitesmoke !important;
+}
+
+.THIS .horizontal {
+    border-style: solid;
+    border-color: white;
+    border-width: 1px 0 0 0;
+    margin-top: 8px;
+}
+
+.THIS .vertical {
+    border-left:1px solid lightgrey;
+    padding-left:15px;
+    /* height: 11.5rem !important; */
+}
+
+.THIS .textalign {
+    color: #36b2c1;
+    font-size:17px;
+    padding-left:0px;
+}
+
+.THIS .footerleft{
+    padding-right:2rem !important;
+}
+
+.THIS .custom-portal {
+    font-size: 1rem !important;
+}
+.THIS .support-phone a:hover {
+    text-decoration:none !important;
+}
+
+/* 
+##Device = Desktops
+##Screen = 1281px to higher resolution desktops
+*/
+
+@media (min-width: 1280px) {
+    .THIS .responsive-text-footer {
+        color: #36b2c1;
+        font-size:17px;
+    }
+}
+
+/* 
+##Device = Laptops, Desktops
+##Screen = B/w 1025px to 1280px
+*/
+
+@media (min-width: 1025px) and (max-width: 1279px) {
+    .THIS .responsive-text-footer {
+        color: #36b2c1;
+        font-size:17px;
+    }
+}
+
+/* 
+##Device = Tablets, Ipads (portrait)
+##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .THIS .responsive-text-footer {
+        color: #36b2c1;
+        font-size:17px;
+    }
+}
+
+/* 
+##Device = Tablets, Ipads (landscape)
+##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    .THIS .responsive-text-footer {
+        color: #36b2c1;
+        font-size:17px;
+    }
+}
+
+/* 
+##Device = Low Resolution Tablets, Mobiles (Landscape)
+##Screen = B/w 481px to 767px
+*/
+
+@media (min-width: 481px) and (max-width: 767px) {
+    .THIS .responsive-text-footer {
+        color: #36b2c1;
+        font-size:17px;
+        padding-left:0px;
+    }
+    .THIS .horizontal-line {
+        border-style: solid;
+        border-color: white;
+        border-width: 1px 0 0 0;
+        margin-top: 8px;
+    }
+}
+
+/* 
+##Device = Most of the Smartphones Mobiles (Portrait)
+##Screen = B/w 320px to 479px
+*/
+
+@media (min-width: 320px) and (max-width: 480px) {
+    .THIS .responsive-text-footer {
+        color: #36b2c1;
+        font-size:17px;
+        padding-left:0px;
+    }
+    .THIS .horizontal-line {
+        border-style: solid;
+        border-color: white;
+        border-width: 1px 0 0 0;
+        margin-top: 8px;
+    }
+}

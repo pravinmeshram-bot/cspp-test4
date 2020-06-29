@@ -1,0 +1,20 @@
+<apex:page standardController="Batch_Data__c" recordSetVar="BatchDataList" extensions="BatchDataController">
+<apex:form >
+    <apex:pageBlock >
+        <apex:pageBlockTable value="{!BatchDataList}" var="batchData">
+            <apex:column headerValue="Class Name" value="{!batchData.Name}"/>
+            <apex:column headerValue="Last Execution Time" value="{!batchData.Last_Execution_Time__c}"/>
+            <apex:column headerValue="Email Address to Notify">
+                <apex:inputField value="{!batchData.Emails_To_Notify__c}"/>
+            </apex:column>
+            <apex:column headerValue="Batch Execution Status" value="{!batchData.Batch_Execution_Status__c}"/>
+            <apex:column headerValue="Batch Failure Reason" value="{!batchData.Batch_Failure_Reason__c}"/>
+            <apex:column headerValue="Async Calls" value="{!batchData.Number_of_Callouts__c}"/>
+        </apex:pageBlockTable>
+        <apex:pageBlockButtons >
+            <apex:commandButton value="Save" title="Submit" action="{!saveData}"/>
+        </apex:pageBlockButtons>
+    </apex:pageBlock>
+    
+</apex:form>
+</apex:page>

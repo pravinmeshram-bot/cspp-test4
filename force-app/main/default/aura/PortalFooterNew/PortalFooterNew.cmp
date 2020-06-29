@@ -1,0 +1,213 @@
+<aura:component access="global" extends="c:abstractServer" controller="SFSPortal_DashboardMetricsController" implements="forceCommunity:availableForAllPageTypes">
+    <ltng:require styles="{!$Resource.fontawsome + '/css/font-awesome.css'}" />
+    <aura:attribute name="footerValueMap" type="Map" access="public" default="{}" />
+    <aura:attribute name="ReferralURL" type="String" default=""/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <div class="slds footer-styles" style="{!'background-color:' + (v.footerValueMap.portfolioInstance.Footer_Background_Color__c || '#414345') + ' !important;color:' + (v.footerValueMap.portfolioInstance.Footer_Text_Color__c || 'white ') +' !important' }">
+        <footer class="footer-bs"  scroll="no" style="overflow-x: hidden;">
+            <lightning:layout class="slds-grid slds-wrap margin-footer slds-show_medium">
+                <lightning:layoutItem size="12" class="slds-p-bottom_x-small" smallDeviceSize="12" mediumDeviceSize="2" largeDeviceSize="2" >
+                    <div class="footerleft" style="padding-top: 2px;">
+                        <lightning:layoutItem size="10">
+                            <div class="slds-form-element slds-m-top_medium slds-p-top_small">
+                                <h1 style="font-family:NotoSansKR-Medium!important;font-size: 21px;margin-bottom:-10px;color:#c6c6c8!important;">Business Hours:</h1><br/> 
+                                <p style="font-family:NotoSansKR-Medium!important;font-size: 18px;color:#c6c6c8!important;margin-bottom:0px;font-weight: bold;"><b>Monday-Friday</b></p>
+                                <div class="slds-form-element__control" style="font-size: 19px;font-color: #ffffff;">
+                                    <p style="font-family:NotoSansKR-Medium!important;color:#c6c6c8!important;font-size: 21px;margin-bottom: 25px;">{!v.footerValueMap.portfolioInstance.Portfolio__r.Business_Hours__c}</p>
+                                </div>
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="10" >
+                            <div class="slds-form-element slds-m-top_medium">
+                                <p style="font-size:21px;font-family:NotoSansKR-Medium!important;color:#c6c6c8!important;font-weight: bold;">Phone</p>
+                                <div class="slds-form-element__control" style="font-family:NotoSansKR-Medium!important;font-size: 21px;font-color: #ffffff;margin-bottom: 20px;">
+                                    <lightning:formattedPhone value="{!v.footerValueMap.portfolioInstance.Portfolio__r.Support_Phone_Number__c}"/>
+                                </div>
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="10" smallDeviceSize="12" mediumDeviceSize="10" largeDeviceSize="10">
+                            <div class="slds-form-element slds-m-top_medium">
+                                <p style="font-size:21px; font-family:NotoSansKR-Medium!important;color:#c6c6c8!important;font-weight: bold;">Fax</p>
+                                <div class="slds-form-element__control" style="font-family:NotoSansKR-Medium!important;font-size: 21px;font-color: #ffffff;">
+                                    <lightning:formattedPhone value="{!v.footerValueMap.portfolioInstance.Portfolio__r.Support_Fax_Number__c}"/>
+                                </div>
+                            </div>
+                        </lightning:layoutItem>
+                    </div>	
+                </lightning:layoutItem> 
+                <lightning:layoutItem size="12"  smallDeviceSize="12" mediumDeviceSize="10" largeDeviceSize="10" >
+                    <div class="Padding-left" style="padding-left: 6px;"> 
+                        <lightning:layout class=" slds-wrap">
+                            <lightning:layoutItem size="12" smallDeviceSize="12">
+                                <div class="slds-grid slds-gutters">
+                                    <div class="slds-col slds-p-top_xx-large" style="text-align:left;padding-bottom: 25px;">
+                                        <span>
+                                            <aura:if isTrue="{!not(empty(v.footerValueMap.portfolioInstance.Portfolio__r.Facebook_URL__c))}">
+                                                <a class="slds-m-left_medium" href="{!v.footerValueMap.portfolioInstance.Portfolio__r.Facebook_URL__c}" target="_blank" style="margin-left:0px"> 
+                                                    <img src="{!$Resource.facebookLogo}" width="40" height="40"/>
+                                                </a>
+                                            </aura:if>
+                                            <aura:if isTrue="{!not(empty(v.footerValueMap.portfolioInstance.Portfolio__r.Linkedin_URL__c))}">
+                                                <a class="slds-m-left_medium" href="{!v.footerValueMap.portfolioInstance.Portfolio__r.Linkedin_URL__c}" target="_blank">
+                                                    <img src="{!$Resource.linkedInLogo}"  width="40" height="40"/>
+                                                </a>
+                                            </aura:if>
+                                        </span>
+                                    </div>
+                                    <div class="small-device" style="margin-top: 5px;margin-bottom: 25px;">
+                                        <div class="slds-col" style="float:right;padiding-bottom:12px;">
+                                            <span><img src="{!''+ v.footerValueMap.companyLogoURL}" style="width:auto;bottom: 0;height:6rem;"/></span>
+                                        </div> 
+                                        <div class="slds-col sourceFont" style="float:left; padding-top:50px;">                                            
+                                            {!v.footerValueMap.portfolioInstance.Portfolio__r.Footer_Name__c}<br/>
+                                            All rights reserved                                              
+                                        </div>
+                                    </div>    
+                                </div>                                                
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                        <p class="horizontal slds-p-bottom_small"/>
+                        <p class="sourceFont" style="text-align: justify;font-size:14px;margin-top: 13px;">
+                            {!v.footerValueMap.portfolioInstance.Portfolio__r.Footer_Contact_Content__c} 
+                        </p>
+                        <p>
+                            {!v.footerValueMap.footerLinkList} 
+                        </p> 
+                    </div>
+                    <div style="text-decoration: underline;font-size:14px; margin-top: 30px; margin-right:-200px;padding-left:6px;">
+                        <lightning:layout class=" slds-wrap">
+                            <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="5" largeDeviceSize="4" class="links">
+                                <aura:iteration items="{!v.footerValueMap.footerLinkList}" var="footerLink" >
+                                    <aura:if isTrue="{!equals(footerLink.Article_Label__c, 'Contact Us')}">
+                                        <aura:if isTrue="{!equals(v.footerValueMap.currentUserType, 'Guest')}">
+                                            <a href="{!'mailto:' + v.footerValueMap.portfolioInstance.Portfolio__r.Support_Email__c}" >Contact Us</a>
+                                            <aura:set attribute="else">
+                                                <a href="/s/contactsupport" target="_self">Contact Us</a>
+                                            </aura:set>
+                                        </aura:if>
+                                        <aura:set attribute="else">
+                                            <a href="{!footerLink.Article_URL__c}" target="_blank" style="margin-right:20px">{!footerLink.Article_Label__c}</a>
+                                        </aura:set>
+                                    </aura:if>
+                                </aura:iteration>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="6" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="6" class="slds-show_medium">
+                                <aura:if isTrue="{!not(empty(v.footerValueMap.portfolioInstance.Portfolio__r.ReferralBaseURL__c))}">
+                                    <a aura:id="Earn $50" class="slds-m-left_medium font-NotoSansKR_Medium refer-a-friend"  href="{!v.ReferralURL}" target="_blank"> 
+                                        <u>{!$Label.c.ReferralTabName}</u> 
+                                    </a> 
+                                </aura:if>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+            <lightning:layout class="slds-wrap margin-footer slds-hide_medium">
+                <lightning:layoutItem size="5" class="slds-p-bottom_x-small" smallDeviceSize="5" mediumDeviceSize="5">
+                    <div class="footerleft" style="padding-top: 2px;">
+                        <lightning:layoutItem size="12">
+                            <div class="slds-col" style="text-align:left;">
+                                <span>
+                                    <aura:if isTrue="{!not(empty(v.footerValueMap.portfolioInstance.Portfolio__r.Facebook_URL__c))}">
+                                        <a class="slds-m-left_medium" href="{!v.footerValueMap.portfolioInstance.Portfolio__r.Facebook_URL__c}" target="_blank" style="margin-left:0px"> 
+                                            <img src="{!$Resource.facebookLogo}" width="40" height="40"/>
+                                        </a>
+                                    </aura:if>
+                                    <aura:if isTrue="{!not(empty(v.footerValueMap.portfolioInstance.Portfolio__r.Linkedin_URL__c))}">
+                                        <a class="slds-m-left_medium" href="{!v.footerValueMap.portfolioInstance.Portfolio__r.Linkedin_URL__c}" target="_blank">
+                                            <img src="{!$Resource.linkedInLogo}"  width="40" height="40"/>
+                                        </a>
+                                    </aura:if>
+                                </span>
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="12">
+                            <div class="slds-form-element slds-p-top_small">
+                                <h1 style="font-family:NotoSansKR-Medium!important;font-size: 21px;margin-bottom:-10px;color:#c6c6c8!important;">Business Hours:</h1><br/> 
+                                <p style="font-family:NotoSansKR-Medium!important;font-size: 18px;color:#c6c6c8!important;margin-bottom:0px;font-weight: bold;"><b>Monday-Friday</b></p>
+                                <div class="slds-form-element__control" style="font-size: 19px;font-color: #ffffff;">
+                                    <p style="font-family:NotoSansKR-Medium!important;color:#c6c6c8!important;font-size: 21px;margin-bottom: 25px;">{!v.footerValueMap.portfolioInstance.Portfolio__r.Business_Hours__c}</p>
+                                </div>
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                            <aura:if isTrue="{!not(empty(v.footerValueMap.portfolioInstance.Portfolio__r.ReferralBaseURL__c))}">
+                                <a aura:id="Earn $50" class=" font-NotoSansKR_Medium refer-a-friend"  href="{!v.ReferralURL}" target="_blank"> 
+                                    <u>{!$Label.c.ReferralTabName}</u> 
+                                </a> 
+                            </aura:if>
+                        </lightning:layoutItem>
+                    </div>	
+                </lightning:layoutItem> 
+                <!--right layout section -->
+                <lightning:layoutItem size="7" smallDeviceSize="7" mediumDeviceSize="7">
+                    <div style="padding-left: 36px;float:right;"> 
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                            <div>
+                                <span><img src="{!''+ v.footerValueMap.companyLogoURL}" style="bottom: 0;height:6rem;"/></span>
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                            <div class="slds-form-element">
+                                <p style="font-size:21px;font-family:NotoSansKR-Medium!important;color:#c6c6c8!important;font-weight: bold;">Phone</p>
+                                <div class="slds-form-element__control" style="font-family:NotoSansKR-Medium!important;font-size: 21px;font-color: #ffffff;">
+                                    <lightning:formattedPhone value="{!v.footerValueMap.portfolioInstance.Portfolio__r.Support_Phone_Number__c}"/>
+                                </div>
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                            <div class="slds-form-element">
+                                <p style="font-size:21px; font-family:NotoSansKR-Medium!important;color:#c6c6c8!important;font-weight: bold;">Fax</p>
+                                
+                                <div class="slds-form-element__control" style="font-family:NotoSansKR-Medium!important;font-size: 21px;font-color: #ffffff;">
+                                    <lightning:formattedPhone value="{!v.footerValueMap.portfolioInstance.Portfolio__r.Support_Fax_Number__c}"/>
+                                </div>
+                            </div>
+                        </lightning:layoutItem>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layout>
+                    <lightning:layoutItem size="12">
+                        <div>
+                            <p class="horizontal slds-p-bottom_small"/>
+                            <p class="sourceFont" style="font-size:14px;margin-top: 13px;">
+                                {!v.footerValueMap.portfolioInstance.Portfolio__r.Footer_Contact_Content__c} 
+                            </p>
+                            <p>
+                                {!v.footerValueMap.footerLinkList} 
+                            </p> 
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <lightning:layout>
+                    <div style="text-decoration: underline;font-size:14px; margin-top: 30px; margin-right:-200px;padding-left:6px;">
+                        <lightning:layout class=" slds-wrap">
+                            <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="5" largeDeviceSize="4" class="links">
+                                <aura:iteration items="{!v.footerValueMap.footerLinkList}" var="footerLink" >
+                                    <aura:if isTrue="{!equals(footerLink.Article_Label__c, 'Contact Us')}">
+                                        <aura:if isTrue="{!equals(v.footerValueMap.currentUserType, 'Guest')}">
+                                            <a href="{!'mailto:' + v.footerValueMap.portfolioInstance.Portfolio__r.Support_Email__c}" >Contact Us</a>
+                                            <aura:set attribute="else">
+                                                <a href="/s/contactsupport" target="_self">Contact Us</a>
+                                            </aura:set>
+                                        </aura:if>
+                                        <aura:set attribute="else">
+                                            <a href="{!footerLink.Article_URL__c}" target="_blank" style="margin-right:20px">{!footerLink.Article_Label__c}</a>
+                                        </aura:set>
+                                    </aura:if>
+                                </aura:iteration>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem size="12">
+                                <div class=" sourceFont" style="float:left; padding-top:12px;">                                            
+                                    {!v.footerValueMap.portfolioInstance.Portfolio__r.Footer_Name__c}
+                                    All rights reserved                                              
+                                </div>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </div>
+                </lightning:layout>
+            </lightning:layout>   
+        </footer>
+    </div>
+</aura:component>

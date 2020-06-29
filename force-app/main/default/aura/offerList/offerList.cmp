@@ -1,0 +1,212 @@
+<aura:component controller="SFSPortal_OfferListController" implements="forceCommunity:availableForAllPageTypes" extends="c:abstractServer" access="public">
+    <aura:attribute name="offerList" type="List" access="public" default="[]"/>
+    <aura:attribute name="offerListToDisplay" type="List" access="public" default="[]"/>
+    <aura:attribute name="offerFieldsetFields" type="List" default="[]" access="public"/>
+    <aura:attribute name="offerListViewFieldset" type="List" default="[]" access="public"/>
+    <aura:attribute name="program" type="Map" default="{'sobjectType': 'nu_dse__Program__c'}" access="public"/>
+    <aura:attribute name="isInit" type="Boolean" default="false" access="public"/>
+    <aura:attribute name="isOfferDecision" type="Boolean" default="false" access="public"/>
+    <aura:attribute name="toRenderModal" type="String" default="" access="public" />
+    <aura:attribute name="offerInstance" type="Map" default="{'sobjectType': 'nu_dse__Offer__c'}" access="public"/>
+    <aura:attribute name="status" type="String" access="public"/>
+    
+    <aura:handler name="actionEvent" event="c:selectedRecordEvt" action="{!c.handleAction}" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <div id="offerListCmp"> </div>
+    <!-- <aura:if isTrue="{!$Browser.isPhone}">
+        <c:notificationHomePage />
+    </aura:if> -->
+    <!--
+    <lightning:card title="{!'Pending Approvals' + ' ('+v.offerList.length+')'}" aura:id="cardview">
+        <aura:if isTrue="{!v.isInit}">
+            <c:dynamicList dataList="{!v.offerList}" columnHeaderList="{!v.offerListViewFieldset}" 
+                           recordsPerPage="5" actionList="[{'title' : 'Review', 'action' : 'review'},{'title' : 'View Info', 'action' : 'view info'}]" 
+                           actionType="Offer" emptyRecordsText="No approvals required at this time" />
+            <!- [{'action' : 'review', 'iconName' : 'utility:info_alt'}] add dash to end comment ->  
+        </aura:if>
+    </lightning:card> -->
+    <aura:if isTrue="{!v.isInit}">
+        <aura:if isTrue="{!greaterthan(v.offerList.length,0)}">
+            <div class="slds-section slds-is-open">
+                <div class="slds-wrap slds-border_bottom custom-title_container">
+                    <span class="custom-title_text"> <span style="color:#f40e0e;">Alert!</span> Immediate action is needed on the following approvals:</span>
+                </div>
+                <div style="margin-top:-15px;">
+                    <br/>
+                </div>
+                <lightning:layout class="slds-wrap custom-layout">
+                    <aura:iteration items="{!v.offerListToDisplay}" var="offerInstance" indexVar="index">
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="12">
+                            <div class="offer-card">
+                                <lightning:layout multipleRows="true">
+                                    <aura:iteration items="{!v.offerListViewFieldset}" var="columnHeader">
+                                        <aura:if isTrue="{!columnHeader.fieldLabel != 'TradeLine'}">
+                                            <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" class="slds-form-layout__custom_right slds-align_absolute-center">
+                                                <div class="slds-form-element">
+                                                    <aura:if isTrue="{!columnHeader.fieldLabel == 'Current Creditor'}">
+                                                        <label style="font-family:Prompt-Regular;font-size: 18px;font-color:#000000">
+                                                            <span>Creditor</span>
+                                                        </label>
+                                                    </aura:if>
+                                                    <aura:if isTrue="{!columnHeader.fieldLabel == 'Original Balance'}">
+                                                        <label style="font-family:Prompt-Regular;font-size: 18px;font-color:#000000">
+                                                            <span>Debt Balance</span>
+                                                        </label>
+                                                    </aura:if>
+                                                    <aura:if isTrue="{!columnHeader.fieldLabel == 'Offer Amount'}">
+                                                        <label style="font-family:Prompt-Regular;font-size: 18px;font-color:#000000">
+                                                            <span>Settlement Offer</span>
+                                                        </label>
+                                                    </aura:if>
+                                                    <div class="slds-form-element__control" style="font-family:Prompt-Regular;font-size: 20px;font-color:#000000">
+                                                        <b><c:dynamicCell dataCellList="{!columnHeader}" dataRowMap="{!offerInstance}"/></b>
+                                                    </div>
+                                                </div>
+                                            </lightning:layoutItem>
+                                        </aura:if>
+                                    </aura:iteration>
+                                    <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="12" largeDeviceSize="3" >
+                                        <div class="slds-form-layout__custom slds-align_absolute-center" style="padding:15.5px;">
+                                            <aura:if isTrue="{!and(offerInstance.offerCriteriaMet, v.isOfferDecision)}"> <!--  offerCriteriaMet first patment date > current date and check for 5 days only  5 days of current date -->
+                                                <lightning:button aura:id="reviewOfferbtn_offerList" variant="neutral" name="{!index}" label="Review Offer" onclick="{! c.reviewForApproval }" class="custom-button_review"/>
+                                                <aura:set attribute="else">
+                                                    <aura:if isTrue="{!offerInstance.offerMoreInfo}">
+                                                        <lightning:button aura:id="viewInfobtn_offerList" name="{!index}" variant="neutral" label="View Info"  onclick="{! c.viewInfo }" class="custom-button_getInfo"/>
+                                                    </aura:if>
+                                                </aura:set>
+                                            </aura:if>
+                                        </div>
+                                    </lightning:layoutItem>
+                                </lightning:layout>
+                            </div>
+                        </lightning:layoutItem>
+                    </aura:iteration>
+                </lightning:layout>
+                <div style="font-family:Prompt-Regular;font-size: 17px;font-color:#2c2e33">
+                    <c:pagination allData="{!v.offerList}" data="{!v.offerListToDisplay}" pageSize="5"/>
+                </div>
+            </div>
+            <aura:set attribute="else">
+                <div style="font-family:Prompt;font-size: 17px;font-color:#2c2e33;" class="slds-p-around_medium">No actions pending at this time.</div>
+            </aura:set>
+        </aura:if>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.toRenderModal == 'View Info'}">
+        <div class="slds-m-around_xx-large custom-modal">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_small">
+                <div class="slds-modal__container responsive-modal-view" >
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" style="min-height:10rem;">
+                        <button class="slds-button slds-button_icon custom-close_button" title="Close" onclick="{!c.cancelModel}">
+                            <lightning:icon class="custom_close_modal_header" iconName="action:close" alternativeText="close" size="x-small"/>
+                        </button>
+                        <div style="text-align:center;font-family:Raleway;font-size: large;">
+                            <div style="font-family: Vidaloka-Regular!important;color:Red;font-size: xx-large;"> Alert! </div>
+                            <div style="font-family: Vidaloka-Regular!important; font-size: x-large;"> <b>Urgent Response Needed </b></div>
+                            The terms &amp; conditions for this offer requires special handling on your part. <br />
+                            Please call our <b>Client Service Department</b> at 
+                            <div style="font-weight:bold;font-size:xx-large;"><ui:outputPhone value="{!v.program.Portfolio__r.Support_Phone_Number__c}"/></div> 
+                            to discuss the details. Proposed settlements may expire so <br />
+                            <b style="color:black;font-size:large;font-family:Prompt-Bold !important;">PLEASE CALL US AS SOON AS POSSIBLE. </b> <br /><br />
+                            
+                            <div class="slds-p-around_large dark-border slds-align_absolute-center" >
+                                <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal slds-table_fixed-layout slds-no-row-hover" >
+                                    <thead style="font-size: small;">
+                                        <tr class="slds-line-height_reset">
+                                            <th scope="col" aria-label="Creditor">
+                                                <div class="slds-align_absolute-center"  title="">
+                                                    <span class="" >
+                                                        <span title="Creditor" class="slds-truncate">Creditor</span>
+                                                    </span>
+                                                </div>
+                                            </th>
+                                            <th scope="col" aria-label="Debt Balance">
+                                                <div class="slds-align_absolute-center"  title="">
+                                                    <span class="" >
+                                                        <span title="Debt Balance" class="slds-truncate">Debt Balance</span>
+                                                    </span>
+                                                </div>
+                                            </th>
+                                            <th scope="col" aria-label="Settlement Offer">
+                                                <div class="slds-align_absolute-center"  title="">
+                                                    <span class="" >
+                                                        <span title="Settlement Offer" class="slds-truncate">Settlement Offer</span>
+                                                    </span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody >
+                                        <tr >
+                                            <td data-label="Creditor" style="font-family: Raleway-SemiBold !important; font-size:larg!important">
+                                                <div class="slds-truncate slds-align_absolute-center">
+                                                    <b><!--<span> {!v.offerInstance.SFSPortal_Original_Creditor__c} </span>-->
+                                                        <ui:outputText value="{!v.offerInstance.SFSPortal_Original_Creditor__c}"/>
+                                                    </b>
+                                                </div>
+                                            </td>
+                                            <td data-label="Debt Balance" style="font-family: Raleway-SemiBold !important; font-size: 20px;!important">
+                                                <div class="slds-truncate slds-align_absolute-center">
+                                                    <b><!--<span>{!v.offerInstance.Current_Balance__c}</span>-->
+                                                        <ui:outputCurrency value="{!v.offerInstance.Current_Balance__c}"/>
+                                                    </b>
+                                                </div>
+                                            </td>
+                                            <td data-label="Settlement Offer" style="font-family: Raleway-SemiBold !important; font-size: 20px;!important">
+                                                <div class="slds-truncate slds-align_absolute-center">
+                                                    <b><!--<span>{!v.offerInstance.nu_dse__Offer_Amount__c}</span>-->
+                                                        <ui:outputCurrency value="{!v.offerInstance.nu_dse__Offer_Amount__c}"/>
+                                                    </b>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>                    
+                        </div>
+                        <div style="text-align:center" class="slds-p-top_large">
+                            <lightning:button class="btn_styleInModal" aura:id="closebtn_offerList" label="CLOSE" variant="brand" onclick="{!c.cancelModel}">
+                                CLOSE <lightning:icon class="custom_close_modal_footer" iconName="action:close" alternativeText="close" size="xx-small"/>
+                            </lightning:button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+    </aura:if>
+    <!--<aura:if isTrue="{!v.toRenderModal}">
+        <c:customModal header="{!v.toRenderModal}" modalSize="slds-modal_small">
+            <aura:set attribute="body">
+                <aura:if isTrue="{!v.toRenderModal == 'Alert'}">
+                    <div style="text-align:center">
+                        Are you sure you want to {!v.status} ?
+                    </div>
+                    <aura:set attribute="else">
+                        <lightning:recordViewForm recordId="{!v.offerInstance.Id}" objectApiName="nu_dse__Offer__c">
+                            <lightning:layout class="slds-wrap">
+                                <aura:iteration items="{!v.offerFieldsetFields}" var="field">
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                                        <lightning:outputField fieldName="{!field}" />
+                                    </lightning:layoutItem>
+                                </aura:iteration>
+                            </lightning:layout>
+                        </lightning:recordViewForm>
+                    </aura:set>
+                </aura:if>
+            </aura:set>
+            <aura:set attribute="footer">
+                <aura:if isTrue="{!v.toRenderModal == 'Alert'}">
+                    <lightning:button variant="brand" label="Yes" onclick="{! c.updateStatus }" />
+                    <lightning:button variant="brand" label="No" onclick="{! c.cancelModel }" />
+                    <aura:set attribute="else">
+                        <lightning:button variant="brand" label="Accept" title="Accept" onclick="{! c.updateStatus }" />
+                        <lightning:button variant="brand" label="Decline" title="Cancel" onclick="{! c.updateStatus }" />
+                        <lightning:button label="Close" variant="brand" onclick="{!c.cancelModel}"/>
+                    </aura:set>
+                </aura:if>
+            </aura:set>
+        </c:customModal>
+    </aura:if>-->
+</aura:component>

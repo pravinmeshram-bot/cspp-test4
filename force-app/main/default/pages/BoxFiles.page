@@ -1,0 +1,20 @@
+<apex:page controller="BoxFiles" showHeader="false" sidebar="false" action="{!FilesharingLink}" id="pge"> 
+   <apex:form id="frm"> 
+<!-- Removed per SFS Request - SelasTech
+      <div style="width:40%;float: right;margin-right: 8px;background:lightyellow" id="notchecked">
+            <i class="fa fa-bell-o" aria-hidden="true" style="margin-left:5px;"></i>
+            <span> To Upload files to below folders, Login with Username: acarroll@stratfs.com &amp; Password: Carroll820n </span>
+      </div>
+-->
+      <div class="container-fluid" style="padding:0px;"> 
+      <apex:outputpanel rendered="{!IF((sharedlink != '' && sharedlink != null),FALSE,TRUE)}">
+      <h4 style="Color: #800000;"> oops looks like there is a problem,contact your system administrator..</h4>
+      </apex:outputpanel>
+      
+      <apex:outputpanel rendered="{!IF((sharedlink != '' && sharedlink != null),TRUE,FALSE)}" >
+           <!-- <h4>Page Not Loaded? <a href="https://app.box.com/logout" rerender="frm">Clik Here</a></h4>  -->
+           <iframe src="https://app.box.com/embed_widget/s/{!sharedlink}" width="100%" height="600px" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" msallowfullscreen="true"/>             
+      </apex:outputpanel>
+      </div> 
+   </apex:form> 
+</apex:page>

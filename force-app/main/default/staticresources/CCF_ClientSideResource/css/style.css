@@ -1,0 +1,1718 @@
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,
+p,blockquote,pre,a,abbr,acronym,address,big,cite,code,
+del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,
+sub,sup,tt,var,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,
+table,caption,tbody,tfoot,thead,tr,th,td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-family: Arial,Helvetica,sans-serif;
+	font-size: 13px;
+}
+a,.pbBody a,.ibBody a{
+	color: #1797c0;
+	text-decoration: none;
+}
+a,input,button,select{
+	cursor: pointer;
+	outline: 0;
+}
+select,input,ul li,ol li{
+	padding: 0;
+	margin: 0;
+}
+#ccf_legalTrigger table,
+#ccf_quotaAllocation table,
+#ccf_multipleValidity table,
+#ccf_upstream table {
+    border-collapse: inherit;
+}
+.formTable_fourthRow select,
+.formTable_fourthRow input{
+	width: 97%;
+}
+.processing {
+    font-weight: bold;
+    clear: both;
+    display: block;
+    padding-top: 15px;
+}
+.bPageBlock .message {
+    margin: 20px;
+}
+input[type=search] {
+    padding: 0 0 0 5px;
+}
+#spinner{
+	display: none;
+	width: 120px;
+	height: 120px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	text-align:center;
+	padding: 0px;
+	font:normal 16px Tahoma, Geneva, sans-serif;
+	border:0;
+	background-color:transparent;
+	z-index: 100;
+	line-height:20px;
+ }
+ #opaque {
+	 position: fixed;
+	 top: 0px;
+	 left: 0px;
+	 width: 100%;
+	 height: 100%;
+	 z-index: 99;
+	 display: none;
+	 background-color: #000;
+	 filter: alpha(opacity=30);
+	 opacity: 0.3;
+	 -moz-opacity:0.3;
+	 -khtml-opacity:0.3
+ }
+ * html #opaque {
+	 position: absolute;
+ }
+/*CCF Landing start*/
+.ccf_pageContent{
+	width: 100%;
+	position: relative;
+	min-height: 600px;
+}
+.ccf_pageContent .mainWrapper{
+	width: 100%;
+    margin: 0 auto 5px;
+    box-sizing: border-box;
+    float: left;
+}
+.ccf_pageContent .mainWrapper .tableMainContent{
+	width: 100%;
+	height: auto;
+    padding: 0;
+    box-sizing: border-box;
+}
+.mainWrapper .tableMainContent .formContainer{
+    min-height: 600px;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .tablePreHeader{
+	width: 100%;
+	height: 50px;
+	border-bottom: 1px solid #ccc;
+    margin-bottom: 15px;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .tablePreHeader h1,
+.ccf_pageContent.ccf_importLineitem .mainWrapper  h1{
+	float: left;
+	color: #000;
+	font-size: 20px;
+	position: relative;
+	top: 5px;
+    left: 1.5%;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .tablePreHeader .buttonContainer {
+    margin: auto;
+    text-align: right;
+    position: relative;
+    top: 5px;
+    width: 90%;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .btn.slds-button {
+	color: #fff;
+    font-size: 14px;
+    height: 24px;
+    border: 0;
+    border-radius: 11px;
+    padding: 5px 15px;
+    background: #1797c0;
+    margin-right: 10px;
+    font-weight: bold;
+    line-height: 1;
+	outline: none;
+    box-shadow: 0 0 0 0px #428bca inset, 0 0 0 1px rgba(255,255,255,0.15) inset, 0 4px 0 0 #1797c0, 0 4px 0 0px rgba(0,0,0,0.4), 0 4px 4px 1px rgba(0,0,0,0.5);
+    transition: all .08s linear;
+    position: relative;
+	display: inline-block;
+    text-transform: capitalize;
+}
+.ccf_formContent .mainWrapper .tableMainContent .slds-button.btnDisabled,
+.ccf_pageContent .mainWrapper .tableMainContent .slds-button.btnDisabled {
+	color: #675d5d;
+    font-size: 14px;
+    height: 24px;
+    border: 0;
+    border-radius: 11px;
+    padding: 0 15px;
+    background: #e8e8e9;
+    margin-right: 10px;
+	margin-left: 10px;
+    font-weight: bold;
+    line-height: 1;
+	outline: none;
+    box-shadow: 0 0 0 0px #428bca inset, 0 0 0 1px rgba(255,255,255,0.15) inset, 0 4px 0 0 #e8e8e9, 0 4px 0 0px rgba(0,0,0,0.4), 0 4px 4px 1px rgba(0,0,0,0.5);
+    transition: all .08s linear;
+    position: relative;
+	display: inline-block;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .btn.slds-button:active{
+    box-shadow: none;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .btn.slds-button:hover {
+    background: #35b4e9;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .tablePreHeader .filter_ccf {
+    float: right;
+    background: url("../images/filter_enable.png") no-repeat center;
+    width: 40px;
+    height: 40px;
+    position: relative;
+    top: -26px;
+    right: 20px;
+    cursor: pointer;
+    background-size: 100%;
+    clear: both;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .tablePreHeader .filter_ccf.active {
+    background: url("../images/filter_disable.png") no-repeat center;
+    background-size: 100%;
+    top: -29px;
+}
+.datePickerImage {
+    background: url(../images/calendar.png) no-repeat right 5px center;
+}
+/*Filter start*/
+.ccf_pageContent .mainWrapper .tableMainContent .tableFilter{
+	width: 100%;
+	min-height: 125px;
+    background: #fff;
+}
+.ccf_importLineitem .mainWrapper .tableMainContent .tableFilter {
+    border: 1px solid #aaa;
+    padding: 20px 10px;
+    border-radius: 10px;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .tableFilter select,
+.ccf_pageContent .mainWrapper .tableMainContent .tableFilter input{
+	border: 1px solid #77787A;
+    height: 26px;
+    border-radius: 5px;
+    margin: 10px 0 0;
+    padding: 0 0 0 2%;
+    box-sizing: border-box;
+    width: 100%;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .tableFilter .tableFilter_section{
+    /* min-height: 100px; */
+}
+.ccf_pageContent .mainWrapper .tableMainContent .tableFilter .tableFilter_section_search{
+    float: left;
+    width: 18%;
+    margin: 1%;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .tableFilter .tableFilter_section_search .dateInput,
+.ccf_formContent .mainWrapper .tableMainContent .tableFilter .tableFilter_section_search .dateInput{
+    position: relative;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .tableFilter .tableFilter_section_search .dateInput .dateFormat,
+.ccf_formContent .mainWrapper .tableMainContent .tableFilter .tableFilter_section_search .dateInput .dateFormat{
+    position: absolute;
+    right: 0;
+    top: 0;
+	line-height: 1;
+	display: none;
+}
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+	.ccf_pageContent.ccf_importLineitem .mainWrapper .tableMainContent .tableFilter .tableFilter_section_search .dateInput .dateFormat {
+		top: -11px;
+	}
+}
+.ccf_pageContent.ccf_importLineitem .mainWrapper .tableMainContent .tableFilter .tableFilter_section_search{
+	width: 14.5%;
+    margin: 1%;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .tableFilter .tableFilter_section_search label,
+.ccf_pageContent .mainWrapper .tableMainContent .tableFilter .tableFilter_section_date label{
+    color: #000;
+    font-size: 13px;
+	font-weight: bold;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .tableFilter .tableFilter_section_date{
+    float: left;
+    width: 12%;
+    margin: 1%;
+    position: relative;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .tableFilter .tableFilter_section_date .dateFormat {
+    padding: 0 2px;
+    position: absolute;
+    right: 0px;
+    bottom: 7px;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .tableFilter .tableFilter_searchOption,
+.ccf_pageContent .mainWrapper .tableMainContent .tableFilter .tableFilter_dateOption{
+    border: 1px solid #77787A;
+    width: 100%;
+    height: 28px;
+    border-radius: 5px;
+    margin: 5px 0 0;
+    padding: 0 0 0 2%;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .tableFilter .tableFilter_button{
+    text-align: center;
+	clear: both;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .tableFilter .tableFilter_button .applyButton,
+.ccf_pageContent .mainWrapper .tableMainContent .tableFilter .tableFilter_button .searchLineItem{
+	padding: 0 30px;
+    width: auto;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .tableFilter .tableFilter_button .clearButton{
+	padding: 0 30px;
+    width: auto;
+}
+/*Filter end*/
+.ccf_pageContent .mainWrapper .tableMainContent .tableHeader{
+	width: 100%;
+	height: 70px;
+    background: #B2D4EE;
+	border-radius: 0 0 10px 10px;
+    margin-bottom: 15px;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .tableHeader .tableHeaderText{
+	color: #000;
+	font-size: 13px;
+	width: 12.5%;
+    height: 100%;
+	float: left;
+	font-weight: bold;
+    display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .tableBodyContent{
+	width: 100%;
+	height: 70px;
+	border-radius: 10px;
+	background: #F5F6F6;
+	margin-bottom: 15px;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .tableBodyContent .tableBodyContentText{
+	color: #000;
+	font-size: 13px;
+	width: 12.5%;
+	height: 100%;
+	float: left;
+    display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .tableBodyContent .tableBodyContentText:first-child{
+	text-align: left;	
+    box-sizing: border-box;
+    padding-left: 10px;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .tableBodyContent .tableBodyContentText:last-child{
+	color: #FFF;
+	border-radius: 0 10px 10px 0;
+}
+.ccf_pageContent .tableBodyContentText{
+	color: #fff;
+    font-weight: bold;
+}
+.ccf_pageContent .tableBodyContentText.Draft{
+	background: #ffaa09;
+}
+.ccf_pageContent .tableBodyContentText.Market.Input.Progress{
+	background: #81f7bc;
+}
+.ccf_pageContent .tableBodyContentText.Market.Input.Complete{
+	background: #7fdaf9;
+}
+.ccf_pageContent .tableBodyContentText.Validation.Progress{
+	
+	background: #FFD700;
+}
+.ccf_pageContent .tableBodyContentText.Validated{
+	background: #2175CD;
+}
+.ccf_pageContent .tableBodyContentText.Validation.Failed{
+	background: #FF0000;
+}
+.ccf_pageContent .tableBodyContentText.Submitted{
+	background: #f36d6d;
+}
+.ccf_pageContent .tableBodyContentText.Info{
+	background: #C653FF;
+}
+.ccf_pageContent .tableBodyContentText.Contract.Created{
+	background: #6AC539;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .formFooter {
+    width: 100%;
+    text-align: center;
+    float: left;
+    position: relative;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .formFooter .previous_button {
+    background: url(../images/previous_active.png) no-repeat right center;
+    width: 33px;
+    height: 33px;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .formFooter .disabled .previous_button {
+    background: url(../images/previous.png) no-repeat right center;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .formFooter .next_button {
+	background: url(../images/next_active.png) no-repeat left center;
+    width: 33px;
+    height: 33px;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .formFooter .disabled .next_button {
+	background: url(../images/next.png) no-repeat left center;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .formFooter .pagination>li>a {
+	border: 0;
+    font-weight: bold;
+}
+/*CCF Landing end*/
+/*CCF Form start*/
+.ccf_formContent #ccf_headerSection .errorMsg {
+	position: relative;
+    top: -10px;
+}
+.ccf_formContent{
+	width: 100%;
+	position: relative;
+}
+.ccf_formContent .mainWrapper{
+	width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    float: left;
+}
+.ccf_formContent .mainWrapper .tablePreHeader{
+	width: 100%;
+	height: 50px;
+	border-bottom: 1px solid #ccc;
+    box-sizing: border-box;
+    padding: 0 1.5%;
+}
+.ccf_formContent .mainWrapper .tablePreHeader .slds-breadcrumb{
+    float: left;
+    width: 60%;
+}
+.ccf_formContent .mainWrapper .tablePreHeader .slds-breadcrumb .slds-list__item {
+    display: inline-block;
+    padding: 15px 10px;
+    float: left;
+}
+.ccf_formContent.ccf_importLineitem .mainWrapper .tablePreHeader .slds-breadcrumb .slds-list__item {
+    padding: 10px;
+}
+.ccf_formContent .mainWrapper .tablePreHeader .slds-breadcrumb .slds-list__item:first-child {
+    padding: 15px 5px 15px 0;
+}
+.ccf_formContent.ccf_importLineitem .mainWrapper .tablePreHeader .slds-breadcrumb .slds-list__item:first-child {
+    padding: 10px 5px 10px 0;
+}
+.ccf_formContent .mainWrapper .tablePreHeader .buttonContainer,
+.ccf_formContent .mainWrapper .tablePreHeader .slds-button-group{
+    float: left;
+    width: 40%;
+	position: relative;
+    top: 7px;
+    display: inline-block;
+}
+.ccf_formContent .mainWrapper .tableMainContent{
+	width: 100%;
+	height: auto;
+    background: #fff;
+    padding: 20px 0;
+    box-sizing: border-box;
+	clear: both;
+}
+.ccf_formContent .mainWrapper .tableMainContent .tableHeader{
+	width: 100%;
+	height: 90px;
+    padding: 0 1.5%;
+    box-sizing: border-box;
+}
+.ccf_formContent .mainWrapper .tableMainContent .tableHeader .tableHeader_firstColumn{
+	width: 45%;
+	float: left;
+}
+.ccf_formContent .mainWrapper .tableMainContent .tableHeader .tableHeader_secondColumn{
+    position: relative;
+    top: 50px;
+	width: 55%;
+	float: right;
+}
+.ccf_formContent .mainWrapper .tableMainContent .tableHeader h1{
+	color: #1797c0;
+    font-size: 18px;
+    display: block;
+    font-weight: normal;
+    margin: 0 0 8px;
+    line-height: 1;
+}
+.ccf_formContent .mainWrapper .tableMainContent .tableHeader h2{
+	color: #000;
+	font-size: 14px;
+    display: block;
+    margin: 5px 0;
+    line-height: 1;
+}
+.ccf_formContent .mainWrapper ul ,
+.ccf_formContent .mainWrapper ol {
+	margin: 0;
+}
+.ccf_formContent .mainWrapper .tableHeader .tableHeader_firstColumn ul li {
+    display: inline-block;
+    padding: 0 0 10px;
+    font-size: 13px;
+    color: #000;
+    float: left;
+	margin: 0;
+    line-height: 19px;
+}
+.ccf_formContent .mainWrapper .tableHeader .tableHeader_firstColumn ul li:after {
+	padding: 0 10px;
+    font-size: 14px;
+    color: #000;
+    content: "|";
+    position: relative;
+    top: -1px;
+}
+.ccf_formContent .mainWrapper .tableHeader .tableHeader_firstColumn ul li:last-child {
+    font-weight: bold;
+    color: #1797c0;
+}
+.ccf_formContent .mainWrapper .tableHeader .tableHeader_firstColumn ul li:last-child:after {
+    content: none;
+}
+.ccf_formContent .mainWrapper .tableHeader .tableHeader_firstColumn .from_date,
+.ccf_formContent .mainWrapper .tableHeader .tableHeader_firstColumn .to_date{
+    padding: 0 5px;
+}
+.ccf_formContent .mainWrapper .tableMainContent .tableHeader .tableHeader_secondColumn .save_draft{
+	float: right;
+}
+.ccf_formContent .mainWrapper .formContainer .formTable_firstRow .generate_pdf {
+    padding: 0 30px;
+    position: absolute;
+    right: 10px;
+    top: 0px;
+}
+.ccf_formContent .mainWrapper .tableHeader .tableHeader_secondColumn .lineItem_section,
+.ccf_formContent .mainWrapper .tableHeader .tableHeader_secondColumn .header_section{
+    float: right;
+	width: 23%;
+	position: relative;
+   /*  margin-top: 5px; */
+}
+.ccf_formContent .mainWrapper .tableHeader .tableHeader_secondColumn .lineItem_section label,
+.ccf_formContent .mainWrapper .tableHeader .tableHeader_secondColumn .header_section label{
+    color: #000;
+    font-size: 13px;
+}
+.ccf_formContent .mainWrapper .tableHeader .tableHeader_secondColumn .lineItem_section .lineItem_section_input,
+.ccf_formContent .mainWrapper .tableHeader .tableHeader_secondColumn .header_section .header_section_input{
+	background: #ccc;
+    width: 94%;
+    height: 5px;
+    position: relative;
+}
+.ccf_formContent .mainWrapper .tableHeader .tableHeader_secondColumn .lineItem_section .lineItem_section_value,
+.ccf_formContent .mainWrapper .tableHeader .tableHeader_secondColumn .header_section .header_section_value{
+    position: absolute;
+    top: 0;
+    right: 6%;
+    font-size: 16px;
+    font-weight: bold;
+}
+.ccf_formContent .mainWrapper .tableHeader .tableHeader_secondColumn .lineItem_section .lineItem_section_value_over,
+.ccf_formContent .mainWrapper .tableHeader .tableHeader_secondColumn .header_section .header_section_value_over{
+    position: absolute;
+    left: 0;
+    background: #428414;
+    height: 5px;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formHeader {
+    width: 100%;
+    height: 60px;
+    background: #F5F6F6;
+    border-radius: 10px;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formHeader .formHeaderText{
+    color: #000;
+    font-size: 15px;
+    width: 12.5%;
+    height: 100%;
+    float: left;
+    font-weight: bolder;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border-left: 1px solid #ddd;
+	margin: 0;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formHeader .formHeaderText.active {
+	border-bottom: 5px solid #1797c0;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formHeader .formHeaderText > a{
+    color: #000;
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    width: 100%;
+    text-decoration: none;
+    font-weight: bolder;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formHeader .formHeaderText.active > a{
+    color: #1797c0;
+    padding-top: 5px;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formHeader .formHeaderText:first-child{
+    border-left: 0;
+    border-radius: 10px 0 0 10px;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formHeader .formHeaderText:last-child{
+    border-radius: 0 10px 10px 0;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable{
+    box-sizing: border-box;
+    margin: 0;
+    border: 0;
+    float: left;
+    width: 100%;
+    min-height: 50px;
+    background: #fff;
+}
+body .ccf_formContent #ccf_massUpdate.formTable .apexp .bPageBlock.apexDefaultPageBlock .pbBody {
+    width: 1530px;	
+    margin: 0 auto;
+}
+body .ccf_formContent #ccf_massUpdate.formTable .apexp .pbBody > table.list {
+    width: 1530px;
+    overflow-x: auto;
+    display: block;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_headerSection.formTable{
+    margin: 30px 0 30px;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable:first-child {
+   /*  margin-top: 20px; */
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_legalTrigger.formTable:first-child,
+body .ccf_formContent .mainWrapper .tableMainContent #ccf_legalTrigger.formTable .apexp .pbBody table.list {
+    margin: 0;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer table{
+    width: 100%;
+	border: 0;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .rich-tabhdr-cell-active > table{
+    top: 0!important;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .rich-tab-bottom-line ,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .rich-tabpanel-content,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .rich-tabhdr-side-cell {
+    background: #fff;
+    border: 0;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .rich-tabhdr-cell-inactive ,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .rich-tabhdr-cell-active {
+	height: 50px!important;
+    width: 100%;
+    display: inline-block;
+    padding: 0;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .rich-tab-header {
+    color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+	border: 0;
+    padding: 0;
+    font-size: 13px;
+	font-weight: 800;
+    /* border-left: 1px solid #aaa; */
+    cursor: pointer;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .rich-tab-header:hover {
+    background-color: #1797c0;
+    color: #fff;
+    opacity: 0.6;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer table tr td table tr td.rich-tabhdr-cell-inactive:nth-child(2) .rich-tab-header {
+	border-left: 0;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .rich-tabhdr-side-border {
+    background-image: none;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer td.rich-tab-bottom-line td img {
+    width: 0 !important;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .rich-tab-active.activeTab {
+    background-color: #1797c0;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .rich-tab-header.rich-tab-active {
+    color: #FFF;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .rich-tab-header.rich-tab-active:hover {
+    opacity: 1;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section{
+    float: left;
+    width: 29.3%;
+   /* min-height: 35px; */
+    position: relative;
+	margin: 0 2%;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section .supplier_risk_msg label {
+    position: absolute;
+    top: -14px;
+    font-size: 11px;
+    color: red;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section .supplier_risk_msg1 label {
+    position: absolute;
+    top: -14px;
+    font-size: 8px;
+    color: red;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section .ContractBoardApproved_msg label {
+    position: absolute;
+    top: -10px;
+    font-size: 8px;
+    color: red;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_multipleValidity.formTable .formTable_section,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_massUpdate.formTable .formTable_section{
+    width: 23%;
+	margin: 0 1%;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_cpmo.formTable .formTable_firstRow > tbody > tr:first-child > td.formTable_section {
+    border: 1px solid #aaa;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0 0;
+    width: 100%;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_quotaAddRemove.formTable table.detailList {
+    border: 1px solid #aaa;
+    border-radius: 10px;
+    padding: 20px;
+    display: inline-block;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_execSummary.formTable .formTable_section {
+    width: 48%;
+    min-height: 35px;
+	margin: 0 1%;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section_blank{
+	min-height: 93px;
+    float: left;
+    width: 100%;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_firstRow{
+    box-sizing: border-box;
+    float: left;
+    width: 100%;
+    position: relative;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_pas.formTable .formTable_firstRow,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_otmCrodillers.formTable .formTable_firstRow {
+    border: 1px solid #aaa;
+    border-radius: 10px;
+    padding: 15px 0 10px;
+    display: inline-block;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_otmCrodillers.formTable .formTable_firstRow {
+	margin-top: 30px;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_pas.formTable .formTable_firstRow > tbody,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_otmCrodillers.formTable .formTable_firstRow > tbody,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_pas.formTable .formTable_firstRow > tbody > tr,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_otmCrodillers.formTable .formTable_firstRow > tbody > tr {
+	width: 100%;
+    float: left;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_lineItem .formTable_firstRow h3{
+    margin: 0;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_secondRow{
+    box-sizing: border-box;
+	color: #000;
+    font-size: 15px;
+    font-weight: bold;
+	padding: 0 2% 40px;
+    float: left;
+    width: 100%;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable_lineItem > div,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable_lineItem > div{
+    box-sizing: border-box;
+    float: left;
+    width: 100%;
+	min-height: 60px;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable_lineItem .formTable_fourthRow,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable_lineItem .formTable_seventhRow{
+    padding: 20px;
+    height: 72px;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable_lineItem .formTable_secondRow,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable_quotaAllocation .formTable_secondRow{
+    /* background: #F5F6F6; */
+	padding: 0;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable_lineItem .formHeaderText:first-child,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable_quotaAllocation .formHeaderText:first-child{
+	border-left: 0;
+    width: 5.5%;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable_quotaAllocation span span span .formHeaderText:first-child{
+	border-left: 1px solid #ddd;
+    width: 10.5%;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable_lineItem .formHeaderText,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable_quotaAllocation .formHeaderText{
+    color: #000;
+    font-size: 13px;
+    width: 15.75%;
+    height: 60px;
+    float: left;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable_lineItem .formTable_secondRow .formHeaderText,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable_quotaAllocation .formTable_secondRow .formHeaderText{
+    border-bottom: 0;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable_lineItem .formTable_fourthRow,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable_lineItem .formTable_seventhRow{
+	background: #B2D4EE;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_firstRow .formTable_firstColumn,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_firstRow .formTable_secondColumn,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_firstRow .formTable_thirdColumn{
+    float: left;
+    width: 29.3%;
+    margin: 2%;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable_lineItem .formTable_scrollRow{
+	min-height: 40px;
+    padding: 10px;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable_lineItem .formTable_scrollBar{
+	width: 200px;
+    height: 20px;
+	background: #77787A;
+	border-radius: 10px;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .formContainer .formTable label,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable label{
+    color: #000;
+    font-size: 13px;
+    font-weight: bold;
+	display: inline-block;
+    min-height: 15px;
+	text-transform: capitalize;
+}
+body .ccf_formContent #ccf_legalTrigger .pbBody table.list tr.dataRow td.dataCell:nth-child(2) label {
+    font-weight: normal;
+    /* display: block; */
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section:only-child{
+    width: 96%;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .collapseTable .formTable_section:only-child {
+    width: 29.3%;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .collapseTable .formTable_section:only-child label {
+    text-transform: none;
+	cursor: default;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .collapseTable input[type="checkbox"] {
+    position: relative;
+    top: 10px;
+    display: block;
+    margin: 0;
+    padding: 0;
+    width: 26px;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .collapseTable textarea {
+    height: 70px;
+    overflow-x: hidden;
+    resize: none;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_execSummary.formTable label,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section:only-child label{
+    text-transform: uppercase;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_execSummary.formTable label{
+    width: 49%;
+    margin-right: 1%;
+    line-height: 1;
+	font-size: 12px;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section:only-child label{
+    cursor: pointer;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_helpInfo{
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 13px;
+    font-style: italic;
+    color: #aaa;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_helpInfo img{
+    position: relative;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable span.radio_level,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable span.radio_level_input{
+    width: 50%;
+	float: left;
+    position: relative;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable span.radio_level_input{
+    top: -7px;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable span.radio_level_input input[type="radio"]{
+	margin: 0 10px 0 20px;
+}
+/*For custom radio start*/
+input[type=checkbox]:not(old),
+input[type=radio]:not(old){
+	width: 33px;
+	margin: 0;
+	padding: 0;
+	height: 20px;
+}
+input[type=radio]:not(old){
+    position: relative;
+    top: 5px;
+}
+body .ccf_formContent #ccf_legalTrigger .pbBody table.list tr.dataRow td.dataCell input[type=checkbox]:not(old) + label{
+	position: relative;
+    top: -5px;
+	font-weight: bold;
+}
+input[type=radio]:not(old) + label{
+	/* display: inline-block;
+    margin-left: -43px;
+    padding-left: 40px;
+    line-height: 32px; */
+}
+body .ccf_formContent #ccf_legalTrigger .pbBody table.list tr.dataRow td.dataCell input[type=radio]:not(old) + label{
+	font-weight: bold;
+}
+/*For custom radio end*/
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .Zebra_DatePicker_Icon_Wrapper{
+	width: 100%;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section_input,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .emptyDependentLookup,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section select,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_date_input{
+    border: 1px solid #77787A;
+    width: 100%;
+    height: 28px;
+    border-radius: 5px;
+    margin: 0 0 15px;
+    padding: 0 0 0 5px;
+    display: inline-block;
+	line-height: 1;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section span.formTable_date_input,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section span.formTable_section_input {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	background: #f2f3f3;
+	cursor: default;
+	border: 0;
+	overflow-x: auto;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section span.formTable_section_input span.formTable_section_input {
+    margin: 0;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_massUpdate.formTable .formTable_firstRow > tbody > tr:first-child .formTable_section_input {
+    width: 80%;
+    margin: 0;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .lookupInput a.formTable_section_input,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .lookupInput a.formTable_date_input {
+    border: 0;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section_checkbox {
+    position: relative;
+    top: 10px;
+    height: 20px;
+    left: 0;
+    display: block;
+}
+.ccf_formContent.viewPage .mainWrapper .tableMainContent .formContainer .formTable .formTable_section_input,
+.ccf_formContent.viewPage .mainWrapper .tableMainContent .formContainer .formTable .formTable_date_input,
+.ccf_formContent.viewPage .mainWrapper .tableMainContent .formContainer .formTable .formTable_section_select,
+.ccf_formContent.viewPage .mainWrapper .tableMainContent .formContainer .formTable .formTable_section_textarea{
+	border: 0;
+    background: #f2f3f3;
+    float: right;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_execSummary.formTable .formTable_section_input,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_execSummary.formTable .formTable_date_input{
+    border: 0;
+    width: 50%;
+    margin: -8px 0 0;
+    padding: 0 0 0 5px;
+    float: right;
+    background: #f2f3f3;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_execSummary.formTable .formTable_section_textarea {
+    border: 0;
+    margin: 0 0 15px;
+    padding: 0 0 0 5px;
+    background: #f2f3f3;
+    width: 50%;
+    float: right;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section_select{
+    border: 1px solid #77787A;
+    width: 100%;
+    height: 28px;
+    border-radius: 5px;
+    margin: 0 0 15px;
+    padding: 0 2%;
+}
+select::-ms-expand,
+textarea::-ms-expand{
+    display: none;
+}
+select{
+    appearance: none;
+    -moz-appearance:none;
+    -webkit-appearance:none;
+	background: url(/img/arrowDown.gif) no-repeat right 5px center;
+}
+.dataTables_wrapper select{
+	min-width: 50px;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section_textarea,
+.ccf_pageContent.ccf_importLineitem .mainWrapper .tableMainContent .formTable_section_textarea{
+    border: 1px solid #77787A;
+    width: 100%;
+    height: 70px;
+    border-radius: 5px;
+    margin: 0 0 15px;
+    padding: 0 2%;
+    overflow-x: hidden;
+    resize: none;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section.slds-button-group{
+	margin: 20px 2%;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formTable .buttonContainer,
+.ccf_formContent .mainWrapper .tableMainContent .formTable .slds-button-group,
+.ccf_pageContent .mainWrapper .tableMainContent .formTable .slds-button-group,
+.ccf_formContent .mainWrapper .tableMainContent .formTable_lineItem .buttonContainer,
+.ccf_formContent .mainWrapper .tableMainContent .formTable_lineItem .slds-button-group{
+    margin: 20px 2%;
+    text-align: center;
+    position: relative;
+    width: 96%;
+    clear: both;
+    display: inline-block;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formTable .pbButton.slds-button-group{text-align: right;}
+.ccf_pageContent .mainWrapper .tableMainContent #ccf_massUpdate.formTable .slds-button-group,
+.ccf_formContent .mainWrapper .tableMainContent #ccf_multipleValidity.formTable .slds-button-group{
+    padding: 25px 0;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formTable_lineItem .formTable_secondRow .buttonContainer,   
+.ccf_formContent .mainWrapper .tableMainContent .formTable_lineItem .formTable_secondRow .slds-button-group{   
+	background: #AED0DC;
+    padding: 10px 0;
+   /*  border-radius: 10px 10px 0 0; */
+    height: 50px;
+    margin: 20px 0;
+    width: 100%;
+}
+.ccf_formContent .mainWrapper .tableMainContent #ccf_addCollaborator.formTable .buttonContainer,
+.ccf_formContent .mainWrapper .tableMainContent #ccf_addCollaborator.formTable .slds-button-group{
+    text-align: left;
+}
+.ccf_formContent.ccf_importLineitem .mainWrapper .tableMainContent .formTable_lineItem .buttonContainer,
+.ccf_formContent.ccf_importLineitem .mainWrapper .tableMainContent .formTable_lineItem .slds-button-group {
+    text-align: left;
+    margin-top: 20px;
+}
+.ccf_formContent.ccf_importLineitem .mainWrapper .tableMainContent .formTable_lineItem .buttonContainer .addContract_ccf,
+.ccf_formContent.ccf_importLineitem .mainWrapper .tableMainContent .formTable_lineItem .slds-button-group .addContract_ccf {
+	background: #1797c0;
+	color: #fff;
+}
+.ccf_formContent .mainWrapper .btn.slds-button {
+    color: #fff;
+    font-size: 14px;
+    border: 0;
+    height: 24px;
+    border-radius: 11px;
+    padding: 5px 15px;
+    background: #1797c0;
+    margin-left: 10px;
+    font-weight: bold;
+    line-height: 1;
+	outline: none;
+    box-shadow: 0 0 0 0px #428bca inset, 0 0 0 1px rgba(255,255,255,0.15) inset, 0 4px 0 0 #1797c0, 0 4px 0 0px rgba(0,0,0,0.4), 0 4px 4px 1px rgba(0,0,0,0.5);
+	transition: all .08s linear;
+    position: relative;
+	display: inline-block;
+    text-transform: capitalize;
+}
+.ccf_formContent .mainWrapper .btn.slds-button:active {
+    box-shadow: none;
+}
+.ccf_formContent .mainWrapper .btn.slds-button:hover {
+    background: #35b4e9;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable input[type=file]:not(old).fileUpload_file{
+	width: 135px;
+    margin: 0;
+    padding: 3px 0 3px;
+    opacity: 0;
+    text-indent: -999px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable_section .dateInput .dateFormat{
+    position: absolute;
+    right: 5px;
+    top: 24px;
+    font-size: 15px;
+	display: none;
+}
+.ccf_formContent .mainWrapper .slds-button.getSupplier {
+    margin: 0 0 20px;
+}
+/*CCF Form end*/
+/*CCF landing page with existing class start*/
+body .ccf_pageContent .dataTables_wrapper {
+    background: #fff;
+    padding-bottom: 50px;
+}
+body .ccf_pageContent .bPageBlock, 
+body .ccf_pageContent .secondaryPalette.bPageBlock, 
+body .ccf_pageContent .individualPalette .secondaryPalette.bPageBlock,
+body .ccf_formContent .secondaryPalette.bPageBlock, 
+body .ccf_formContent .individualPalette .secondaryPalette.bPageBlock,
+body .ccf_formContent .bPageBlock {
+    border: 0;
+	background: #fff;
+	margin: 0;
+}
+body .ccf_formContent .pbBody table.list tr th, 
+body .ccf_formContent .pbBody table.list tr td,
+body .ccf_formContent .pbBody table.detailList tr th,
+body .ccf_formContent .pbBody table.detailList tr td {
+    border: 0;
+}
+body .ccf_formContent .pbBody table.dataTable > tbody > tr > td {
+    padding: 0 10px;
+    border-bottom: 1px solid #ededed;
+}
+body .ccf_pageContent .apexp .bPageBlock.apexDefaultPageBlock .pbBody,
+body .ccf_formContent .apexp .bPageBlock.apexDefaultPageBlock .pbBody {
+    border: 0;
+    margin: 0;
+}
+body .ccf_pageContent .pbBody .dt-buttons,
+body .ccf_formContent .pbBody .dt-buttons {
+	display: none;
+}
+body .ccf_pageContent .bRelatedList .pbBody table.list, 
+body .ccf_pageContent .apexp .pbBody table.list,
+body .ccf_formContent .apexp .pbBody table.list {
+    border: 0;
+    padding-bottom: 15px;
+}
+body .ccf_formContent .apexp .pbBody table.list {
+    /* margin-top: 20px; */
+}
+body .ccf_formContent #ccf_quotaAddRemove.formTable .apexp .pbBody table.list {
+    margin-bottom: 20px;
+}
+body .ccf_formContent #ccf_quotaAddRemove.formTable .bPageBlock .detailList tr td, 
+body .ccf_formContent #ccf_quotaAddRemove.formTable .bPageBlock .detailList tr th, 
+body .ccf_formContent #ccf_quotaAddRemove.formTable .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons {
+    border: 0;
+	position: relative;
+}
+body .ccf_formContent #ccf_quotaAddRemove.formTable .bPageBlock .detailList tr td .dateFormat {
+    position: absolute;
+    top: 9px;
+    right: 3px;
+	display: none;
+}
+.dateInput .dateFormat {
+	display: none;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_quotaAddRemove.formTable .formTable_section_input, 
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_quotaAddRemove.formTable .formTable_date_input,
+.ccf_formContent .mainWrapper .tableMainContent .formContainer #ccf_quotaAddRemove.formTable .formTable_section_textarea {
+	margin: 0;
+	box-sizing: border-box;
+}
+body .ccf_pageContent .pbBody table.list tr.dataRow,
+body .ccf_formContent .pbBody table.list tr.dataRow {
+    height: 35px;
+    border-collapse: inherit;
+}
+body .ccf_pageContent .pbBody table.list tr.headerRow td, 
+body .ccf_pageContent .pbBody table.list tr.headerRow th {
+	background: #AED0DC;
+    padding: 0px 15px 0px 5px;
+    height: 50px;
+    text-align: center;
+    border: 0;
+    width: 11.1%!important;
+    vertical-align: middle;
+}
+body .ccf_formContent .pbBody table.list tr.headerRow td, 
+body .ccf_formContent .pbBody table.list tr.headerRow th {
+    background: #AED0DC;
+    padding: 0px 15px 0px 5px;
+    height: 50px;
+    text-align: center;
+    border: 0;
+    vertical-align: middle;
+}
+body .ccf_formContent #ccf_multipleValidity .pbBody table.list.dataTable thead tr.headerRow th.headerRow:first-child,
+body .ccf_formContent #ccf_lineItem .pbBody table.list.dataTable thead tr.headerRow th.headerRow:first-child,
+body .ccf_formContent #ccf_lineItem .pbBody table.list.dataTable thead tr.headerRow th.headerRow:nth-child(2) {
+    background: #AED0DC;
+    padding: 0;
+}
+body .ccf_pageContent .pbBody table.list.dataTable thead tr.headerRow th.sorting_desc,
+body .ccf_formContent .pbBody table.list.dataTable thead tr.headerRow th.sorting_desc {
+    background: #AED0DC url(../images/sort_desc.png) no-repeat right center;
+}
+body .ccf_pageContent .pbBody table.list.dataTable thead tr.headerRow th.sorting_asc,
+body .ccf_formContent .pbBody table.list.dataTable thead tr.headerRow th.sorting_asc {
+    background: #AED0DC url(../images/sort_asc.png) no-repeat right center;
+}
+body .ccf_pageContent .pbBody table.list.dataTable thead tr.headerRow th.sorting,
+body .ccf_formContent .pbBody table.list.dataTable thead tr.headerRow th.sorting {
+    background: #AED0DC url(../images/sort_both.png) no-repeat right center;
+}
+body .ccf_pageContent .pbBody table.list tr.headerRow th:first-child,
+body .ccf_formContent .pbBody table.list tr.headerRow th:first-child {
+    /* border-radius: 0 0 0 10px; */
+}
+body .ccf_pageContent .pbBody table.list tr.dataRow td:first-child,
+body .ccf_formContent .pbBody table.list tr.dataRow td:first-child {
+   /*  border-radius: 10px 0 0 10px; */
+}
+body .ccf_pageContent .pbBody table.list tr.headerRow th:last-child,
+body .ccf_formContent .pbBody table.list tr.headerRow th:last-child{
+    /* border-radius: 0 0 10px 0; */
+}
+body .ccf_pageContent .pbBody table.list tr.dataRow td:last-child,
+body .ccf_formContent .pbBody table.list tr.dataRow td:last-child {
+    /* border-radius: 0 10px 10px 0; */
+}
+body .ccf_pageContent .pbBody table.list tr.headerRow th:only-child,
+body .ccf_formContent .pbBody table.list tr.headerRow th:only-child {
+   /*  border-radius: 0 0 10px 10px; */
+}
+body .ccf_pageContent .pbBody table.list tr.dataRow td,
+body .ccf_formContent .pbBody table.list tr.dataRow td{
+	border-bottom: 1px solid #ededed;
+    padding: 5px;
+    text-align: center;
+}
+body .ccf_formContent #ccf_legalTrigger .pbBody table.list tr.dataRow td{
+    text-align: left;
+}
+body .ccf_formContent #ccf_legalTrigger .pbBody table.list tr.dataRow td.dataCell table tr td {
+   /*  width: 33.33%; */
+    display: inline-block;
+}
+body .ccf_pageContent .pbBody table.list tr.dataRow:hover td, 
+body .ccf_formContent .pbBody table.list tr.dataRow:hover td {
+    color: #000;
+}
+body .ccf_formContent .pbBody table.list tr.dataRow td.dataCell tr td{
+	border: 0;
+}
+body .ccf_formContent #ccf_quotaAllocation.formTable .formTable_firstRow > tbody,
+body .ccf_formContent #ccf_quotaAllocation.formTable .formTable_firstRow > tbody > tr,
+body .ccf_formContent #ccf_quotaAllocation.formTable .formTable_firstRow:nth-child(2) > tbody > tr > td,
+body .ccf_formContent .formTable .formTable_firstRow .collapse > tbody,
+body .ccf_formContent .formTable .formTable_firstRow .collapse > tbody > tr,
+body .ccf_formContent .formTable .formTable_secondRow .collapse > tbody,
+body .ccf_formContent .formTable .formTable_secondRow .collapse > tbody > tr{
+    width: 100%;
+    float: left;
+}
+body .ccf_formContent .formTable .formTable_firstRow .collapseTable {
+	float: left;
+    width: 96%;
+    margin: 0px 2% 20px;
+    /* background: #F5F6F6; */
+    padding: 15px 0;
+    border: 1px solid #aaa;
+    border-radius: 10px;
+}
+body .ccf_formContent .formTable .formTable_secondRow .collapseTable {
+	width: 50%;
+    margin: 20px auto 0;
+    border-radius: 10px;
+}
+body .ccf_formContent .formTable .formTable_secondRow .collapseTable .countValidity {
+    font-size: 24px;
+    margin-left: 5px;
+}
+body .ccf_formContent .formTable .formTable_secondRow .collapseTable .countPricing {
+    font-size: 18px;
+    margin-left: 5px;
+}
+body .ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_secondRow .collapseTable .formTable_section {
+    width: 46%;
+    min-height: 30px;
+}
+body .ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_secondRow .collapseTable .formTable_section:only-child {
+    width: 96%;
+}
+body .ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_secondRow .collapseTable .formTable_section:only-child label {
+    text-transform: none;
+	display: block;
+}
+body .ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_secondRow .collapseTable .formTable_section:only-child .formTable_section_input {
+	width: 48%;
+}
+body .ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_secondRow .collapseTable .formTable_section_input, 
+body .ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_secondRow .collapseTable .formTable_date_input {
+    margin: 0 0 10px;
+}
+body .ccf_formContent #ccf_cpmo.formTable .bPageBlock .pbBody .labelCol,
+body .ccf_formContent #ccf_cpmo.formTable .bPageBlock .pbBody .dataCol {
+	color: #000;
+    font-weight: bold;
+    background: #fff;
+	border: 0;
+    font-size: 13px;
+}
+body .ccf_formContent #ccf_cpmo.formTable .bPageBlock .pbBody th.labelCol:nth-child(1),
+body .ccf_formContent #ccf_cpmo.formTable .bPageBlock .pbBody .dataCol:nth-child(2) {
+    width: 11%;
+}
+body .ccf_formContent #ccf_cpmo.formTable .bPageBlock .detailList .data2Col {
+    border: 0;
+    background: #fff;
+    text-align: center;
+}
+body .ccf_formContent #ccf_cpmo.formTable .bPageBlock .detailList .dataCol input, 
+body .ccf_formContent #ccf_cpmo.formTable .bPageBlock .detailList .dataCol select{
+	width: 100%;
+	margin: 0;
+}
+body .ccf_formContent #ccf_cpmo.formTable .bPageBlock .detailList .dataCol input, 
+body .ccf_formContent #ccf_cpmo.formTable .bPageBlock .detailList .dataCol select,
+body .ccf_formContent .formTable .bPageBlock .dataTables_wrapper .dataTables_length select,
+body .ccf_formContent .formTable .bPageBlock .dataTables_wrapper .dataTables_filter input,
+body .ccf_pageContent .bPageBlock .dataTables_wrapper .dataTables_length select,
+body .ccf_pageContent .bPageBlock .dataTables_wrapper .dataTables_filter input {
+    border: 1px solid #77787A;
+    height: 26px;
+    border-radius: 5px;
+}
+body .ccf_formContent .bPageBlock .dataTables_wrapper label,
+body .ccf_pageContent .bPageBlock .dataTables_wrapper label,
+body .ccf_formContent .bPageBlock .dataTables_wrapper .dataTables_info,
+body .ccf_pageContent .bPageBlock .dataTables_wrapper .dataTables_info,
+body .ccf_formContent .bPageBlock .dataTables_wrapper .dataTables_paginate .paginate_button,
+body .ccf_pageContent .bPageBlock .dataTables_wrapper .dataTables_paginate .paginate_button {
+    color: #000;
+    font-size: 13px;
+    font-weight: bold;
+}
+body .ccf_formContent #ccf_cpmo.formTable .bPageBlock .detailList .dataCol .btn {
+    border: 0;
+    height: 24px;
+    border-radius: 11px;
+    width: 230px;
+}
+body .ccf_pageContent .formTable .bPageBlock .pbBody .labelCol,
+body .ccf_formContent .formTable .bPageBlock .pbBody .labelCol,
+body .ccf_pageContent .formTable .bPageBlock .pbBody .dataCol ,
+body .ccf_formContent .formTable .bPageBlock .pbBody .dataCol ,
+body .ccf_formContent .bPageBlock .pbBody .data2Col,
+body .ccf_pageContent .formTable .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons {
+    border: 0;
+}
+body .ccf_pageContent .formTable .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons .pbTitle {
+    display: none;
+}
+body .ccf_pageContent .formTable .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons .pbButtonb {
+    text-align: center;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section_input {
+    border: 1px solid #77787A;
+    width: 80%;
+    height: 26px;
+    border-radius: 5px;
+    margin: 0;
+    padding: 0 1.5% 0 2%;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .formContainer .formTable .lookupInput a.formTable_section_input {
+    border: 0;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .formTable .btn {
+    color: #fff;
+    background: #1797c0;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section .expand_img {
+	background: url(/img/arrowRight.gif) no-repeat left center;
+    padding-left: 15px;
+	cursor: pointer;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section .expand_img.active {
+
+		background: url(/img/arrowDown.gif) no-repeat left center;
+}
+
+
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section .expand_img1 {
+	background: url(/img/arrowDown.gif) no-repeat left center;
+    padding-left: 15px;
+	cursor: pointer;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section .expand_img1.active {
+
+		
+		background: url(/img/arrowRight.gif) no-repeat left center;
+}
+
+.ccf_pageContent .mainWrapper .tableMainContent .formTable input[type="file"],
+.ccf_formContent .mainWrapper .tableMainContent .formTable input[type="file"] {
+    border: 1px solid #77787A;
+    height: 26px;
+    border-radius: 5px;
+    padding: 2px;
+    box-sizing: border-box;
+    display: inline-block;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .formTable input[type="text"] {
+    border: 1px solid #77787A;
+    height: 26px;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formTable input[type="text"] {
+	border: 1px solid #77787A;
+    height: 28px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 5px 0 10px;
+    padding: 0 0 0 5px;
+}
+.ccf_formContent .mainWrapper .tableMainContent #ccf_quotaAddRemove.formTable .lookupInput input[type="text"],
+.ccf_formContent .mainWrapper .tableMainContent #ccf_addCollaborator.formTable .lookupInput input[type="text"] {
+    width: 90%;
+}
+body .ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_secondRow .collapseTable .fieldPricing > div {
+    clear: both;
+    position: relative;
+}
+body .ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_secondRow .collapseTable .removePricing,
+body .ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_secondRow .collapseTable .removeValidity {
+    position: absolute;
+    right: 2%;
+}
+body .ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_secondRow .collapseTable .fieldValidity > div {
+    clear: both;
+    position: relative;
+    margin-top: 10px;
+    float: left;
+    width: 100%;
+}
+/*Test custom user search page start*/
+#testCustomerUserSearch.ccf_formContent .mainWrapper .tableMainContent,
+body #testCustomerUserSearch.ccf_formContent .mainWrapper .tableMainContent .bPageBlock .pbBody .data2Col {
+    padding: 0;
+}
+#testCustomerUserSearch.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable {
+    margin: 0;
+}
+body #testCustomerUserSearch.ccf_formContent .pbBody table.list tr.headerRow td, 
+body #testCustomerUserSearch.ccf_formContent .pbBody table.list tr.headerRow th,
+body #testCustomerUserSearch.ccf_pageContent .pbBody table.list tr.dataRow, 
+body #testCustomerUserSearch.ccf_formContent .pbBody table.list tr.dataRow {
+    height: auto;
+    text-align: left;
+}
+body #testCustomerUserSearch.ccf_pageContent .pbBody table.list tr.dataRow td, 
+body #testCustomerUserSearch.ccf_formContent .pbBody table.list tr.dataRow td {
+    text-align: left;
+}
+body #testCustomerUserSearch.ccf_formContent .apexp .bPageBlock.apexDefaultPageBlock .pbHeader > table {
+	border: 0;
+}
+body #testCustomerUserSearch.ccf_formContent .apexp .bPageBlock .pbHeader > table > tbody > tr > td.pbTitle,
+body #testCustomerUserSearch.ccf_formContent .apexp .bPageBlock .pbBottomButtons > table > tbody > tr > td.pbTitle {
+	display: none;
+}
+body .ccf_formContent .pbBody table.list tr.dataRow td.dataCell span.detail_button {
+    background: url(../images/details_open.png) no-repeat center;
+	width: 20px;
+    height: 20px;
+    display: inline-block;
+    cursor: pointer;
+}
+body .ccf_formContent .pbBody table.list tr.dataRow td.dataCell span.detail_button.active {
+    background: url(../images/details_close.png) no-repeat center;
+}
+body .ccf_pageContent .dataTables_wrapper .dataTables_length {
+	margin-bottom: 20px;
+}
+body .ccf_formContent .dataTables_wrapper .dataTables_length {
+	margin-bottom: 15px;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .formContainer .formTable .price_condition_field label {
+    width: 35%;
+    padding: 5px 8px 10px 2px;
+    text-align: right;
+}
+.ccf_pageContent .mainWrapper .tableMainContent .formContainer .formTable .price_condition_field input.formTable_section_input {
+    width: 50.5%;
+    margin: 0 2px 0 12px;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_section_input select, 
+.ccf_formContent .mainWrapper .tableMainContent .formContainer .formTable .formTable_date_input select {
+    margin: 2px 5px 0 0;
+    border: 1px solid #77787A;
+    height: 20px;
+    border-radius: 5px;
+    padding: 0;
+    width: auto;
+}
+.ccf_formContent .mainWrapper .tableMainContent .formTable .formTable_section_input .lookupInput input[type="text"],
+.ccf_formContent .mainWrapper .tableMainContent .formTable .formTable_date_input .lookupInput input[type="text"] {
+	height: 20px;
+    width: auto;
+    margin: 0;
+    padding: 0;
+}
+.apexp .bPageBlock .searchTips {
+    margin: 0 0 0 15px;
+}
+.apexp .bPageBlock .searchTips h3 {
+    font-weight: bold;
+}
+.apexp .bPageBlock .searchTips p {
+    margin: 0 0 0 15px;
+    font-size: 12px;
+}
+.apexp .bPageBlock .searchTips p span {
+    margin: 0 5px 0 0;
+    top: 3px;
+    position: relative;
+}
+/*Test custom user search page end*/
+/*landing page popup start*/
+body .ccf_pageContent .popupBackground,
+body .ccf_formContent .popupBackground {
+    background: #000;
+    z-index: 1040;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    opacity: 0.8;
+}
+body .ccf_pageContent .custPopup,
+body .ccf_formContent .custPopup {
+    background: #fff;
+    width: 600px;
+	position: fixed;
+	left: 50%;
+    top: 50%;
+    margin-top: -200px;
+    margin-left: -300px;
+    z-index: 1050;
+    border-radius: 10px;
+    padding-bottom: 20px;
+}
+body .ccf_pageContent .custPopup label,
+body .ccf_formContent .custPopup h2 {
+    background: #1797c0;
+    border-radius: 10px 10px 0 0;
+    padding: 15px;
+    color: #fff;
+    font-size: 18px;
+    width: 100%;
+    float: left;
+    margin: 0;
+    box-sizing: border-box;
+}
+body .ccf_formContent .bPageBlock .pbTitle h2{
+	font-weight: bold;
+}
+body .ccf_pageContent .custPopup .btn.close,
+body .ccf_formContent .custPopup .btn.close {
+	background: #1797c0;
+    color: #fff;
+    font-size: 14px;
+	position: absolute;
+    right: 5px;
+    top: 5px;
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+    border: 0;
+    height: auto;
+    border-radius: 0;
+    font-weight: bold;
+    box-shadow: none;
+}
+body .ccf_pageContent .custPopup .custPopup_body,
+body .ccf_formContent .custPopup .custPopup_body {
+    clear: both;
+    padding: 20px 5% 0;
+    min-height: 80px;
+    position: relative;
+}
+body .ccf_formContent .custPopup .custPopup_body h3 {
+    font-size: 16px;
+    font-weight: bold;
+}
+body .ccf_pageContent .custPopup .custPopup_body select {
+	width: 65%;
+    margin: 10px auto 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 26px;
+    border-radius: 5px;
+    border: 1px solid #77787A;
+    padding: 0 0 0 1%;
+}
+body .ccf_formContent .custPopup div.custPopup_button {
+	text-align: center;
+}
+body .ccf_pageContent .custPopup .btn {
+    margin-left: 45%;
+}
+body .ccf_formContent .custPopup .btn {
+    margin-left: 10px;
+}
+body .ccf_formContent .custPopup .custPopup_body input[type=checkbox] {
+    position: relative;
+    top: 5px;
+    left: -5px;
+    margin-top: 5px;
+}
+body .ccf_formContent .custPopup .custPopup_body font {
+    color: #aaa;
+    font-style: italic;
+}
+body .ccf_formContent .custPopup .bPageBlock {
+    border-radius: 10px;
+}
+body .ccf_formContent .custPopup .pbSubheader {
+    background: #1797c0;
+    font-size: 16px;
+    color: #fff!important;
+    border-radius: 10px 10px 0 0;
+    padding: 15px;
+}
+body .ccf_formContent .custPopup .pbBody div:last-child .pbSubheader {
+    border-radius: 0;
+    padding: 0 15px;
+}
+body .ccf_formContent .custPopup .bPageBlock .pbBody .labelCol, 
+body .ccf_formContent .custPopup .bPageBlock .pbBody .dataCol,
+body .ccf_formContent .custPopup .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons {
+    border: 0;
+}
+body .ccf_formContent .custPopup .dataCol input,
+body .ccf_formContent .custPopup .dataCol select{
+    border: 1px solid #77787A;
+    border-radius: 5px;
+    width: 98%;
+    height: 26px;
+    padding: 0 0 0 2%;
+}
+/*landing page popup end*/
+/*CCF landing page with existing class end*/
+
+/*user_preference style start*/
+ .user_preference .formTable_section .formTable_date_input, .user_preference select:disabled  {
+    line-height: 1;
+    border-radius: 5px;
+    display: inline-block;
+    height: 28px;
+    width: 50%;
+    margin: 0 0 10px 0;
+				}
+        .user_preference td.formTable_section {
+    width: 50%;
+    float: left;
+    display: block;
+    padding-left: 10px;}
+            .user_preference .formTable_section label {
+            float: left;
+    width: 25%;}
+/*user_preference style end*/
+
+/*mass update style start*/
+
+#ccf_massUpdate table.detailList {
+
+	display:block;
+}
+/*mass update style end*/

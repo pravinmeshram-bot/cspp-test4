@@ -1,0 +1,88 @@
+<apex:component controller="StatusComponentController" access="global">
+    
+  <apex:attribute name="recordId" type="String" description="Parent Program id." />
+    
+  <apex:slds />
+  
+  <style>
+      .status-item {
+          widht: 100%;
+          height: 50px;
+          line-height: 50px;
+          text-align: center;
+          color: #000;
+      }
+      
+      .status-active {
+          background-color: #11FF55;
+      }
+      
+      .status-inactive {
+          background-color: #FF2222;
+      }
+      
+      .status-item {
+          margin: 5px;
+      }
+      
+  </style>
+  
+  <div class="slds-grid status-cmp">
+      <div class="slds-col slds-size--1-of-2 slds-m-around_xxx-small">
+          <div id="status_processorStatus" class="status-item"></div>
+      </div>
+      <div class="slds-col slds-size--1-of-2 slds-m-around_xxx-small">
+          <div id="status_cipStatus" class="status-item"></div>
+      </div>
+      <div class="slds-col slds-size--1-of-2 slds-m-around_xxx-small">
+          <div id="status_ofacStatus" class="status-item"></div>
+      </div>
+      <div class="slds-col slds-size--1-of-2 slds-m-around_xxx-small">
+          <div id="status_baStatus" class="status-item"></div>
+      </div>
+  </div>
+  
+  <script>
+      (function() {
+          
+          var activeClassName = 'status-item status-active';
+          var inactiveClassName = 'status-item status-inactive';
+          
+          function init() {
+              StatusComponentController.getStatus('{!recordId}', function(response, event) {
+                  if(event) {
+                      console.log(response);
+                      setStatus('status_processorStatus', 'Processor Status', response.processorStatus);
+                      setStatus('status_cipStatus', 'CIP Status', response.cipStatus);
+                      setStatus('status_ofacStatus', 'OFAC Status', response.ofacStatus);
+                      setStatus('status_baStatus', 'BA', response.baStatus);
+                  } else {
+                      console.log(event.message);
+                  }
+              });
+          }
+          
+          function setStatus(id, label, status) {
+              if(!status) {
+                  status = {};
+                  status.status = '';
+                  status.active = false;
+              }
+              var element = document.getElementById(id);
+              if(element) {
+                  element.innerHTML = label + ': ' + getClearText(status.status);
+                  element.className = status.active ? activeClassName : inactiveClassName;
+              }
+          }
+          
+          function getClearText(text) {
+              return text ? text : '';
+          }
+          
+          init();
+      })();
+      
+  </script>
+  
+  
+</apex:component>

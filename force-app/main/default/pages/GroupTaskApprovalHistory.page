@@ -1,0 +1,50 @@
+<apex:page standardController="nu_dse__Group_Task__c" extensions="AFSettlement_ApprovalScreenCtrl">
+    <script>
+    	function goToApprovalScreen(){
+        	window.open('/apex/AFSettlement_ApprovalScreen?recId={!nu_dse__Group_Task__c.Id}', '_Parent');
+        }
+    </script>
+    <apex:form >
+        <apex:outputPanel rendered="{!showActions}">
+            <apex:commandButton styleClass="btn" onclick="goToApprovalScreen();" value="Approve / Reject" />
+        </apex:outputPanel>
+    </apex:form>
+    <apex:relatedList list="ProcessSteps" />
+    <script language="JavaScript">
+    function CustomApproval(){
+        try{
+            var str=location.href;
+            var leadId=str.substr(str.indexOf(".com/")-0 + 5,15);
+            console.log('### leadId: '+leadId);
+            var divid=leadId+'_RelatedProcessHistoryList';
+            var Approvalprocessdiv=document.getElementById(divid);
+            if(Approvalprocessdiv!=null){
+                var originalHTML=Approvalprocessdiv.innerHTML;
+                var newHtml=originalHTML.replace('/p/process/ProcessInstanceWorkitemWizardStageManager?','/apex/AFSettlement_ApprovalScreen?recId='+leadId+'&');
+                Approvalprocessdiv.innerHTML=newHtml;
+            }
+        }catch(err){
+            alert(err);
+        }
+    }
+    var oldonload = window.onload;
+    if (typeof window.onload != 'function'){
+        window.onload = oldonload;
+    } else { 
+        window.onload = function() {
+            if (oldonload) {
+                oldonload();
+            }
+            CustomApproval();
+        }
+    }
+    </script>
+        
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script> 
+    <script type="text/javascript"> 
+        $( document ).ready(function() {    
+        $(".actionColumn").css("display","none"); //Approve and Reject Hide 
+        $("input[name='piSubmit']").css("display","none"); //Submit for approval 
+    }); 
+    </script>
+</apex:page>

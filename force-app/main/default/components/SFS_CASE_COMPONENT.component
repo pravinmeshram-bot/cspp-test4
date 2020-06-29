@@ -1,0 +1,122 @@
+<apex:component controller="SFSCASEController">
+    <apex:attribute name="recordId" type="String" description="Parent Program Id" required="true" />
+    
+    <apex:slds />
+    
+    <style>
+        .case-active {
+            background-color: #11FF55;
+        }
+        
+        .case-inactive {
+            background-color: #FFFF22;
+        }
+        
+        .case-panel {
+        
+        }
+        
+        .case-item {
+            color: #000;
+            width: 100%;
+            height: 50px;
+            padding-left: 10px;
+            line-height: 50px;
+        }
+        
+        .case-button {
+            margin: 8px !important;
+            float: right;
+        }
+    </style>
+ 
+     <!--Tradeline #, Tradeline Name, Legal Status, Hot Potato, Who it’s assigned to, SFS Case Status and Date Created.-->
+
+      <table class="slds-table slds-table_bordered slds-table_fixed-layout">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Tradeline #</th>
+                <th>Tradeline Name</th>
+                <th>Legal Status</th>
+                <th>Hot Potato</th>
+                <th>Owner</th>
+                <th>Status</th>
+                <th>Created Date</th>
+                
+            </tr>
+        </thead>
+        <tbody id="casePanel" class="case-panel">
+            
+        </tbody>
+    </table>
+    
+    <script>
+        (function() {
+        
+            var activeClass = 'case-item case-active';
+            var inactiveCalss = 'case-item case-inactive';
+        
+            function init() {
+                SFSCASEController.getsfsCases('{!recordId}', function(response, event) {
+                    if(event) {
+                        console.log('SFSCaseController', response);
+                        renderCasePanel(response);
+                    } else {
+                        console.log('SFSCaseController Error!', event);
+                    }
+                });
+            }
+            
+            function renderCasePanel(caseList) {
+                var markup = '';
+                var casePanel = document.getElementById('casePanel');
+                if(casePanel) {
+                    
+                    if(caseList.length > 0) {
+                    
+                        for(var i = 0; i < caseList.length; i++) {
+                            markup += renderCaseItem(caseList[i]);
+                        }
+                    } else {
+                        
+                        markup = '<div class="case-item">No Case(s) Found</div>';
+                    }
+                }
+                
+                casePanel.innerHTML = markup;
+            }
+            
+            function renderCaseItem(sfscase) {
+               var markup = '';
+               if(sfscase) {
+                   var colorClass = inactiveCalss;
+                   
+                   if(sfscase.verified) {
+                       colorClass = activeClass;
+                   }
+               
+                   markup = '<tr class="case-item"><td>' + sfscase.name + '</td><td>' +sfscase.tradelinenumber+ '</td><td>' + sfscase.tradelinename+ '</td><td>' + sfscase.legal_status+ '</td><td>' + sfscase.hot_potato+ '</td><td>' + sfscase.owner+ '</td><td>' + sfscase.status+ '</td><td>' + sfscase.createddate+ '</td> </tr>';
+             
+                   
+                   //<button type="button" class="slds-button slds-button--brand slds-m-right_xx-small case-button" onclick="openCase(\'' + sfscase.recordId + '\'); return false; ">View Case</button>' + sfscase.name + '</div>';
+               } 
+               
+               return markup;
+            }
+            
+            init();
+            
+        })();
+        
+        
+        window.openCase = function(sfsCaseId) {
+            if(sfsCaseId) {
+               window.open('/' + sfsCaseId, '_blank');
+            }
+             
+            return false; 
+        }
+    </script>
+    
+</apex:component>

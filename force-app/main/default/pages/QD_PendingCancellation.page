@@ -1,0 +1,385 @@
+<apex:page controller="QD_AccountReview_CC" id="CCF_Form" tabStyle="Quick_Doc__c" sidebar="false" showHeader="false">
+    <script>
+    function loadtable(){
+    document.getElementById("spinner").style.display='inline';
+    }
+    function stoptable(){
+    document.getElementById("spinner").style.display='none';
+    }
+    
+    </script>
+    <style type="text/css">
+        table, td {
+        border: 2px solid black;
+        }
+        
+        tr th:nth-child(odd) {
+        text-align: center;
+        }
+        tr th:nth-child(even) {
+        text-align: center;
+        }
+        
+    </style>
+   <apex:slds /> 
+    <head>
+        <Title>CUSTOMER SERVICE - QUICK DOC TOOL</Title>
+    </head>
+    <body>
+    <apex:form style="background-color: #f2f2f2;" id="fm">
+        
+    <div class="slds-color__background_gray-12" id="mainpanel">
+    
+        <apex:actionFunction name="textload"  action="{!PendingCancellation}" />
+    <div class="slds-grid">
+        <div class="slds-col"> </div>
+        <!-- <div class="slds-col"> <apex:commandButton value="CLEAR ALL VALUES" action="{!clearAll}" onclick="loadtable();" html-name="options" styleClass="btn slds-button slds-button--brand slds-not-selected"    id="btn3" /></div>
+        -->
+         <div class="slds-col slds-text-heading_large ">CUSTOMER SERVICE</div>
+    </div>
+    <br/>
+    
+    
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+            <div class="slds-p-horizontal_small" >
+                <label class="slds-form-element__label slds-float_right slds-text-heading_medium" for="text-input-id-1" ><b>Pending Cancellation</b></label>
+            </div>
+    </div>    
+     
+       
+    
+    <apex:actionRegion rendered="{!ShowAccount}">
+    
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+              <div class="slds-p-horizontal_medium slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Account*</b></label>
+        </div>
+              <div class="slds-form-element__control slds-p-horizontal_small slds-size_1-of-5 slds-combobox-picklist">           
+              <c:SLDSDynamicLookup SLDSResourceName="{!$Resource.slds}" ObjectApiName="Account" DisplayFieldApiNames="Name,Type" DisplayFieldsPattern="Name" LabelName="Set Account" SetValueToField="{!QD1.Account__c}"/>
+                
+              </div>  
+              
+              
+    </div>
+       </apex:actionRegion>
+       
+       <apex:outputPanel id="idShowMsgError">
+       <apex:outputLabel value="Error:You must enter a value"  rendered="{!showms}" styleclass="slds-p-left_xx-large" style="color: Red; padding-left: 219px;">
+    </apex:outputLabel>
+    </apex:outputPanel>
+   
+   <div class="slds-grid" id="subpanel">
+    <div class="slds-col">
+    
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Caller</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup4"  value="{!QD1.Applicant__c}">
+                        <apex:actionSupport event="onchange" action="{!PendingCancellation}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup4" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Applicant</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; 
+            <div class="slds-form-element__control slds-col ">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup3"  value="{!QD1.Co_Applicant__c}">
+                        <apex:actionSupport event="onchange" action="{!PendingCancellation}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup3" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Co-Applicant</span>
+                    </apex:outputLabel>
+                </span> 
+            </div>
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="slds-form-element__control slds-col ">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup8"  value="{!QD1.Other_Than_POA__c}">
+                        <apex:actionSupport event="onchange" action="{!PendingCancellation}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup8" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Other Than POA</span>
+                    </apex:outputLabel>
+                </span> 
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="slds-form-element__control slds-col ">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup9"  value="{!QD1.Creditor__c}">
+                        <apex:actionSupport event="onchange" action="{!PendingCancellation}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup9" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Creditor</span>
+                    </apex:outputLabel>
+                </span> 
+            </div>
+        </div>
+        </div>
+    </div>
+    
+     <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Social Security Verified</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col ">
+                <span class="slds-checkbox slds-m-right--x-large">
+                    <apex:inputCheckbox html-name="options" id="divsup7"  value="{!QD1.Verified_Last_4_Digtit_SSN__c}">
+                        <apex:actionSupport event="onchange" action="{!PendingCancellation}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup7" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Verified Last 4 Digit SSN</span>
+                    </apex:outputLabel>
+                </span> 
+            </div>
+            &nbsp; &nbsp;
+   
+            
+            <div class="slds-form-element__control slds-col ">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup121"  value="{!QD1.Read_Mini_Miranda__c}">
+                        <apex:actionSupport event="onchange" action="{!PendingCancellation}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup121" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Read Mini Miranda</span>
+                    </apex:outputLabel>
+                </span> 
+            </div>
+            
+            
+            <div class="slds-form-element__control slds-col ">
+                <span class="slds-checkbox slds-m-right--xx-large slds-m-left--large">
+                    <apex:inputCheckbox html-name="options" id="divsup10"  value="{!QD1.Verified_Mini_Miranda__c}">
+                        <apex:actionSupport event="onchange" action="{!PendingCancellation}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup10" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Verified Mini Miranda</span>
+                    </apex:outputLabel>
+                </span> 
+            </div>
+            
+        </div>
+        </div>
+    </div>
+    
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Cancellation Request</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right-large">
+                    <apex:inputCheckbox html-name="options" id="divsup6" value="{!QD1.Client_Request_To_Cancel__c}">
+                        <apex:actionSupport event="onchange" action="{!PendingCancellation}"  reRender="Panel1Id,ClientR,idMsgPanel"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup6" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Client Request To Cancel</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--x-large slds-m-left--x-large">
+                    <apex:inputCheckbox html-name="options" id="divsup60" value="{!QD1.To_Pending_Cancellation__c}">
+                        <apex:actionSupport event="onchange" action="{!PendingCancellation}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup60" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">To Pending Cancellation</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--x-large slds-m-left--x-small">
+                    <apex:inputCheckbox html-name="options" id="divsup61" value="{!QD1.Transfer_To_Retention__c}">
+                        <apex:actionSupport event="onchange" action="{!PendingCancellation}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup61" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Transfer To Retention</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right-large">
+                    <apex:inputCheckbox html-name="options" id="divsup62" value="{!QD1.Retention_Follow_up_Task__c}">
+                        <apex:actionSupport event="onchange" action="{!PendingCancellation}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup62" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Retention Follow-up Task</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+        </div>
+        </div>
+        
+    </div>
+    <apex:outputPanel id="ClientR">
+    <apex:outputPanel rendered="{!showAccountReview}">
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+          <apex:outputLabel styleClass="slds-form-element__label slds-float_left"></apex:outputLabel>
+        </div>
+        
+            <div class="slds-p-horizontal_small " >
+                <apex:outputLabel style="font-weight: bold" styleClass="slds-form-element__label slds-float_left" value="Reason:"></apex:outputLabel> 
+            </div>
+            <div class="slds-form-element__control slds-p-horizontal_small ">
+                <div class="slds-form-element slds-grid">
+                    <div class="slds-form-element__control slds-col">
+                        <span class="slds-checkbox">
+                            <apex:inputText styleClass="slds-input" value="{!CancelReason}" style="background-color: #f4ce42">
+                            <apex:actionSupport event="onchange" action="{!PendingCancellation}" reRender="Panel1Id"/>
+                                </apex:inputtext>
+                        </span>   
+                    </div>
+                </div>
+            </div>
+        
+     </div>   
+     </apex:outputPanel>
+     </apex:outputPanel>
+
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Bankruptcy</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--xxx-small">
+                    <apex:inputCheckbox html-name="options" id="divsup140" value="{!QD1.Request_Bankruptcy_Referral__c}">
+                        <apex:actionSupport event="onchange" action="{!PendingCancellation}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup140" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Request Bankruptcy Referral</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup151" value="{!QD1.X5_Questions_Asked__c}">
+                        <apex:actionSupport event="onchange" action="{!PendingCancellation}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup151" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">5 Questions Asked</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-left--large">
+                    <apex:inputCheckbox html-name="options" id="divsup150" value="{!QD1.Task_Set_For_BK_Referral__c}">
+                        <apex:actionSupport event="onchange" action="{!PendingCancellation}" reRender="Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup150" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Task Set For BK Referral</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+        </div>
+        </div>
+    </div>
+    
+    
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-7 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Additional Information</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_2-of-5 slds-combobox-picklist">                        
+            <apex:inputField value="{!QD1.Additional_Information__c}" styleClass="slds-input"> 
+                <apex:actionSupport event="onchange" action="{!PendingCancellation}" reRender="Panel1Id"/>
+            </apex:inputField>
+        </div>
+    </div>
+    
+    </div>
+ <!--  <div class="slds-col" id="contactpanel"> 
+        
+    </div> -->
+    </div>
+    
+   
+    <br/>
+    
+   <apex:outputPanel id="idMsgPanel">
+    <apex:outputPanel rendered="{!msgPanel}">
+        <div class="demo-only" style="height: 4rem;">
+            <div class="slds-notify_container slds-is-relative">
+                <div class="slds-notify slds-notify_toast slds-theme--warning" role="alert" style="background-color: #f4ce42;">
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <span class="slds-icon_container slds-icon-utility-info" title="Info">
+                        <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.slds, '/assets/icons/utility-sprite/svg/symbols.svg#info')}" />
+                        </svg>
+                      </span>&nbsp;&nbsp;
+                      <div class="slds-notify__content">
+                          <b> Fields Marked in Yellow are required. </b>
+                      </div>
+          
+                </div>
+          </div>
+        </div>
+        </apex:outputPanel>
+   </apex:outputPanel>
+    <center>
+        <apex:commandButton value="Clear All Values" action="{!clearAll}" onclick="loadtable();" html-name="options" styleClass="btn slds-button slds-button--brand slds-not-selected"   style="text-decoration:black;padding:1px;;width:9pc;background:#0070d2;" id="btn3" />
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <apex:commandButton value="Save" rerender="idShowMsgError" action="{!saveQDCancelPayment}" html-name="options" styleClass="btn slds-button slds-button--brand slds-not-selected"   style="text-decoration:black;padding:1px;;width:9pc;background:#0070d2;" id="btn8" />
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <apex:commandButton value="Cancel" immediate="true" action="{!CancelQD}" onclick="loadtable();" html-name="options" styleClass="btn slds-button slds-button--brand slds-not-selected"   style="text-decoration:black;padding:1px;;width:9pc;background:#0070d2;" id="btn5" />
+    
+    </center>
+    <br/>
+    <div class="demo-only" id="spinner"  style="display:none;">
+      <div role="status" class="slds-spinner slds-spinner_brand slds-spinner_large">
+        <span class="slds-assistive-text">Loading</span>
+        <div class="slds-spinner__dot-a"></div>
+        <div class="slds-spinner__dot-b"></div>
+      </div>
+    </div>
+    <apex:outputPanel id="Panel1Id">
+    <apex:outputPanel rendered="{!showPanel}">
+    <!--<table  class="slds-table slds-table_bordered slds-table_cell-buffer">-->
+    <apex:pageBlock >  
+
+        <apex:pageBlockTable value="{!quickDocScripts2}" var="n" style="border:2px solid black;">
+   <!--     <apex:column value="{!n.Description__c}" width="50%" style="padding-left: 10px; padding-right:10px; border:2px solid black;" headerValue="Script Pane"/>  -->
+        <apex:column value="{!n.Notes__c}" style="padding-left: 10px; padding-right:10px; border:2px solid black; " headerValue="Notes Pane"/>  
+        </apex:pageBlockTable>
+        
+    </apex:pageBlock>
+    </apex:outputPanel>
+    </apex:outputPanel>
+    <br/>
+    
+    </div>
+    
+    </apex:form>
+    <apex:includeScript value="{!$Resource.SLDSDynamicLookupScript}"/> 
+    </body>
+    
+</apex:page>

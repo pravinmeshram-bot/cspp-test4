@@ -1,0 +1,240 @@
+<aura:component controller="SFSPortal_ClientsTaskController" implements="forceCommunity:availableForAllPageTypes" extends="c:abstractServer" access="public">
+    
+    <link href="https://fonts.googleapis.com/css?family=Noto+Serif+KR:700" rel="stylesheet" />
+    
+    <aura:attribute name="toRenderModal" type="String" default="" access="public" />
+    <aura:attribute name="status" type="String" access="public"/>
+    
+    <aura:attribute name="isModalOpen" type="Boolean" access="public" default="false"/>
+    <aura:attribute name="isInit" type="Boolean" default="false" access="public"/>
+    <aura:attribute name="isOfferDecision" type="Boolean" default="false" access="public"/>
+    
+    <aura:attribute name="clientTaskWrapper" type="Map" access="public" default="{}"/>
+    <aura:attribute name="taskInfo" type="Map" default="{}"/> 
+    <aura:attribute name="program" type="Map" default="{'sobjectType': 'nu_dse__Program__c'}" access="public"/>
+    <aura:attribute name="offerInstance" type="Map" default="{'sobjectType': 'nu_dse__Offer__c'}" access="public"/>
+    
+    <aura:attribute name="tasksToDisplay" type="List" access="public" default="[]" />
+    <aura:attribute name="offerList" type="List" access="public" default="[]"/>
+    <aura:attribute name="offerListToDisplay" type="List" access="public" default="[]"/>
+    <aura:attribute name="offerFieldsetFields" type="List" default="[]" access="public"/>
+    <aura:attribute name="offerListViewFieldset" type="List" default="[]" access="public"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="actionEvent" event="c:selectedRecordEvt" action="{!c.taskAction}" />
+    <aura:registerEvent name="setDisplayAlert" type="c:displayTaskAlert"/>
+    
+    <div id="offerListCmp" >
+        
+    </div>
+    <div class="slds-section slds-is-open">
+        <div class="slds-show_large">
+            <br />
+        </div>
+        <div class="slds-wrap slds-border_bottom custom-title_container">
+            <span class="{!and(v.clientTaskWrapper, v.clientTaskWrapper.sObjectList.length , v.clientTaskWrapper.isClientTaskVisible) ? 'custom-title_text': 'slds-hide'}" style="color:#F40E0E;"> Alert!</span>
+            <span class="custom-title_text" style="color:#0A202D;"> Your Action Is Needed:</span>
+        </div>
+        
+        <aura:if isTrue="{!and(v.clientTaskWrapper, v.clientTaskWrapper.sObjectList.length , v.clientTaskWrapper.isClientTaskVisible)}">
+            <div style="margin-top:-15px;">
+                <br/>
+            </div>
+            <div id="debtOverviewStatus" aria-hidden="false" class="slds-section__content custom-layout" >
+                <lightning:layout class="slds-wrap">
+                    <aura:iteration items="{!v.tasksToDisplay}" var="taskInstance" indexVar="index">
+                        <lightning:layoutItem class="slds-p-around_x-small min-width-task" size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="3" >
+                            <div class="task-card">
+                                <lightning:layout class="slds-wrap">
+                                    <aura:iteration items="{!v.clientTaskWrapper.listViewFields }" var="columnHeader">
+                                        <lightning:layoutItem size="12" class="slds-m-bottom_x-small">
+                                            <div class="slds-form-element">
+                                                <aura:if isTrue="{!or(taskInstance.isOffer,and(equals(taskInstance.Call_Type__c, 'NSF'), v.clientTaskWrapper.isRescheduleNSF),
+                                                                 (and(taskInstance.offerCriteriaMet, v.isOfferDecision)))}">
+                                                    <div id="urjentTask_Id" class="urjentTask_class">URGENT</div>
+                                                    <aura:set attribute="else">
+                                                        <aura:if isTrue="{!!taskInstance.isOffer}">
+                                                            <div class="tasklable_class">YOUR TASK:</div>
+                                                            <aura:set attribute="else">
+                                                                <div class="tasklable_class">YOUR OFFER:</div>
+                                                            </aura:set>
+                                                        </aura:if>
+                                                    </aura:set>
+                                                </aura:if>
+                                                <aura:if isTrue="{!taskInstance.isOffer}">
+                                                    <div style="padding-top: 1rem;">
+                                                        <label style="font-family:NotoSansKR-Bold!important;font-size:14px;color:#908b8b">REVIEW/APPROVE OFFER:</label>
+                                                        <div>
+                                                            <label style="font-family:NotoSansKR-Bold!important;font-size:14px;">
+                                                                <span>Debt Balance :
+                                                                    <ui:outputCurrency value="{!taskInstance.Current_Balance__c}"/>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                        <div>
+                                                            <label style="font-family:NotoSansKR-Bold !important;font-size: 14px;">
+                                                                <span>Settlement Offer :
+                                                                    <ui:outputCurrency value="{!taskInstance.nu_dse__Offer_Amount__c}"/>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <aura:set attribute="else">
+                                                        <div style="padding-top: 1.5rem;padding-bottom: 0.5rem;min-height:5.5rem">
+                                                            <div class="taskSubject_class" >
+                                                                {!taskInstance.Portal_Subject__c}
+                                                            </div>
+                                                        </div>
+                                                    </aura:set>
+                                                </aura:if>
+                                                <aura:if isTrue="{!(v.tasksToDisplay.length-1) == index}">
+                                                    <div id="debtStatusCmp"></div>
+                                                </aura:if>
+                                            </div>
+                                        </lightning:layoutItem>
+                                    </aura:iteration>
+                                    <lightning:layoutItem size="12" class="slds-m-top_x-small">
+                                        <aura:if isTrue="{!!taskInstance.isOffer}">
+                                            <aura:if isTrue="{!and(equals(taskInstance.Call_Type__c, 'NSF'), v.clientTaskWrapper.isRescheduleNSF)}">
+                                                <lightning:button variant="base" name="{!index}" label="" title="Reschedule Now" onclick="{! c.rescheduleNow }" class="custom-button_reschedule">
+                                                    <span>Reschedule Now</span>
+                                                </lightning:button>
+                                                <aura:set attribute="else">  
+                                                    <div class="custom-button_getInfo_class">
+                                                        <lightning:button variant="base" name="{!index}" label="Get More Info" title="Get More Info" onclick="{! c.getMoreInfo }" class="custom-button_getInfo" >
+                                                            <span>Get More Info</span>
+                                                        </lightning:button>
+                                                    </div>
+                                                </aura:set>
+                                            </aura:if>
+                                            <aura:set attribute="else">
+                                                <aura:if isTrue="{!and(taskInstance.offerCriteriaMet, v.isOfferDecision)}"> 
+                                                    <aura:if isTrue="{!v.isOfferDecision}">
+                                                        <lightning:button aura:id="reviewOfferbtn_offerList" variant="base" name="{!index}" label="Review Offer" onclick="{!c.reviewForApproval}" class="custom-button_review"/>
+                                                    </aura:if>
+                                                    <aura:set attribute="else">
+                                                        <aura:if isTrue="{!taskInstance.offerMoreInfo}">
+                                                            <div class="custom-button_getInfo_class">
+                                                                <lightning:button aura:id="viewInfobtn_offerList" name="{!index}" variant="base" label="View Info"  onclick="{!c.viewInfo}" class="custom-button_getInfo"/>
+                                                            </div>
+                                                        </aura:if>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </aura:set>
+                                        </aura:if>
+                                    </lightning:layoutItem>
+                                </lightning:layout>
+                            </div>
+                        </lightning:layoutItem>
+                    </aura:iteration>
+                </lightning:layout>
+            </div>
+            <div style="font-family:Prompt;font-size: 17px;font-color:#2c2e33;text-align:center;">
+                <c:pagination allData="{!v.clientTaskWrapper.sObjectList}" data="{!v.tasksToDisplay}" pageSize="4"/>
+            </div>
+            <aura:set attribute="else">
+                <div id="debtStatusCmp"></div>
+                <aura:if isTrue="{!and(v.clientTaskWrapper, v.clientTaskWrapper.isClientTaskVisible)}">
+                    <div style="font-family:'Noto Serif KR', serif;font-size: 22px;font-color:#2c2e33;padding:40px 0px;" class="slds-p-around_medium">No actions pending at this time.</div>
+                </aura:if>
+            </aura:set>
+        </aura:if>
+    </div>
+    <aura:if isTrue="{!v.toRenderModal == 'View Info'}">
+        <div class="slds-m-around_xx-large custom-modal">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_small">
+                <div class="slds-modal__container responsive-modal-view" >
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" style="min-height:10rem;">
+                        <button class="slds-button slds-button_icon custom-close_button" title="Close" onclick="{!c.cancelModel}">
+                            <lightning:icon class="custom_close_modal_header" iconName="action:close" alternativeText="close" size="x-small"/>
+                        </button>
+                        <div style="text-align:center;font-family:Raleway;font-size: large;">
+                            <div style="font-family: Vidaloka-Regular!important;color:Red;font-size: xx-large;"> Alert! </div>
+                            <div style="font-family: Vidaloka-Regular!important; font-size: x-large;"> <b>Urgent Response Needed </b></div>
+                            The terms &amp; conditions for this offer requires special handling on your part. <br />
+                            Please call our <b>Client Service Department</b> at 
+                            <div style="font-weight:bold;font-size:xx-large;"><ui:outputPhone value="{!v.program.Portfolio__r.Support_Phone_Number__c}"/></div> 
+                            to discuss the details. Proposed settlements may expire so <br />
+                            <b style="color:black;font-size:large;font-family:Prompt-Bold !important;">PLEASE CALL US AS SOON AS POSSIBLE. </b> <br /><br />
+                            
+                            <div class="slds-p-around_large dark-border slds-align_absolute-center" >
+                                <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal slds-table_fixed-layout slds-no-row-hover" >
+                                    <thead style="font-size: small;">
+                                        <tr class="slds-line-height_reset">
+                                            <th scope="col" aria-label="Creditor">
+                                                <div class="slds-align_absolute-center"  title="">
+                                                    <span class="" >
+                                                        <span title="Creditor" class="slds-truncate">Creditor</span>
+                                                    </span>
+                                                </div>
+                                            </th>
+                                            <th scope="col" aria-label="Debt Balance">
+                                                <div class="slds-align_absolute-center"  title="">
+                                                    <span class="" >
+                                                        <span title="Debt Balance" class="slds-truncate">Debt Balance</span>
+                                                    </span>
+                                                </div>
+                                            </th>
+                                            <th scope="col" aria-label="Settlement Offer">
+                                                <div class="slds-align_absolute-center"  title="">
+                                                    <span class="" >
+                                                        <span title="Settlement Offer" class="slds-truncate">Settlement Offer</span>
+                                                    </span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody >
+                                        <tr >
+                                            <td data-label="Creditor" style="font-family: Raleway-SemiBold !important; font-size:larg!important">
+                                                <div class="slds-truncate slds-align_absolute-center">
+                                                    <b>
+                                                        <ui:outputText value="{!v.offerInstance.SFSPortal_Original_Creditor__c}"/>
+                                                    </b>
+                                                </div>
+                                            </td>
+                                            <td data-label="Debt Balance" style="font-family: Raleway-SemiBold !important; font-size: 20px;!important">
+                                                <div class="slds-truncate slds-align_absolute-center">
+                                                    <b>
+                                                        <ui:outputCurrency value="{!v.offerInstance.Current_Balance__c}"/>
+                                                    </b>
+                                                </div>
+                                            </td>
+                                            <td data-label="Settlement Offer" style="font-family: Raleway-SemiBold !important; font-size: 20px;!important">
+                                                <div class="slds-truncate slds-align_absolute-center">
+                                                    <b>
+                                                        <ui:outputCurrency value="{!v.offerInstance.nu_dse__Offer_Amount__c}"/>
+                                                    </b>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>                    
+                        </div>
+                        <div style="text-align:center" class="slds-p-top_large">
+                            <lightning:button class="btn_styleInModal" aura:id="closebtn_offerList" label="CLOSE" variant="brand" onclick="{!c.cancelModel}">
+                                CLOSE <lightning:icon class="custom_close_modal_footer" iconName="action:close" alternativeText="close" size="xx-small"/>
+                            </lightning:button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.isModalOpen}">
+        <c:customModal header="Task Info" modalSize="slds-modal_small">
+            <aura:set attribute="body">
+                <div style="text-align:center;background:lightyellow">
+                    As you are still within the first year of your program, you may have questions about the program or questions about the status of your accounts. If so feel free to call us. A member of our Client Service Team will be happy to answer any questions you may have.
+                    <br />
+                    Our hours of operation are Monday-Friday {!v.taskInfo.portfolio.Business_Hours__c},  {!v.taskInfo.portfolio.Support_Phone_Number__c}. 
+                </div>
+            </aura:set>
+            <aura:set attribute="footer"> 
+                <lightning:button label="Close" variant="brand" onclick="{!c.cancelModel}"/>
+            </aura:set>
+        </c:customModal>
+    </aura:if>
+</aura:component>

@@ -1,0 +1,273 @@
+.THIS * {
+    font-family: 'Noto', sans-serif;
+}
+
+.THIS .custom-title_text {
+    font-family: 'Noto Serif KR';
+    font-size: 35px;
+    color: #0A202D;
+    font-weight: bold;
+}
+.THIS .Icon-title {
+    font-family: 'Noto Serif KR' !important;
+    text-align: center;
+    font-size: 24px;
+    display: block;
+    font-weight: bold;
+    color: black !important;
+}
+
+.THIS .logoItems {
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    padding-right: 40px;
+    padding-left: 0px;
+}
+
+.THIS .badge {
+    color: #258ca6;
+    font-family: 'Noto Serif KR', serif !important;
+}
+
+.THIS .logoItems img:first-child {
+    width: 130px;
+    padding-bottom: 15px;
+}
+
+.THIS .starIcon {
+    width: 18px !important; 
+    padding-bottom: 5px !important;
+}
+
+/* Document Listing CSS starts */
+
+.THIS a {
+    color: #258ca6;
+    font-weight: bold
+}
+
+.THIS hr {
+    margin: 0em;
+}
+
+.THIS .linktag {
+    margin-left: 10px;
+}
+
+.THIS .sidepadding {
+    padding-right: 2.5vw;
+}
+
+
+.THIS .documentTable {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 18px;
+    margin-right: 15px;
+    margin-top: 10px;
+    page-break-inside:auto;
+} 
+
+
+.THIS .download {
+    text-align: center;   
+}
+
+.THIS .download img {
+    width: 30px; 
+    cursor: pointer;
+}
+
+.THIS .fileIcon {
+    width: 30px !important;
+}
+
+.THIS .tipList{
+    background-color: #D5DEE1;
+    padding: 5%;
+    font-size: 15.5px;
+}
+
+.THIS .tipList ul {
+    margin-top: 10px;
+}
+
+.THIS .tipList li {
+    margin: 0 0 10px 0
+}
+
+
+.THIS .tipListModal {
+    background-color: white; 
+    font-size: 17px; 
+    padding: 10px; 
+}
+
+.THIS .tipListModal li {
+    margin: 3vw 0 0 0
+}
+
+.THIS .slds-table td:first-child {
+    padding-bottom: 1vw;
+    padding-top: 1vw;
+    padding-left: 7px !important;
+}
+
+.THIS .slds-table th:first-child {
+    padding-left: 7px !important;
+} 
+
+.THIS .slds-table tr td {
+    white-space: normal
+}
+
+.THIS .slds-border_bottom {
+    border-color: #c0d2d5;
+}
+
+.THIS .b1{
+    margin-top:1rem;
+    background-color:White !important;
+    color:black;
+    /*padding-left:4rem;*/
+    padding-right:1rem;
+    text-align: center !important;
+    font-size:23px;
+    border-radius: 5px;
+    border-color: black !important;
+    padding-top:0.1rem;
+    padding-bottom:0.2rem;
+    font-family: NotoSansKR-Regular !important;
+}
+
+.THIS .b1:hover{
+    cursor: pointer;
+    /* background-color:#006999 !important;*/
+    border-color:#282828 !important;
+    background-color:#ff9666 !important;
+    filter: invert(1);
+}
+
+.THIS .b3{
+    background-color:#ffffff !important;
+    border-radius: 5px;
+    border-color: black !important;
+    /* padding-bottom:3px; */
+    padding-bottom: 9px;
+    padding-top: 9px;
+    padding-left: 9px;
+    padding-right: 9px;
+    
+}
+.THIS .b3:hover{
+    /*  background-color:#006999 !important;*/
+    border-color:#282828 !important;
+    background-color:#ff9666 !important;
+    filter: invert(1);
+}
+
+
+.THIS .mobileElement {
+    display: none
+}
+
+.THIS forceContentFileCard {
+    width: 0rem !important;
+}
+
+@media screen and (max-width: 750px) {
+    .THIS .custom-title_text {
+        font-size: 22px !important;
+        
+    }
+
+    .THIS .custom-title_subtext {
+        font-size: 22px !important;
+        margin-top: 25px !important;
+    }
+
+    .THIS .logoItems {
+        text-align: left;
+        margin-top: 20px;
+        margin-bottom: 0px;
+        padding-right: 20px;
+        padding-left: 0px;
+    }
+
+    .THIS .logoItems img:first-child {
+        width: 25% !important;
+        padding-bottom: 5px;
+        /* padding-right: 25px; */
+    }
+
+    .THIS .Icon-title {
+        display: inline;
+        padding-left: 20px;
+    }
+    
+    .THIS .documentTable {
+        font-size: 14px !important; 
+    }
+    
+    .THIS .mobileElement {
+        display: initial;
+    }
+    
+    .THIS .notMobileElement {
+        display: none
+    }
+
+}
+
+@media screen and (max-width: 1020px) {  
+    
+    .THIS .logoItems {
+        margin-top: 7%;
+    }
+    
+    .THIS .logoItems img:first-child {
+        width: 90px;
+    }
+    
+    .THIS .documentTable {
+        font-size: 80%; 
+    }
+    
+	.THIS .slds-table td  {
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+    
+    .THIS .slds-table td img  {
+        width: 125%;
+    }
+    
+    .THIS .download img {
+    	height: 30px;
+	}
+    
+    .THIS .tipList{
+        background-color: #dedfdf;
+        padding: 10px;
+        /*height: 274px;*/
+    }
+    
+        
+    .THIS .sidepadding {
+        padding: 0px;
+    }
+    
+   	.THIS .Icon-title {
+        font-size: 16.5px;
+    }
+}
+
+@media screen and (min-width: 1550px) { 
+	.THIS .docCenter {
+        zoom: 120%;
+    }
+    
+}
+
+
+/* Document Listing CSS ends */

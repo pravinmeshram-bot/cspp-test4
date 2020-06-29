@@ -1,0 +1,3 @@
+<apex:page Standardcontroller="nu_dse__Program__c">
+    <c:Task_View_Component recordId="{!Id}" />
+</apex:page>

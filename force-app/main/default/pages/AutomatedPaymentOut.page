@@ -1,0 +1,23 @@
+<apex:page controller="AutomatedPaymentOutCtrl" readOnly="true" sidebar="false">
+    <apex:pageBlock >
+        <apex:pageBlockSection columns="1" title="Payments Out Count - {!pcmList.size} Programs / {!ppmList.size} Payments">
+        	<!--<apex:pageBlockTable value="{!ppmList}" var="ppm">
+                <apex:column headerValue="PROGRAM_UUID" value="{!ppm.PROGRAM_UUID}" />
+                <apex:column headerValue="PROGRAM_NUM" value="{!ppm.PROGRAM_NUM}" />
+                <apex:column headerValue="SCHEDULED_DATE">
+                    <apex:outputText value="{0,date,dd/MM/yyyy}">
+                        <apex:param value="{!ppm.SCHEDULED_DATE}" />
+                    </apex:outputText>
+                </apex:column>
+                <apex:column headerValue="AMOUNT" value="{!ppm.AMOUNT}" />
+            </apex:pageBlockTable>-->
+            
+            <apex:pageBlockTable value="{!pcmList}" var="pcm">
+                <apex:column headerValue="PROGRAM_UUID" value="{!pcm.PROGRAM_UUID}" />
+                <apex:column headerValue="PROGRAM_NUM" value="{!pcm.PROGRAM_NUM}" />
+                <apex:column headerValue="Payment Count" value="{!pcm.paymentCount}" />
+                <!--<apex:column headerValue="PIO Count" value="{!pcm.progIOCount}" />-->
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:page>

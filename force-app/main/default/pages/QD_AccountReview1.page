@@ -1,0 +1,330 @@
+<apex:page controller="QD_AccountReview_CC" tabStyle="Quick_Doc__c" id="CCF_Form" sidebar="false" showHeader="false">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script>
+    $(document).ready(function(){
+        $(".bPageBlock").css("background-color","#f2f2f2;");
+        $(".bPageBlock").css("border-color","#f2f2f2;");
+    });
+    </script>
+    <script>
+    function loadtable(){
+    document.getElementById("spinner").style.display='inline';
+    }
+    function stoptable(){
+    document.getElementById("spinner").style.display='none';
+    }
+    function SaveQDFuction()
+    {
+        var result = window.confirm("Have you asked the client if they have any changes in their contact information and made appropriate changes in LeadTrac if any?");
+             if(result)
+             {
+                 SaveQDrecord();
+             }else{  
+                 return false;
+             }
+    }
+    
+    function SaveQDFuction1()
+    {
+       SaveQDrecord1(); 
+    }
+    
+  function renderPortfolioDependents(){
+
+  $(".portfolio").show(); 
+         if(($('[id$=portfolio]').val()=='Attorney')||($('[id$=portfolio]').val()=='')){
+             $(".portfolio").hide();
+             
+          }        
+    }
+    
+    $( window ).ready(function() {
+              pageLoad();      
+ 
+        });
+        function pageLoad(){
+           $(".portfolio").hide(); 
+         if($('[id$=portfolio]').val()=='Contingency'){
+             $(".portfolio").show();
+             
+          }   
+        }
+    
+    </script>
+    <style type="text/css">
+        table, td {
+        border: 2px solid black;
+        }
+        table, td{
+           page-break-after: $;
+        }
+        
+        td {
+word-wrap:break-$;
+}
+        br {mso-data-placement:same-cell;}
+        tr th:nth-child(odd) {
+        text-align: center;
+        }
+        tr th:nth-child(even) {
+        text-align: center;
+        }
+        
+         popupBackground {
+    background: #000;
+    z-index: 1040;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    opacity: 0.8;
+}
+     custPopup {
+    background: #fff;
+    width: 600px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    margin-top: -200px;
+    margin-left: -300px;
+    z-index: 1050;
+    border-radius: 10px;
+    padding-bottom: 20px;
+}
+body .ccf_pageContent .custPopup label,
+body .ccf_formContent .custPopup h2 {
+    background: #1797c0;
+    border-radius: 10px 10px 0 0;
+    padding: 10px;
+    color: #fff;
+    font-size: 15px;
+    width: 100%;
+    float: left;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+    </style>
+   <apex:slds /> 
+    <head>
+        <Title>ACCOUNT REVIEW - QUICK DOC TOOL</Title>
+    </head>
+    <body>
+    <apex:form style="background-color: #f2f2f2;" id="frmId">
+    
+            
+    <div class="slds-color__background_gray-12">
+    <div class="">
+    <div class="slds-grid">
+        <div class="slds-col"> </div>
+        
+         <div class="slds-col slds-text-heading_large ">ACCOUNT REVIEW</div>
+    </div>
+    </div><br/>
+       
+    <apex:actionFunction name="textload"  action="{!DescriptionQD}" reRender="Panel1Id"/>   
+     
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-8 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Portfolio*</b></label>
+        </div>
+        
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_2-of-8 slds-combobox-picklist">                        
+            <apex:inputField value="{!QD.Portfolio__c}" styleClass="slds-input " id="portfolio" onchange="renderPortfolioDependents(), textload()">              
+             <apex:actionSupport event="onchange" action="{!DescriptionQD}" reRender="Panel1Id"/>
+            </apex:inputField> 
+        </div>
+    </div>
+    
+    <apex:outputPanel id="idErrorMsg">
+    <apex:outputLabel value="Error:You must enter a value" rendered="{!showmsa}"  styleclass="slds-p-left_xx-large" style="color: Red; padding-left: 191px;">
+    </apex:outputLabel>
+    </apex:outputPanel>
+    
+<!--    <apex:actionRegion > reRender="Panel1Id,buttonsPanel" onchange="renderPortfolioDependents()" -->
+   
+     <apex:actionRegion >
+    
+          <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top portfolio" id="AccountLookupId" style="border-color:#f3f3ec;" >
+              <div class="slds-p-horizontal_small slds-size_1-of-8 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Account*</b></label>
+        </div>
+              <div class="slds-form-element__control slds-p-horizontal_small slds-size_2-of-8 slds-combobox-picklist">           
+             
+             <c:SLDSDynamicLookup SLDSResourceName="{!$Resource.slds}" ObjectApiName="Account" DisplayFieldApiNames="Name,Type" DisplayFieldsPattern="Name" LabelName="Set Account" SetValueToField="{!QD.Account__c}"/>
+                
+              </div>  
+        
+    </div>
+  </apex:actionRegion>
+
+   
+ <apex:outputPanel id="idShowMs">
+<apex:outputLabel value="Error:You must enter a value" rendered="{!showms}"  styleclass="slds-p-left_xx-large" style="color: Red; padding-left: 191px;">
+    </apex:outputLabel>
+  </apex:outputPanel>  
+
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-8 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Month Review*
+            </b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_2-of-8 slds-combobox-picklist">                        
+            <apex:inputField value="{!QD.MonthReview__c}" styleClass="slds-input">
+                <apex:actionSupport event="onchange" action="{!DescriptionQD}" reRender="Panel1Id"/>
+            </apex:inputField> 
+        </div>
+    </div>
+   <apex:outputPanel id="idShowMsb">
+    <apex:outputLabel value="Error:You must enter a value" rendered="{!showmsb}"  styleclass="slds-p-left_xx-large" style="color: Red; padding-left: 191px;">
+    </apex:outputLabel>
+    </apex:outputPanel> 
+
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-8 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Caller</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right-large">
+                    <apex:inputCheckbox html-name="options" id="divsup4"  value="{!QD.Applicant__c}">
+                        <apex:actionSupport event="onchange" action="{!DescriptionQD}" reRender="Panel1Id"/>    
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup4" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Applicant</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+           
+            <div class="slds-form-element__control slds-col ">
+                <span class="slds-checkbox slds-m-left--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup3"  value="{!QD.Co_Applicant__c}">
+                        <apex:actionSupport event="onchange" action="{!DescriptionQD}" reRender="Panel1Id"/> 
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup3" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Co-Applicant</span>
+                    </apex:outputLabel>
+                </span> 
+            </div>
+        </div>
+        </div>
+    </div>
+    
+     <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-8 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Verified Last 4 Digit SSN</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right-large">
+                    <apex:inputCheckbox html-name="options" id="divsup5" value="{!QD.Verified_Last_4_Digtit_SSN__c}">
+                        <apex:actionSupport event="onchange" action="{!DescriptionQD}" reRender="Panel1Id"/> 
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup5" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+        </div>
+        </div>
+    </div>
+    
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+    <div class="slds-p-horizontal_small slds-size_1-of-8 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Additional Information</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_2-of-8 slds-combobox-picklist">                        
+            <apex:inputField value="{!QD.Additional_Information__c}" styleClass="slds-input">
+                <apex:actionSupport event="onchange" action="{!DescriptionQD}" reRender="Panel1Id"/>
+            </apex:inputField> 
+        </div>
+    </div>
+    
+   
+    <br/>
+    
+    <br/>
+
+    
+    <br/>
+   <div class="slds-form-element">
+    <div class="slds-form-element__control">
+        <span class="slds-checkbox">
+            <apex:inputCheckbox onclick="loadtable();" html-name="options" id="divsup"  value="{!QD.Conducted_Account_Review__c}">
+                <apex:actionSupport event="onchange" action="{!DescriptionQD}" reRender="Panel1Id" oncomplete="stoptable();"/>
+            </apex:inputCheckbox>
+            <apex:outputLabel for="divsup" styleClass="slds-checkbox__label">
+                <span class="slds-checkbox--faux"></span>
+                <span class="slds-form-element__label">Conducted Account Review</span>
+            </apex:outputLabel>
+        </span>
+    </div>
+</div><br/>
+    
+    <center>
+        <apex:commandButton value="Clear All Values" action="{!clearAll}" onclick="loadtable();" html-name="options" styleClass="btn slds-button slds-button--brand slds-not-selected"   style="text-decoration:black;padding:1px;;width:9pc;background:#0070d2;" id="btn3" />
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <apex:commandButton value="Save" rerender="idErrorMsg,idShowMsb,idShowMs" action="{!saveQD}" html-name="options" styleClass="btn slds-button slds-button--brand slds-not-selected portfolio"   style="text-decoration:black;padding:1px;;width:9pc;background:#0070d2;" id="btn8" />
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <apex:commandButton value="Cancel" immediate="true" action="{!CancelQD}" onclick="loadtable();" html-name="options" styleClass="btn slds-button slds-button--brand slds-not-selected"   style="text-decoration:black;padding:1px;;width:9pc;background:#0070d2;" id="btn5" />
+    
+    </center>
+   <apex:outputPanel id="Panel1Id"> 
+    <br/>
+    <div class="demo-only" id="spinner"  style="display:none;">
+      <div role="status" class="slds-spinner slds-spinner_brand slds-spinner_large">
+        <span class="slds-assistive-text">Loading</span>
+        <div class="slds-spinner__dot-a"></div>
+        <div class="slds-spinner__dot-b"></div>
+      </div>
+    </div>
+    
+    <apex:outputPanel rendered="{!showPanel}">
+    
+    <apex:pageBlock >  
+
+        <apex:pageBlockTable value="{!quickDocScripts}" var="n" style="border:2px solid black;" id="idPGBT">
+        <apex:column value="{!n.Description__c}" width="50%" style="padding-left: 10px; padding-right:10px; border:2px solid black;" headerValue="Script Pane"/>
+        <apex:column value="{!n.Notes__c}" style="padding-left: 10px; padding-right:10px; border:2px solid black; " headerValue="Notes Pane"/> 
+        </apex:pageBlockTable>
+        
+    </apex:pageBlock>  
+
+    </apex:outputPanel>
+    </apex:outputPanel>
+    <br/>
+    <!--
+    <div class="ccf_pageContent">
+            <div class="mainWrapper">
+                <div class="tableMainContent">
+                       <apex:outputPanel id="tstpopup">
+                            <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayPopUp}"/>
+                            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displayPopUp}">
+                                <apex:outputLabel value="Please Confirm" ></apex:outputLabel>
+                                <div class="custPopup_body">
+                                    <apex:outputText style="font-size: 15px;" value="Have you asked the client if they have any changes in their contact information and made appropriate changes in LeadTrac if any?" ></apex:outputText>
+                                </div>
+                          <!--     <center> <H2> Have you asked the client if they have any changes in their contact information and made appropriate changes in LeadTrac if any? </H2> </center>  -->
+       <!--                         <apex:commandButton styleClass="slds-button slds-float_center"   style="margin-left: 210px;" value="Yes" action="{!saveQD}" rerender="tstpopup"/>
+                                <apex:commandButton styleClass="slds-button slds-float_center"   style="margin-left: 30px;" value="No" action="{!closePopup}" rerender="tstpopup"/>
+                                
+                            </apex:outputPanel>
+                      </apex:outputPanel>      
+                            
+    
+    </div>
+    </div>
+    </div>  -->
+    </div>
+    
+    
+    </apex:form>
+    <apex:includeScript value="{!$Resource.SLDSDynamicLookupScript}"/>  
+    </body>
+    
+</apex:page>

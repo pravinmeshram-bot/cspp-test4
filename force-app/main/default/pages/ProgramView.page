@@ -1,0 +1,525 @@
+<apex:page standardController="Account" extensions="ProgramViewExt" showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"/>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <title>Program Details</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <apex:slds />
+    </head>
+    <style>
+    .slds-item--label {
+         font-weight:bold;
+     }
+     .slds-scope .slds-list--horizontal .slds-item--label{
+         width:40% !important;
+     }
+     .slds-scope .slds-list--horizontal .slds-item--detail {
+        width: 60% !important;
+     }
+    
+    
+    </style>
+
+   <apex:form id="frm">
+    <body>
+    
+        <!-- REQUIRED SLDS WRAPPER -->
+        <div class="slds-scope">
+        <div align="right">
+        <button class="slds-button slds-button--icon-border" aria-live="assertive" style="width:4rem;">
+         <a href="{!$Site.Prefix}/secur/logout.jsp" >Log Off</a>
+        </button>
+                </div>
+            <!-- PAGE HEADER -->
+            <!-- RELATED LIST CARDS-->
+                <div class="slds-grid slds-m-top--large">
+                        <!-- NARROW CARD -->
+                    <div class="slds-col slds-p-left--large slds-size--6-of-12" id="offerdetail" style="padding:0px;">
+                        <article class="slds-card slds-card--narrow">
+                            <div class="slds-card__header slds-grid">
+                                <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                                    <div class="slds-media__figure">
+                                        <svg class="slds-icon slds-icon-standard-home slds-icon--small" aria-hidden="true">
+                                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/standard-sprite/svg/symbols.svg#home')}"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="slds-media__body slds-truncate">
+                                        <h2 class="slds-text-heading--small" style="color:hotpink;">Company Information</h2>
+                                    </div>
+                                </header>
+                            </div>
+                            <div class="slds-card__body">
+                                <div class="slds-card__body--inner">
+                                    <div class="slds-tile">
+                                        <div class="slds-tile__detail slds-text-body--small">
+                                            <dl class="slds-list--horizontal slds-wrap">
+                                                <dt class="slds-item--label slds-text-color--weak slds-truncate" title="Name:">
+                                                    Name:
+                                                </dt>
+                                                <dd class="slds-item--detail slds-truncate" title="Name">
+                                                   {!orgDetails.name} 
+                                                </dd>
+                                                <dt class="slds-item--label slds-text-color--weak slds-truncate" title="Phone:">
+                                                    Phone:
+                                                </dt>
+                                                <dd class="slds-item--detail slds-truncate" title="Phone">
+                                                   {!orgDetails.phone} 
+                                                </dd>
+                                                <dt class="slds-item--label slds-text-color--weak slds-truncate" title="Fax:">
+                                                     Fax:
+                                                </dt>
+                                                <dd class="slds-item--detail slds-truncate" title="Fax">
+                                                   {!orgDetails.fax} 
+                                                </dd>
+                                                <dt class="slds-item--label slds-text-color--weak slds-truncate" title="Address:">
+                                                    Address:
+                                                </dt>
+                                                <dd class="slds-item--detail slds-truncate" title="achoi@burlingtion.com">
+                                                    {!orgDetails.street},{!orgDetails.state},{!orgDetails.Country},{!orgDetails.postalcode}
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                                                              
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    <!-- / NARROW CARD -->
+                    
+                    <!-- NARROW CARD -->
+                    <div class="slds-col slds-p-left--large slds-size--6-of-12" id="offerdetail" style="padding:0px;">
+                        <article class="slds-card slds-card--narrow">
+                            <div class="slds-card__header slds-grid">
+                                <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                                    <div class="slds-media__figure">
+                                        <svg class="slds-icon slds-icon-standard-event slds-icon--small" aria-hidden="true">
+                                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/standard-sprite/svg/symbols.svg#operating_hours')}"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="slds-media__body slds-truncate">
+                                        <h2 class="slds-text-heading--small" style="color:hotpink;">Hours of Operation</h2>
+                                    </div>
+                                </header>
+                            </div>
+                            <div class="slds-card__body">
+                                <div class="slds-card__body--inner">
+                                    <div class="slds-tile">
+                                        <div class="slds-tile__detail slds-text-body--small">
+                                            <dl class="slds-list--horizontal slds-wrap">
+                                                <dt class="slds-item--label slds-text-color--weak slds-truncate" title="Time Zone:">
+                                                    Time Zone:
+                                                </dt>
+                                                <dd class="slds-item--detail slds-truncate" title="Time Zone">
+                                                 <apex:outputfield value="{!bh.TimeZoneSidKey}"/>
+
+                                                </dd>
+                                                
+                                                <dt class="slds-item--label slds-text-color--weak slds-truncate" title="Sunday:">
+                                                    Monday - Friday:
+                                                </dt>
+                                                <dd class="slds-item--detail slds-truncate" title="achoi@burlingtion.com">
+                                                    9:00 AM - 9:00 PM
+                                                </dd>
+                                                <dt class="slds-item--label slds-text-color--weak slds-truncate" title="Monday:">
+                                                    Saturday:
+                                                </dt>
+                                                <dd class="slds-item--detail slds-truncate" title="achoi@burlingtion.com">
+                                                    9:00 AM - 8:00 PM
+                                                </dd>
+                                                <dt class="slds-item--label slds-text-color--weak slds-truncate" title="Tuesday:">
+                                                    Sunday:
+                                                </dt>
+                                                <dd class="slds-item--detail slds-truncate" title="achoi@burlingtion.com">
+                                                    9:00 AM - 6:00 PM
+                                                </dd>
+                                            </dl>
+                                        </div>                                      
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    <!-- / NARROW CARD -->
+                </div>
+                <!-- / RELATED LIST CARDS -->
+            
+                                <br/>
+            
+            
+            <div class="slds-page-header">
+                <!-- PAGE HEADER TOP ROW -->
+                <div class="slds-grid">
+                    <!-- PAGE HEADER / ROW 1 / COLUMN 1 -->
+                    <div class="slds-col slds-has-flexi-truncate">
+                        <!-- HEADING AREA -->
+                        <!-- MEDIA OBJECT = FIGURE + BODY -->
+                        <div class="slds-media slds-no-space slds-grow">
+                            <div class="slds-media__figure">
+                                <svg aria-hidden="true" class="slds-icon slds-icon-standard-user">
+                                    <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/standard-sprite/svg/symbols.svg#user')}"></use>
+                                </svg>
+                            </div>
+                            <div class="slds-media__body">
+                                <p class="slds-text-title--caps slds-line-height--reset">Program</p>
+                                <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate" title="SLDS Inc.">{!prgm.name}</h1>
+                            </div>
+                        </div>
+                        <!-- / MEDIA OBJECT -->
+                        <!-- HEADING AREA -->
+                    </div>
+                    <!-- / PAGE HEADER / ROW 1 / COLUMN 1 -->
+                </div>
+                <ul class="slds-grid slds-page-header__detail-row">
+                    <p style="font-weight:bold;color:darkturquoise;">Account Information</p>
+                </ul>
+                <!-- / PAGE HEADER TOP ROW -->
+                <!-- PAGE HEADER DETAIL ROW -->
+                <ul class="slds-grid slds-page-header__detail-row">
+                    <!-- PAGE HEADER / ROW 2 / COLUMN 1 -->
+                    <li class="slds-page-header__detail-block">
+                        <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="First Name">First Name</p>
+                        <p class="slds-text-body--regular slds-truncate" title="Description that demonstrates truncation with a long text field">{!acc.firstname}</p>
+                    </li>
+                    <!-- PAGE HEADER / ROW 2 / COLUMN 2 -->
+                    <li class="slds-page-header__detail-block">
+                        <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="Last Name">Last Name
+                        </p>
+                        <p class="slds-text-body--regular">{!acc.Lastname}</p>
+                    </li>
+                    <!-- PAGE HEADER / ROW 2 / COLUMN 3 -->
+                    <li class="slds-page-header__detail-block">
+                        <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="Field 3">Work Phone</p><a href="javascript:void(0);">{!acc.nu_dse__Work_Phone__c}</a></li>
+                    <!-- PAGE HEADER / ROW 2 / COLUMN 4 -->
+                    <li class="slds-page-header__detail-block">
+                        <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="Fax">Cell Phone</p>
+                        <p class="slds-text-body--regular slds-truncate" title="Phone">{!acc.nu_dse__Cell_phone__c}</p>
+                    </li>
+                    <li class="slds-page-header__detail-block">
+                        <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="Phone">Home Phone</p>
+                        <p class="slds-text-body--regular slds-truncate" title="Phone">{!acc.PersonHomePhone}</p>
+                    </li>
+                     <li class="slds-page-header__detail-block">
+                        <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="Phone">Email</p>
+                        <p class="slds-text-body--regular slds-truncate" title="Phone">{!acc.PersonEmail}</p>
+                    </li>
+                    <li class="slds-page-header__detail-block">
+                        <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="Addresse">Address</p>
+                        <p class="slds-text-body--regular" title="Address">{!acc.PersonMailingstreet},{!acc.PersonMailingCity},{!acc.PersonMailingstate} {!acc.PersonMailingPostalCode},{!acc.PersonMailingcountry}</p>
+                    </li>
+                </ul>
+                <hr style="margin-bottom:0px" />
+                <!------------------------------------------------------------------------->
+                <ul class="slds-grid slds-page-header__detail-row">
+                    <p style="font-weight:bold;color: darkturquoise;">Program Information</p>
+                </ul>
+                <!-- / PAGE HEADER TOP ROW -->
+                <!-- PAGE HEADER DETAIL ROW -->
+                <ul class="slds-grid slds-page-header__detail-row">
+                    <!-- PAGE HEADER / ROW 2 / COLUMN 1 -->
+                    <li class="slds-page-header__detail-block">
+                        <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="First Name">Program Name</p>
+                        <p class="slds-text-body--regular slds-truncate" title="Description that demonstrates truncation with a long text field">{!prgm.name}</p>
+                    </li>
+                    <!-- PAGE HEADER / ROW 2 / COLUMN 2 -->
+                   
+                    <!-- PAGE HEADER / ROW 2 / COLUMN 3 -->
+                    <li class="slds-page-header__detail-block">
+                        <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="Program Status">Program Status</p><a href="javascript:void(0);">{!prgm.nu_dse__Program_Status__c}</a></li>
+                        
+                         <li class="slds-page-header__detail-block">
+                        <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="Program Status">Processor Status</p><a href="javascript:void(0);">{!prgm.nu_dse__Processor_Status__c}</a></li>
+                    <!-- PAGE HEADER / ROW 2 / COLUMN 4 -->
+                    <li class="slds-page-header__detail-block">
+                        <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="Program Length">Program Length</p>
+                        <p>
+                            <span title="Description (2-line truncation—must use JS to truncate).">{!prgm.nu_dse__Program_Length__c}</span> 
+                        </p>
+                    </li>
+                    <li class="slds-page-header__detail-block">
+                        <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="Program Frequency">Program Frequency</p>
+                        <p>
+                            <span title="Description (2-line truncation—must use JS to truncate).">{!prgm.nu_dse__Payment_Frequency__c}</span> 
+                        </p>
+                    </li>
+                      <li class="slds-page-header__detail-block">
+                        <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="Total Debt">Total Debt</p><a href="javascript:void(0);">${!prgm.nu_dse__Total_Debt__c}</a></li>
+                        
+                      <!--    <li class="slds-page-header__detail-block">
+                        <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="Last Disposition">Last Disposition</p><a href="javascript:void(0);">{!prgm.nu_dse__Last_Disposition__c}</a></li>      -->        
+                </ul>
+                <!----------------------------------------------------------------------------->
+                <!-- / PAGE HEADER DETAIL ROW -->
+            </div>
+            <!-- / PAGE HEADER -->
+            <!-- PRIMARY CONTENT WRAPPER -->
+            <div class="myapp">
+                <!-- RELATED LIST 2-->
+                <div class="slds-grid slds-m-top--large">
+                    <!-- MAIN CARD -->
+                    <div class="slds-col slds-col-rule--right slds-p-right--large slds-size--8-of-12" style="padding-right:0px;">
+                        <article class="slds-card" style="background:lights">
+                            <div class="slds-card__header slds-grid">
+                                <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                                    <div class="slds-media__figure">
+                                        <svg aria-hidden="true" class="slds-icon slds-icon-standard-task slds-icon--small">
+                                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/standard-sprite/svg/symbols.svg#orders')}"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="slds-media__body slds-truncate">
+                                        <a href="javascript:void(0);" class="slds-text-link--reset">
+                                            <span class="slds-text-heading--small" style="color:mediumseagreen">Payments</span>
+                                        </a>
+                                    </div>
+                                </header>
+                            </div>
+                            <!-- CARD BODY = TABLE -->
+                            <div class="slds-card__body">
+                            
+                            
+                             <table id="contacttable1" class="slds-table slds-table--bordered slds-table--cell-buffer">
+                                <thead style="color:mediumseagreen">   <!-- background:mediumseagreen; -->
+                                        <tr class="slds-text-heading--label">
+                                            <th class="slds-size--1-of-6" scope="col" >Name</th> <!-- background:#82E0AA;-->
+                                            <th class="slds-size--1-of-6" scope="col" >Payment Type</th>
+                                            <th class="slds-size--1-of-6" scope="col" >Status</th>
+                                            <th class="slds-size--1-of-6" scope="col" >Maint Fee</th>
+                                            <th class="slds-size--1-of-6" scope="col" >Other Fee</th>
+                                            <th class="slds-size--1-of-6" scope="col" >Third Party Fee</th>
+                                            <th class="slds-size--1-of-6" scope="col" >Processor Fee</th>
+                                            <th class="slds-size--1-of-6" scope="col" >Total Amount</th>
+                                        </tr>
+                                    </thead>
+                                <tbody>
+                                    <apex:repeat value="{!Paymentlist}" var="pmt">
+                                        <tr>
+                                            <td>
+                                              <a value="{!pmt.id}">{!pmt.name}</a>
+                                            </td>
+                                            <td>{!pmt.nu_dse__Payment_Type__c}</td>
+                                            <td>{!pmt.nu_dse__Transaction_Status__c}</td>
+                                            <td>${!pmt.nu_dse__Monthly_Maintenance_Fee__c}</td>
+                                            <td>${!pmt.nu_dse__Monthly_Other_Fee__c}</td>
+                                            <td>${!pmt.nu_dse__Monthly_Third_Party_Fees__c}</td>
+                                            <td>${!pmt.nu_dse__Processor_Fee__c}</td>
+                                            <td>${!pmt.nu_dse__Amount__c}</td>
+
+                                        </tr>
+                                    </apex:repeat>
+                                </tbody>
+                            </table>
+                            
+                            </div>
+                            <!-- / CARD BODY = SECTION + TABLE -->
+                         
+                        </article>
+                    </div>
+                    <!-- / MAIN CARD -->
+                </div>
+                <!-- / RELATED LIST Payments -->
+                <!-- RELATED LIST CARDS-->
+                <div class="slds-grid slds-m-top--large">
+                    <!-- MAIN CARD -->
+                    
+                  <div class="slds-col slds-col-rule--right slds-p-right--large slds-size--8-of-12" style="padding-right:0px;">
+                        <article class="slds-card" style="background:lights">
+                            <div class="slds-card__header slds-grid">
+                                <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                                   <div class="slds-media__figure">
+                                        <svg aria-hidden="true" class="slds-icon slds-icon-standard-lead slds-icon--small">
+                                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/standard-sprite/svg/symbols.svg#related_list')}"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="slds-media__body slds-truncate">
+                                        <a href="javascript:void(0);" class="slds-text-link--reset">
+                                            <span class="slds-text-heading--small" style="color:#F1948A;">Tradelines</span>
+                                        </a>
+                                    </div>
+                                </header>
+                            </div>
+                            <!-- CARD BODY = TABLE -->
+                            <div class="slds-card__body">  
+                  
+                                 <table id="contacttable1" class="slds-table slds-table--bordered slds-table--cell-buffer">
+                                <thead style="color:#F1948A;">
+                                        <tr class="slds-text-heading--label">
+                                            <th class="slds-size--1-of-12" scope="col" >Debt Name</th>   <!-- background:#F1948A;-->
+                                            <th class="slds-size--2-of-12" scope="col" >Acc No.</th>
+                                            <th class="slds-size--2-of-12" scope="col" >New Acc No.</th>
+                                            <th class="slds-size--2-of-12" scope="col" >Org. Creditor</th>
+                                            <th class="slds-size--2-of-12" scope="col" >New Creditor</th>
+                                            <th class="slds-size--1-of-12" scope="col" >Original Balance</th>
+                                            <th class="slds-size--1-of-12" scope="col" >Current Balance</th>
+                                            <th class="slds-size--1-of-12" scope="col" >Stage</th>
+                                        </tr>
+                                    </thead>
+                                <tbody>
+                                    <apex:repeat value="{!Tradelinelist}" var="trd">
+                                        <tr>
+                                            <td>
+                                             <a value="{!trd.id}">{!trd.name}
+                                              </a>
+                                            </td>
+                                            <td>{!trd.nu_dse__Original_Account_Number__c}</td>
+                                            <td>{!trd.nu_dse__New_Account_Number__c}</td>
+                                            <td>{!trd.nu_dse__Original_Creditor__r.name}</td>
+                                            <td>{!trd.nu_dse__New_Creditor__r.name}</td>
+                                            <td>${!trd.nu_dse__Original_Debt__c}</td>
+                                            <td>${!trd.nu_dse__Current_Balance__c}</td>
+                                            <td>{!trd.nu_dse__Current_Stage__c}</td>
+                                        </tr>
+                                    </apex:repeat>
+                                </tbody>
+                            </table>
+                            </div>
+                            <!-- / CARD BODY = SECTION + TABLE -->
+                  
+                        </article>
+                    </div>
+                  
+                    <!-- / MAIN CARD -->
+                </div>
+                <!-- / RELATED LIST Tradelines-->
+
+                <!-- RELATED LIST Offers-->
+                <div class="slds-grid slds-m-top--large">
+                    <!-- MAIN CARD -->
+                    <div class="slds-col slds-col-rule--right slds-p-right--large slds-size--8-of-12">
+                        <article class="slds-card">
+                            <div class="slds-card__header slds-grid">
+                                <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                                    <div class="slds-media__figure">
+                                        <svg aria-hidden="true" class="slds-icon slds-icon-standard-case slds-icon--small">
+                                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/standard-sprite/svg/symbols.svg#performance')}"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="slds-media__body slds-truncate">
+                                        <a href="javascript:void(0);" class="slds-text-link--reset">
+                                            <span class="slds-text-heading--small" style="color:#F1C40F">Offers</span>
+                                        </a>
+                                    </div>
+                                </header>
+                            </div>
+                            <!-- CARD BODY = TABLE -->
+                            <div class="slds-card__body">
+                                 <table id="contacttable1" class="slds-table slds-table--bordered slds-table--cell-buffer">
+                                <thead style="color:#F7DC6F;">
+                                        <tr class="slds-text-heading--label">
+                                            <th class="slds-size--1-of-6" scope="col" >#Offer</th> <!-- background:#F7DC6F;-->
+                                            <th class="slds-size--1-of-6" scope="col" >Offer Type</th>
+                                            <th class="slds-size--1-of-6" scope="col" >Offer Amount</th>
+                                            <th class="slds-size--1-of-6" scope="col" >Creditor</th>
+                                            <th class="slds-size--1-of-6" scope="col" >Status</th>
+                                            </tr>
+                                    </thead>
+                                <tbody>
+                                    <apex:repeat value="{!offerlistview}" var="ofrlist">
+                                        <tr>
+                                            <td>
+                                             <apex:commandlink action="{!ShowOffer}" rerender="offerdetails">{!ofrlist.name}
+                                                <apex:param name="ofrId" value="{!ofrlist.id}" assignTo="{!selectedoffer}" />
+                                            </apex:commandlink>
+                                            </td>
+                                            <td>{!ofrlist.nu_dse__Offer_Type__c}</td>
+                                            <td>${!ofrlist.nu_dse__Offer_Amount__c}</td>
+                                            <td>{!ofrlist.nu_dse__TradeLine__r.nu_dse__Original_Creditor__r.name}</td>
+                                            <td>{!ofrlist.nu_dse__Status__c}</td>
+                                        </tr>
+                                    </apex:repeat>
+                                </tbody>
+                            </table>
+                            </div>
+                            <!-- / CARD BODY = SECTION + TABLE -->
+                  
+                        </article>
+                    </div>
+                  
+                    <!-- / MAIN CARD -->
+                    <!-- NARROW CARD -->
+                    <div class="slds-col slds-p-left--large slds-size--4-of-12"  style="padding:0px;">
+                        <article class="slds-card slds-card--narrow">
+                            <div class="slds-card__header slds-grid">
+                                <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                                    <div class="slds-media__figure">
+                                        <svg class="slds-icon slds-icon-standard-case slds-icon--small" aria-hidden="true">
+                                            <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/standard-sprite/svg/symbols.svg#lead')}"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="slds-media__body slds-truncate">
+                                        <h2 class="slds-text-heading--small" style="color:#F1C40F">Offer Details</h2>
+                                    </div>
+                                </header>
+                            </div>
+                            <div class="slds-card__body" >
+                                <div class="slds-card__body--inner">
+                                    <div class="slds-tile">
+                                    <apex:outputpanel id="offerdetails">
+                                       <apex:outputpanel rendered="{!IF((offerlist != null && offerlist.size>0),true,false)}" > 
+                                        <div class="slds-tile__detail slds-text-body--small">
+                                            <dl class="slds-list--horizontal slds-wrap">
+                                                <dt class="slds-item--label slds-text-color--weak " title="Name:">
+                                                    Name:
+                                                </dt>
+                                                <dd class="slds-item--detail" title="offer Name">
+                                                   {!offerlist[0].name} 
+                                                </dd>
+                                                <dt class="slds-item--label slds-text-color--weak " title="Tradeline:">
+                                                    Tradeline:
+                                                </dt>
+                                                <dd class="slds-item--detail" title="Tradeline">
+                                                   {!offerlist[0].nu_dse__TradeLine__r.name} 
+                                                </dd>
+                                                <dt class="slds-item--label slds-text-color--weak " title="Offer Amount:">
+                                                    Offer Amount:
+                                                </dt>
+                                                <dd class="slds-item--detail" title="offer Amount">
+                                                   ${!offerlist[0].nu_dse__Offer_Amount__c} 
+                                                </dd>
+                                                <dt class="slds-item--label slds-text-color--weak " title="Number of Payments:">
+                                                    Number of Payments:
+                                                </dt>
+                                                <dd class="slds-item--detail" title="Number of Payments">
+                                                   {!offerlist[0].nu_dse__Number_of_Payments__c} 
+                                                </dd>
+                                                <dt class="slds-item--label slds-text-color--weak " title="First payment Due:">
+                                                    First Payment Due:
+                                                </dt>
+                                                <dd class="slds-item--detail" title="First paymetn Due">
+                                                   <apex:outputText value="{0, date, MMMM d','  yyyy}">
+                                                        <apex:param value="{!offerlist[0].nu_dse__First_Payment_Date__c}" /> 
+                                                    </apex:outputText>
+                                                </dd>
+                                                <dt class="slds-item--label slds-text-color--weak " title="Status:">
+                                                    Status:
+                                                </dt>
+                                                <dd class="slds-item--detail" title="Status">
+                                                   {!offerlist[0].nu_dse__Status__c} 
+                                                </dd>                                                
+                                            </dl>
+                                        </div>
+                                      </apex:outputpanel> 
+                                       <apex:outputpanel rendered="{!IF((offerlist != null && offerlist.size<0),true,false)}">
+                                       <p> No Offers found related to this Program</p>
+                                       </apex:outputpanel>
+                                       </apex:outputpanel>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    <!-- / NARROW CARD -->
+                </div>
+                <!-- / RELATED LIST Offers -->
+            </div>
+            <!-- / PRIMARY CONTENT WRAPPER -->
+            
+        </div>
+        <!-- / REQUIRED SLDS WRAPPER -->
+    
+    </body>
+  </apex:form>
+    </html>
+</apex:page>

@@ -1,0 +1,221 @@
+@font-face {
+  font-family: Prompt-Regular;
+  src: url("/s/sfsites/c/resource/CustomFonts_V1/Prompt/Prompt-Regular.ttf");
+}
+@font-face {
+  font-family: Prompt-Bold;
+  src: url("/s/sfsites/c/resource/CustomFonts_V1/Prompt/Prompt-Bold.ttf");
+}
+@font-face {
+  font-family: Vidaloka-Regular;
+  src: url("/s/sfsites/c/resource/CustomFonts_V1/Vidaloka/Vidaloka-Regular.ttf");
+}
+@font-face {
+  font-family: Raleway-Regular;
+  src: url("/s/sfsites/c/resource/CustomFonts_V1/Raleway/Raleway-Regular.ttf");
+}
+@font-face {
+  font-family: Raleway-Bold;
+  src: url("/s/sfsites/c/resource/CustomFonts_V1/Raleway/Raleway-Bold.ttf");
+}
+@font-face {
+  font-family: Raleway-SemiBold;
+  src: url("/s/sfsites/c/resource/CustomFonts_V1/Raleway/Raleway-SemiBold.ttf");
+}
+@font-face {
+  font-family: PTSerif-Regular;
+  src: url("/s/sfsites/c/resource/CustomFonts_V1/PTSerif/PTSerif-Regular.ttf");
+}
+@font-face {
+  font-family: Vidaloka-Regular;
+  src: url("/s/sfsites/c/resource/CustomFonts_V1/Vidaloka/Vidaloka-Regular.ttf");
+}
+
+
+.THIS .custom-title_container {
+    padding-top: 5px !important;
+}
+
+.THIS .offer-card{
+    border:1px solid #C8C8C8;
+    margin-bottom: 5px;
+    background-color: #f2f2f2;
+}
+
+.THIS .custom-title_text {
+    font-family: Vidaloka-Regular !important;
+    font-size: 30px !important;
+    color: #0A202D;
+}
+
+.THIS .custom-layout {
+    padding-top: 20px !important;
+}
+.THIS .slds-icon_container_circle{
+    padding:0.2rem !important;
+}
+.THIS .slds-icon_container,.THIS .slds-icon__container{
+    cursor: pointer !important;
+}
+
+.THIS .custom-paddding{
+    margin-bottom: 4px;
+}
+
+.THIS .slds-card__header {
+    padding: .2rem 1rem 0;
+    margin: 0 0 .2rem;
+}
+
+.THIS .slds-card__body {
+     margin-bottom: 0px !important;
+}
+
+.THIS .offer-layout .slds-button.slds-button_icon {
+    display: none !important;
+}
+
+
+.THIS .custom-button_review{
+    background-color:#f40e0e;
+    font-family:Raleway-SemiBold;
+    font-size: 24px;
+    font-color:#ffffff;
+    display: block;
+    border-color:#f40e0e;
+    width: 100%;
+    min-width: 140px;
+    margin-left: auto;
+    margin-right: auto; 
+color:#ffffff !important;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.THIS .custom-button_getInfo{
+    background-color:#5599e4;
+    font-family:Raleway-SemiBold;
+    font-size: 24px;
+    font-color:#ffffff;
+    display: block;
+    border-color:#5599e4;
+    width: 100%;
+    min-width: 140px;
+    margin-left: auto;
+    margin-right: auto; 
+    color:#ffffff !important;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.THIS .custom-button_review:hover{
+    background-color:#fb543f;
+    cursor: pointer;
+}
+
+.THIS .custom-button_getInfo:hover{
+    background-color:#71b5fa;
+    cursor: pointer;
+}
+.THIS .slds-form-layout__custom {
+    background-color: #f2f2f2;
+    text-align: center;
+     /*border-width: 1px;
+    border-style: solid;*/
+}
+
+.THIS .slds-form-layout__custom_right{
+    border-right:1px solid #C8C8C8 !important;
+        background-color:#f2f2f2;
+            text-align: center;
+
+
+    /*border-width: 1px;
+    border-style: solid;*/
+}
+
+.THIS .dark-border {
+    border-width: 6px;/*4px;*/
+    border-style: solid;
+    /*border-color: rgb(212, 212, 212);*/
+    border-image: initial;
+    border-radius: 0.25rem;
+    padding: 0;
+    text-align: center;
+}
+.THIS .btn_styleInModal {
+    background: darkgray !important;
+    border-color: darkgray !important;
+}
+.THIS .slds-modal__footer{
+	display: none;
+}
+/* 
+##Device = Desktops
+##Screen = 1281px to higher resolution desktops
+*/
+
+@media (min-width: 1280px) {
+    .THIS .custom-close_button{
+        position: fixed; 
+        left: 95%;
+    }
+}
+/* 
+##Device = Laptops, Desktops
+##Screen = B/w 1025px to 1280px
+*/
+
+@media (min-width: 1025px) and (max-width: 1279px) {
+    .THIS .custom-close_button{
+        position: fixed; 
+        left: 95%;
+    }
+}
+
+/* 
+##Device = Tablets, Ipads (portrait)
+##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .THIS .custom-close_button{
+        position: relative; 
+        left: 95%;
+    }
+    .THIS .slds-modal__container{
+        width: auto !important;
+    }
+}
+
+/* 
+##Device = Tablets, Ipads (landscape)
+##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    .THIS .custom-close_button{
+        position: relative; 
+        left: 85%;
+    }
+}
+
+/* 
+##Device = Low Resolution Tablets, Mobiles (Landscape), Most of the Smartphones Mobiles (Portrait)
+##Screen = B/w 320px to 767px
+*/
+
+@media (min-width: 320px) and (max-width: 767px) {
+    .THIS .custom-close_button{
+        position: relative; 
+        left: 85%;
+    }
+}
+
+
+.THIS .custom_close_modal_header{
+    background-color: darkgray!important;
+}
+.THIS .custom_close_modal_footer{
+	background-color: lightgray!important;    
+}

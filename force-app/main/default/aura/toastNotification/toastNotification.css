@@ -1,0 +1,24 @@
+.THIS .slds-custom-icon .slds-icon {
+    height: 1.5rem !important;
+    width: 1.5rem !important;
+}
+
+.THIS .slds-icon-text-default {
+    fill: white !important;
+}
+.THIS .custom-div {
+    visibility: visible;
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(126,140,153,.8);
+    z-index: 9999;
+}
+.THIS .slds-notify_toast{
+    margin-top:240px;
+}

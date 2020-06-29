@@ -1,0 +1,86 @@
+<apex:component controller="MakePaymentComponent">
+    <apex:attribute name="recordId" type="Id" required="true" description="Parent record id" />
+
+    <apex:slds />
+    
+    <style>
+        
+        .creditor-panel {
+        
+        }
+        
+        .make-payment-item {
+            color: #000;
+            width: 100%;
+            height: 50px;
+            padding-left: 10px;
+            line-height: 50px;
+            background-color: #FF2222;
+            margin-bottom: 5px;
+        }
+        
+        .makeup-button {
+            margin: 8px !important;
+            float: right;
+        }
+    </style>
+    
+    <div id="makePayementPanel" class="">
+    </div>
+    
+    <script>
+        (function() {
+            function init() {
+                MakePaymentComponent.getPayments('{!recordId}', function(response, event) {
+                    if(event.status) {
+                        console.log('MakePaymentComponent', response);
+                        setPanel(response);
+                    } else {
+                        console.log('Error MakePaymentComponent', event.message)
+                    }
+                });
+            }
+            
+            function setPanel(response) {
+                var element = '';
+                var panel = document.getElementById('makePayementPanel');
+                
+                if(panel) {
+                    console.log('MakePaymentComponent', 'generating Payments.');
+                    for(var i = 0; i < response.length; i++) {
+                        element += createPaymentItem(response[i]);
+                    }
+                    panel.innerHTML = element;
+                }
+                
+            }
+            
+            function createPaymentItem(item) {
+                var element = '';
+                if(item) {
+                    element += '<div id="payment' + item.recordId + '" class="make-payment-item">' + item.name + ' <strong>Schedule Date: ' + item.scheduleDate + '</strong><button class="slds-button slds-button--brand makeup-button" onClick="makePayment(\'' + item.recordId + '\')">Reschedule</button></div>';
+                }
+                return element;
+            }
+            
+            window.makePayment = function(paymentId) {
+                MakePaymentComponent.makePayment('{!recordId}', paymentId, function(response, event) {
+                    if(event.status) {
+                        var element = document.getElementById('payment' + paymentId);
+                        if(element) {
+                            element.remove();
+                        }
+                    } else {
+                        console.log('error while creating payment');
+                    }
+                });
+            }
+            
+            init();
+        })()
+        
+        
+        
+    </script>
+    
+</apex:component>

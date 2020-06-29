@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<apex:page controller="TwiML_NSF" showheader="false" contentType="text/xml"  standardStylesheets="false" sidebar="false" >
+{!response}
+</apex:page>

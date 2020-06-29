@@ -1,0 +1,3 @@
+<aura:component access="global" extends="c:abstractServer" implements="forceCommunity:availableForAllPageTypes" controller="SFSPortal_DashboardMetricsController">
+  <ltng:require scripts="{!$Resource.OnesignalJavaScript}"/>
+</aura:component>

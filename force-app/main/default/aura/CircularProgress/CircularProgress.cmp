@@ -1,0 +1,35 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:hasSObjectName"
+                
+                access="global">
+
+    <ltng:require scripts="{!$Resource.GaugeJS}" />
+    <ltng:require scripts="{!$Resource.GaugeCoffeeJS}" />
+
+    <aura:attribute name="recordId" type="Id" description="Id of record on which this component is hosted." />
+    <aura:attribute name="sObjectName" type="String" description="API name of record on which this component is hosted." />
+    
+    <aura:attribute name="Legend" type="String" description="Legend to display" />
+    
+    <aura:attribute name="perText" type="String" default="0%" description="Text to display inside circle. It is auto calculated field and used internally." />
+    <aura:attribute name="cirDeg" type="String" default="0" description="Degree of Progress to show. It is auto calculated field and used internally." />
+    
+    <aura:attribute name="totalProgress" type="Integer" default="100" description="Total progress. It can be number OR API name of field." access="public"/>
+    <aura:attribute name="actualProgress" type="Integer" default="50" description="Actual progress. It can be number OR API name of field." access="public"/>
+    
+    <aura:attribute name="actualData" type="Object" default="{}" access="public" />
+    
+    <aura:attribute name="theme" type="String" default="green" description="Theme of Circular Progress Bar. Possible values are blue, green, orange." />
+    <aura:attribute name="size" type="String" default="small" description="Size of Circular Progress Bar. Possible values are small, medium, big." />
+    
+    <aura:handler name="change" value="{!v.actualData}" action="{!c.doInit}"/>
+
+    <div class="slds-col slds-align--absolute-center">
+      <canvas aura:id="chart"/>
+    </div>
+      
+    <div class="slds-col slds-align--absolute-center"
+          style="font-family:NotoSansKR-Black;font-size: 60px;font-color: #0a202d!important;">
+      {!v.perText}
+    </div>
+
+</aura:component>

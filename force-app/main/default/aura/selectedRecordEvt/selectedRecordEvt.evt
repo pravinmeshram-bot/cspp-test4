@@ -1,0 +1,5 @@
+<aura:event type="COMPONENT" description="Selected Record Event" access="global">
+    <aura:attribute name="selectedRecord" type="Map" access="public" />
+    <aura:attribute name="selectedIndexPostion" type="Integer" access="public" />
+    <aura:attribute name="action" type="String" access="public" />
+</aura:event>

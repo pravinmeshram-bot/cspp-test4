@@ -1,0 +1,285 @@
+<!-- add implements="forceCommunity:availableForAllPageTypes" to surface the component in community builder -->
+<aura:component controller="SFSPortal_LightningSelfRegisterCtrl" implements="forceCommunity:availableForAllPageTypes" extends="c:abstractServer" access="public">
+    
+    <aura:attribute name="accountId" type="String" required="false" description="accountId for creating the user. If not specified, it will create a PersonAccount if possible for B2C scenario. Or otherwise if it's in a community, the community's self-registration accountId will be used."/>    
+    <aura:attribute name="accountWrapper" type="Map" default="{}" access="public" />    
+    <aura:attribute name="regConfirmUrl" type="String" required="true"/> 
+    <aura:attribute name="userInstance" type="Map" default="{}" access="public"/>
+    <aura:attribute name="dateOfBirth" type="Date" access="public" />
+    <aura:attribute name="toRenderView" type="String" default="SearchAccount" access="public" />
+    <aura:attribute name="startUrl" type="String" required="false" description="The url you go to after a successful login" />
+    <aura:attribute name="showError" type="Boolean"  required="true" description="" default="false" access="private"/>
+    <aura:attribute name="errorMessage" type="String" required="false" description="" access="private"/>
+    <aura:attribute name="firstnameLabel" type="String" required="false" default="First Name"/>
+    <aura:attribute name="lastnameLabel" type="String" required="false" default="Last Name"/>
+    <aura:attribute name="emailLabel" type="String" required="false" default="Email"/>
+    <aura:attribute name="passwordLabel" type="String" required="false" default="Create Password"/>
+    <aura:attribute name="confirmPasswordLabel" type="String" required="false" default="Confirm Password"/>    
+    <aura:attribute name="submitButtonLabel" type="String" required="false" default="Register My Account"/>
+    <aura:attribute name="includePasswordField" type="Boolean" required="false" default="true" description="Whether to include password"/>    
+    <aura:attribute name="extraFieldsFieldSet" type="String" required="false" description="A field set name whose fields are desired for user registration"/>
+    <aura:attribute name="extraFields" type="list" required="false" description="A field set name whose fields are desired for user registration"/>
+    <aura:handler name="init" value="{!this}" action="{!c.initialize}"/>
+    <aura:attribute name="expid" type="String" required="false" description="The branding experience ID" />    
+    
+    <aura:attribute name="sourceType" type="String" access="public" />
+    <aura:attribute name="campaignId" type="String" access="public" />
+    <aura:attribute name="selectedDOB" type="Date" access="public" />
+    <aura:attribute name="uiwrapperMap" type="Map" access="public" default="{}" />
+    
+    
+    <aura:registerevent name="sitePropagatedStartUrl" type="c:setStartUrl"/>
+    <aura:dependency resource="c:setStartUrl" type="EVENT"/>
+    <!-- Please uncomment
+    <aura:dependency resource="siteforce:registerQueryEventMap" type="EVENT"/>
+    -->
+    <aura:handler name="dateChangeEvent" event="c:datePickerChangeEvent" action="{!c.handleDateChange}" />
+    <aura:handler event="c:setStartUrl" action="{!c.setStartUrl}"/> 
+    <aura:handler event="c:setExpId" action="{!c.setExpId}"/>    
+    <aura:dependency resource="c:setExpId" type="EVENT"/>   
+    
+    <div>
+        <aura:if isTrue="{!equals(v.toRenderView,'ToEndSessionOrRegister')}">
+            <span style="text-align:center;">
+                <h1 style="color:white">There is already an active session for</h1>
+                <br/>
+                <h1 style="color:white; font-size: 1.5rem;">{!v.userInstance.Name}</h1>
+                <br />
+                <h1 style="color:white">Do you want to logout and continue registration?</h1>
+                <br />
+                <button type="button" aura:id="yesbtn_selfRegister" onclick="{! c.toSelfRegistration  }" 
+                        class="slds-button slds-button--neutral sfdc_button uiButton--default uiButton" 
+                        style="{!'background-color:' + v.uiwrapperMap.uiInstance.Action_Button_Color__c + ' '}"> <!-- !important; -->
+                    Yes
+                </button>
+                <button type="button" aura:id="nobtn_selfRegister" onclick="{! c.toRediredtToUser }" 
+                        class="slds-button slds-button--neutral sfdc_button uiButton--default uiButton" 
+                        style="{!'background-color:' + v.uiwrapperMap.uiInstance.Action_Button_Color__c + ' '}"> <!-- !important; -->
+                    No
+                </button>
+                <br />
+            </span>
+            <aura:set attribute="else">
+                <lightning:layout class=" slds-wrap">
+                   <!-- <lightning:layoutItem size="6" >
+                        <span class="{!if(equals(v.toRenderView,'SearchAccount'), 'slds-hide','slds-show')}" style="float:left" >
+                            <a onclick="{!c.backToSearchAccount}">
+                                Back
+                            </a>
+                        </span>
+                    </lightning:layoutItem> -->
+                    <lightning:layoutItem size="12" >
+                        <span style="float:right;color:white;font-size:17px; ">
+                            Already Registered ? <a aura:id="loginclck_selfRegister" onclick="{!c.redirectToLogin}" >LOG IN</a>
+                        </span>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <span class="slds-p-around_small" style="font-size:17px;text-align:center;">
+                    <h1 style="color:orange;">Register Your Account Online.</h1>
+                </span>
+                
+                <aura:if isTrue="{!equals(v.toRenderView,'SearchAccount')}">
+                    <span style="text-align:center;font-size:17px;">
+                        <h1 style="color:white">In order to find your account, please provide the following information:</h1>
+                    </span>
+                    <br />
+                    <aura:if isTrue="{!v.showError}">
+                        <div id="error" class="slds-p-around_medium">
+                            <ui:outputRichText value="{!v.errorMessage}"/>
+                        </div>
+                        <br />
+                    </aura:if>
+                    
+                    <aura:if isTrue="{!v.accountWrapper.email}">
+                        <div id="sfdc_email_container" class="inputContainer slds-p-top_medium" style="border-radius: 2rem;background-color: rgb(235, 235, 228);">
+                            <lightning:icon iconName="utility:email" alternativeText="User" size="x-small" />
+                            <ui:inputText aura:id="email_selfRegister" placeholder="{!v.emailLabel}" value="{!v.accountWrapper.email}" class="input sfdc_usernameinput sfdc" disabled="true" />
+                        </div> 
+                       <aura:set attribute="else">
+                            <div id="sfdc_email_container" class="inputContainer slds-p-top_medium" style="border-radius: 2rem;">
+                                <lightning:icon iconName="utility:email" alternativeText="User" size="x-small" />
+                                <ui:inputText aura:id="email_selfRegister" placeholder="{!v.emailLabel}" class="input sfdc_usernameinput sfdc" />
+                            </div>   
+                        </aura:set>
+                    </aura:if>                         
+                    
+                    <div id="sfdc_dob_container" class="dob-input inputContainer" style="border-radius: 2rem;">
+                        <c:DatePicker aura:id="dateofBirth" placeholder="DOB [ mm/dd/yyyy ]" 
+                                      value="{!v.selectedDOB}" formatSpecifier="MM/dd/yyyy" 
+                                      startYear="1929"  extendedYearRange="true" />
+                    </div>
+                    
+                    
+                    <!--
+                    <div id="sfdc_dob_container" class="dob-input inputContainer" style="border-radius: 2rem;">
+                        <input type="date" name="input" placeholder="Date of Birth in dd/mm/yyyy" pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}" title="dd/mm/yyyy"/>
+                        <ui:inputDate aura:id="dob" label="Date Of Birth" class="removeLabel input sfdc_usernameinput sfdc slds-input-has-icon_left"  value="{!v.dateOfBirth}" displayDatePicker="true" format="dd/MM/yyyy" /> 
+                    </div>
+                    
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="date">First
+                            Payment Date</label>
+                        <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">
+                            <lightning:icon iconName="utility:event" alternativeText="Date" />
+                            <input id="selfreg_dob" class="slds-input"
+                                   placeholder="mm/dd/yyyy" label="First Payment Date"
+                                   type="text"  />
+                        </div>
+                    </div>
+                    -->
+                    <!--
+                    <div id="sfdc_dob_container" class="dob-input inputContainer" style="border-radius: 2rem;">
+                        <lightning:input type="date" aura:id="dob" value="{!v.dateOfBirth}" name="Date Of Birth" label="Date Of Birth" class="removeLabel input sfdc_usernameinput sfdc slds-input-has-icon_left" placeholder="Date Of Birth"/>
+                    </div>
+                    -->
+                    <!--
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="date">First
+                            Payment Date</label>
+                        <div class="slds-form-element__control slds-input__icon slds-input__icon_right">
+                            <lightning:icon iconName="utility:event" class="slds-input__icon slds-input__icon_right" alternativeText="Date" size="x-small" />
+                            <input id="selfreg_dob1" class="slds-input"
+                                   placeholder="mm/dd/yyyy" label="First Payment Date"
+                                   type="text"  />
+                        </div>
+                    </div>
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="text-input-id-1">Input Label</label>
+                        <div class="slds-form-element__control slds-input__icon slds-input__icon_right">
+                            <lightning:icon iconName="utility:event" class="slds-input__icon slds-input__icon_right" alternativeText="Date" size="x-small" />
+                            <input type="text" id="text-input-id-1" placeholder="Placeholder Text" class="slds-input" />
+                        </div>
+                    </div>
+                    -->
+                    <!-- working component 
+                    <div class="slds-form-element"  style="margin-bottom: 10px;padding: 2px;border-radius: 2rem;background-color: white;border: 1px solid #ccc;">
+                        <a onclick="{!c.openDatePicker}">
+                            <lightning:icon iconName="utility:event" alternativeText="Date" size="x-small" />
+                        </a>    
+                        
+                        <input id="selfreg_dob" aura:id="dob" class="slds-input"
+                               placeholder="mm/dd/yyyy" label="First Payment Date"
+                               type="text"  />
+                    </div>
+                    -->
+                    <div id="sfdc_ssn_container" class="inputContainer" style="border-radius: 2rem;">
+                        <lightning:icon iconName="utility:type" alternativeText="User" size="x-small" />
+                        <!-- <lightning:input aura:id="ssn" value="0123" label="Last 4 digits of SSN" maxlength="4" class="input sfdc_usernameinput sfdc" /> -->
+                        <ui:inputText aura:id="ssn_selfRegister" placeholder="Last 4 digits of SSN" keyup="{!c.validateSSN}" updateOn="keyup" maxlength="4" />
+                    </div>
+                    
+                    <button type="button" aura:id="findmyAcctbtn_selfRegister" onclick="{! c.findAccount }" 
+                            class="slds-button slds-button--neutral sfdc_button uiButton--default uiButton" 
+                            style="{!'background-color:' + v.uiwrapperMap.uiInstance.Action_Button_Color__c + ' '}"> <!-- !important; -->
+                        Register My Account
+                    </button>
+                    
+                    <span class="slds-p-around_small" style="text-align:center;font-size:17px;">
+                        <h1 style="color:orange">Please Note :</h1>
+                        <h1 style="color:white">Account registration is for {!v.uiwrapperMap.uiInstance.Portfolio__r.Name} clients only</h1>
+                    </span>
+                </aura:if>
+                
+                <aura:if isTrue="{!equals(v.toRenderView,'FoundAccountView')}">
+                    <span style="text-align:center;">
+                        <h1 style="color:white">Thanks!</h1>
+                        <br/>
+                        <h1 style="color:white">Based on the information you have provided, we found the following account holder:</h1>
+                        <br />
+                        <h1 style="color:white; font-size: 1.5rem;">{!v.accountWrapper.firstName} &nbsp; {!v.accountWrapper.lastName}</h1>
+                        <br />
+                        <h1 style="color:white">Is this you?</h1>
+                        <br />
+                        <button type="button" aura:id="yesconfirmbtn_selfRegister" onclick="{! c.accountConfirmed }" 
+                                class="slds-button slds-button--neutral sfdc_button uiButton--default uiButton" 
+                                style="{!'background-color:' + v.uiwrapperMap.uiInstance.Action_Button_Color__c + ' '}"> <!-- !important; -->
+                            Yes, That's me
+                        </button>
+                        <button type="button" aura:id="noconfirm_selfRegister" onclick="{! c.accountNotConfirmed }" 
+                                class="slds-button slds-button--neutral sfdc_button uiButton--default uiButton" 
+                                style="{!'background-color:' + v.uiwrapperMap.uiInstance.Action_Button_Color__c + ' '}"> <!-- !important; -->
+                            No, That's not me
+                        </button>
+                    </span>
+                </aura:if>
+                
+                <aura:if isTrue="{!equals(v.toRenderView,'AccountNotFound')}">
+                    <span style="text-align:center;">
+                        <h1 style="color:white">We apologize, but we seem to be having trouble finding your account.</h1>
+                        <br/>
+                        <br/>
+                        <h1 style="color:white">Please contact our Customer Service Team so we can assist you further:</h1>
+                        <br/>
+                        <br/>
+                        <h1 style="color:white; font-size: 1.5rem;">{!v.accountWrapper.supportNumber}</h1>
+                        <br/>
+                        <br/>
+                        <h1 style="color:white" ><span class="slds-border_bottom">{!v.accountWrapper.supportEmail}</span></h1>
+                    </span>
+                </aura:if>
+                
+                <aura:if isTrue="{!equals(v.toRenderView,'SelfRegister')}">
+                    <span style="text-align:center;">
+                        <h1 style="color:white">Welcome, {!v.accountWrapper.firstName}!</h1>
+                        <br/>
+                        <h1 style="color:white">Please select a username and password:</h1>
+                    </span>
+                    <br />
+                    <aura:if isTrue="{!v.showError}">
+                        <div id="error" >
+                            <ui:outputRichText value="{!v.errorMessage}"/>
+                        </div>
+                        <br />
+                    </aura:if>
+                                       
+                    <div id="sfdc_username_container" class="inputContainer slds-p-top_medium" style="border-radius: 2rem;background-color: rgb(235, 235, 228);">
+                        <lightning:icon iconName="utility:user" alternativeText="User" size="x-small" />
+                        <ui:inputText aura:id="username_selfRegister" disabled="true" placeholder="Username : username@youremail.com" value="{!v.accountWrapper.userName}" keyup="{!c.onKeyUp}" class="input sfdc_passwordinput sfdc"/>
+                    </div>
+                    
+                    <div id="sfdc_password_container" class="inputContainer" style="border-radius: 2rem;">
+                        <lightning:icon iconName="utility:lock" alternativeText="User" size="x-small" />
+                        <ui:inputSecret aura:id="password_selfRegister" placeholder="{!v.passwordLabel}" keyup="{!c.onKeyUp}" class="input sfdc_passwordinput sfdc"/>
+                    </div>
+                    
+                    <div id="sfdc_confirm_password_container" class="inputContainer" style="border-radius: 2rem;">
+                        <lightning:icon iconName="utility:lock" alternativeText="User" size="x-small" />
+                        <ui:inputSecret aura:id="confirmPassword_selfRegister" placeholder="{!v.confirmPasswordLabel}" keyup="{!c.onKeyUp}" class="input sfdc_passwordinput sfdc"/>
+                    </div>
+                    
+                    <div class="slds-p-top_medium">
+                        <!--h1 style="color:orange;"> &nbsp;&nbsp;&nbsp;Your password must be at least 8 characters, &nbsp;&nbsp;&nbsp;contain uppercase, lowercase, and a number.</h1-->
+                        <!--<h1 style="color:orange;">*Password must contain a mix of alpha and numeric characters &amp; the length should be at-least 8 characters. </h1>-->
+                        <h1 style="color:orange;text-align: -webkit-center;"> Your password must be at least 8 characters &amp; contain an uppercase letter, lowercase letters and a number.</h1>
+                    </div>
+                    <div class="sfdc" style="margin-top:5px;">
+                        <button type="button" aura:id="registerbtn_selfRegister" onclick="{!c.registerUser}" 
+                                class="slds-button slds-button--neutral sfdc_button uiButton--default uiButton" 
+                                style="{!'background-color:' + v.uiwrapperMap.uiInstance.Action_Button_Color__c + ' '}"> <!-- !important; -->
+                            {!v.submitButtonLabel}
+                        </button>
+                        <!--<ui:button aura:id="submitButton" label="{!v.submitButtonLabel}" press="{!c.handleSelfRegister}" class="sfdc_button slds-button-brand"/> -->
+                    </div>
+                </aura:if>
+            </aura:set>
+        </aura:if>
+        <!--<div id="sfdc_forgot" class="sfdc" style="text-align:center;">
+            <span><a href="/s/login/">Already have an account</a></span>
+        </div> -->
+        <!-- first name-->
+        <!--<div class="inputContainer" id="sfdc_username_container" style="border-radius: 2rem;">
+            <lightning:icon iconName="utility:user" alternativeText="User" size="x-small" />
+            <ui:inputText value="" aura:id="firstname" placeholder="{!v.firstnameLabel}" class="input sfdc_usernameinput sfdc"/>
+        </div>
+        <div id="sfdc_nickname_container" class="inputContainer" style="border-radius: 2rem;">
+            <lightning:icon iconName="utility:user" alternativeText="User" size="x-small" />
+            <ui:inputText value="" aura:id="lastname" placeholder="{!v.lastnameLabel}" class="input sfdc_usernameinput sfdc" />
+        </div>
+        <aura:iteration aura:id="extraFields" items="{!v.extraFields}" var="curField" indexVar="index">
+            <div id="sfdc_extrafield_container" class="sfdc">
+                <span id="sfdc_user" class="login-icon" data-icon="a"></span>
+                <ui:inputText value="{!curField.value}" aura:id="{!curField.fieldPath}" placeholder="{!curField.label}" keyup="{!c.onKeyUp}" class="input sfdc_extrafieldinput sfdc"/>
+            </div>
+        </aura:iteration>-->
+    </div>
+</aura:component>

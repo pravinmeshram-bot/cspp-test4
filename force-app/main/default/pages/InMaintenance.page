@@ -1,0 +1,4 @@
+<apex:page showHeader="false" sidebar="false"  title="Site is Under Maintenance" cache="false" standardStylesheets="false">
+    
+    <c:SFSPortal_CommunityTemplateNewUpdate actionType="InMaintenance" />
+</apex:page>

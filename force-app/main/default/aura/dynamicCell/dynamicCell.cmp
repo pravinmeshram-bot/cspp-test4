@@ -1,0 +1,11 @@
+<aura:component access="public">
+    <aura:attribute name="dataCellList" type="List" access="public"/>
+    <aura:attribute name="dataRowMap" type="Map" access="public"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <div class="slds-truncate">
+        {!v.body}
+    </div>
+    
+</aura:component>

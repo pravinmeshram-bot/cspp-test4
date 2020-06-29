@@ -1,0 +1,18 @@
+.THIS.custom-spinner .slds-spinner_container {
+	position: fixed !important;
+}
+
+@media (min-width: 375px) and (max-width: 812px) {
+    
+    .THIS .slds-notify {        
+        width:22rem !important;
+    }
+    
+    .THIS .slds-notify_toast{
+        min-width:22rem !important;
+    }
+    
+    .THIS .slds-notify--toast{
+         min-width:22rem !important;
+    }
+}

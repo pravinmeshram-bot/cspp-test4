@@ -1,0 +1,77 @@
+<apex:page lightningStylesheets="true" sidebar="false" standardStylesheets="false" standardController="nu_dse__TradeLine__c" extensions="CreditorLookUpController">
+    <apex:slds />
+    <apex:form >
+        <!-- Jquery -->
+        <!--<apex:includeScript value="{!URLFOR($Resource.CCF_ClientSideResource, 'js/jquery-1.11.3.min.js')}"/>
+        
+        <!-- DataTable -->
+        <!--<apex:includeScript value="{!URLFOR($Resource.CCF_ClientSideResource, 'js/jquery.dataTables.min.js')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.CCF_ClientSideResource, '/css/jquery.dataTables.min.css')}"/>
+        
+        <!-- Search Highlight -->
+        <!--<apex:includeScript value="{!URLFOR($Resource.CCF_ClientSideResource, 'js/jquery.highlight.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.CCF_ClientSideResource, 'js/dataTables.searchHighlight.min.js')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.CCF_ClientSideResource, '/css/dataTables.searchHighlight.css')}"/>
+        
+        <!-- DataTable buttons -->
+        <!--<apex:includeScript value="{!URLFOR($Resource.CCF_ClientSideResource, 'js/dataTables.buttons.min.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.CCF_ClientSideResource, 'js/buttons.flash.min.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.CCF_ClientSideResource, 'js/jszip.min.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.CCF_ClientSideResource, 'js/pdfmake.min.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.CCF_ClientSideResource, 'js/vfs_fonts.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.CCF_ClientSideResource, 'js/buttons.html5.min.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.CCF_ClientSideResource, 'js/buttons.print.min.js')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.CCF_ClientSideResource, '/css/buttons.dataTables.min.css')}"/>
+        
+        <apex:includeScript value="{!URLFOR($Resource.CCF_ClientSideResource, 'js/jquery-3.1.1.min.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.CCF_ClientSideResource, '/js/jquery-ui.js')}"/> 
+        <apex:includeScript value="{!URLFOR($Resource.CCF_ClientSideResource, '/js/script.js')}"/> 
+        <apex:includeScript value="{!URLFOR($Resource.CCF_ClientSideResource, '/js/ccf_landing.js')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.CCF_ClientSideResource, '/css/style.css')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.CCF_ClientSideResource, 'css/salesforce-lightning-design-system.min.css')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.CCF_ClientSideResource, '/css/jquery-ui.css')}"/>-->
+        
+        <apex:actionFunction name="fetchCurrentCreditor" reRender="input,table" action="{!refreshPicklists}"/>
+        <apex:actionFunction name="fetchData" reRender="input,table" action="{!refreshData}"/>
+        
+        <apex:actionRegion >
+        <apex:outputPanel layout="block" styleClass="slds-panel slds-grid slds-grid--vertical slds-nowrap slds-form--compound">
+        <apex:pageBlock id="input">
+            <apex:pageBlockSection columns="2">
+                <apex:pageBlockSectionItem >
+                <apex:outputLabel styleClass="slds-form-element__label">Original Creditor</apex:outputLabel>
+                <apex:selectList size="1" styleClass="slds-select" value="{!SelectedOriginalCreditor}" onchange="fetchCurrentCreditor()">
+                    <apex:selectOptions value="{!OriginalCreditorList}"></apex:selectOptions>
+                </apex:selectList>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                <apex:outputLabel styleClass="slds-form-element__label">Current Creditor</apex:outputLabel>
+                <apex:selectList size="1" styleClass="slds-select" onchange="fetchData()" value="{!SelectedCurrentCreditor}">
+                    <apex:selectOptions value="{!CurrentCreditorList}" ></apex:selectOptions>
+                </apex:selectList>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                <apex:outputLabel styleClass="slds-form-element__label">is Litigation</apex:outputLabel>
+                <apex:selectList size="1" styleClass="slds-select" onchange="fetchData()" value="{!isLitigationSelected}">
+                    <apex:selectOptions value="{!isLitigation}" ></apex:selectOptions>
+                </apex:selectList>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        </apex:outputPanel>
+        </apex:actionRegion>
+        <apex:pageBlock id="table">
+            <apex:pageBlockTable styleClass="slds-table slds-table_cell-buffer slds-table_bordered" value="{!CreditorLookUpList}" var="creditor" rendered="{!if(CreditorLookUpList.size>0,true,false)}">
+                <apex:column value="{!creditor.Settlement_Terms__c}"/>
+                <apex:column value="{!creditor.Average_Settlement_Percentage__c}"/>
+                <apex:column value="{!creditor.Median_Settlement_Percentage__c}"/>
+                <apex:column value="{!creditor.Best_Single_Settlement__c}"/>
+                <apex:column value="{!creditor.Worst_Single_Offer__c}"/>
+                <apex:column value="{!creditor.NUmber_of_Offers_Frequency__c}"/>
+            </apex:pageBlockTable>
+            <apex:pageBlockSection rendered="{!if(CreditorLookUpList.size>0,false,true)">
+                <apex:outputText >No Data Found for this Combination</apex:outputText>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

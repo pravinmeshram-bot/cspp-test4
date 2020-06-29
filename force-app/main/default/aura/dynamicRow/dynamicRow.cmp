@@ -1,0 +1,53 @@
+<aura:component access="public">
+    <aura:attribute name="dataRowMap" type="Map" access="public"/>
+    <aura:attribute name="columnHeaderList" type="List" access="public"/>
+    <aura:attribute name="actionList" type="List" access="public" default="[]" />
+    
+    <aura:attribute name="indexPosition" type="Integer" access="public" />
+    
+    <aura:attribute name="actionType" type="String" access="public" />
+    
+    <aura:registerEvent name="actionEvent" type="c:selectedRecordEvt"/>
+    
+    <aura:iteration items="{!v.columnHeaderList}" var="columnHeader">
+        <td data-label="{!columnHeader.fieldLabel}" style="min-width:3rem;">
+            <c:dynamicCell dataCellList="{!columnHeader}" dataRowMap="{!v.dataRowMap}"/>
+        </td>
+    </aura:iteration>
+    <aura:if isTrue="{!v.actionList.length}"> 
+        <td data-label="ACTION">
+            <aura:if isTrue="{!equals(v.actionType, 'Link')}">
+                <aura:iteration items="{!v.actionList}" var="rowAction">
+                    <a onclick="{!c.iconAction}"  data-action="{!rowAction.action}">
+                        {!rowAction.title}
+                    </a>
+                </aura:iteration>
+            </aura:if>
+            <aura:if isTrue="{!equals(v.actionType, 'Offer')}">
+                <aura:if isTrue="{!v.dataRowMap.Available_for_Client_Review__c}">
+                     <a onclick="{!c.iconAction}"  data-action="Review">Review</a>
+                    <aura:set attribute="else">
+                        <a onclick="{!c.iconAction}"  data-action="View Info">View Info</a>
+                    </aura:set>
+                </aura:if>
+            </aura:if>
+            
+            <aura:if isTrue="{!equals(v.actionType, 'Icon')}">
+                <aura:iteration items="{!v.actionList}" var="rowAction">
+                    <a onclick="{!c.iconAction}" data-action="{!rowAction.action}">
+                        <lightning:icon class="slds-m-left_x-small" iconName="{!rowAction.iconName}" title="{!rowAction.action}" size="xx-small" />
+                    </a>
+                </aura:iteration>
+            </aura:if>
+            <aura:if isTrue="{!equals(v.actionType, 'Task')}">
+                <aura:if isTrue="{!equals(v.dataRowMap.Call_Type__c, 'NSF')}">
+                    <lightning:button variant="destructive" label="Reschedule" title="Reschedule" onclick="{! c.taskAction }" />
+                    <aura:set attribute="else">
+                        <lightning:button variant="brand" label="View Info" title="View Info" onclick="{! c.taskAction }" class="viewinfo-class" />
+                    </aura:set>
+                </aura:if>
+            </aura:if>
+        </td>
+    </aura:if>
+    
+</aura:component>

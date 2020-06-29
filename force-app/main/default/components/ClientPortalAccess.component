@@ -1,0 +1,46 @@
+<apex:component Controller="AdminSettingsController">
+
+    <apex:slds />
+ <style>
+     .slds-scope .slds-checkbox_toggle [type=checkbox]:checked+.slds-checkbox_faux_container .slds-checkbox_faux{
+         background:green !important;
+         border:green !important;
+     }
+ </style>
+ 
+    <apex:form >
+        <div class="slds-grid slds-wrap">
+                <div class="slds-form-element">
+                    <!-- <span class="slds-form-element__label slds-m-bottom_none">Client Access</span> -->
+                    <label class="slds-checkbox_toggle slds-grid">
+                        <apex:inputField value="{!programList[0].Invite_Client__c}" onchange="changeAccess()" html-disabled="{!programList[0].Invite_Client__c}"/>
+                        <span  class="slds-checkbox_faux_container" aria-live="assertive">
+                            <span class="slds-checkbox_faux"></span>
+                            <span class="slds-checkbox_on">Invited</span>
+                            <span class="slds-checkbox_off">Not Invited</span>
+                        </span>
+                    </label>
+                    <b><span class="slds-form-element__label slds-m-bottom_none">{!if(programList[0].Client_Portal_User_Id__c != null, 'Registered', 'Not Registered')}</span></b>
+                </div>
+            
+           <!-- <div class="slds-size_2-of-12">
+                <div class="slds-form-element">
+                    <span class="slds-form-element__label slds-m-bottom_none">Co-Client Access</span>
+                    <label class="slds-checkbox_toggle slds-grid">
+                        <apex:inputField value="{!programInstance.Invite_Co_Client__c}" onchange="changeAccess()" />
+                        <span class="slds-checkbox_faux_container" aria-live="assertive">
+                            <span class="slds-checkbox_faux"></span>
+                            <span class="slds-checkbox_on">Invited</span>
+                            <span class="slds-checkbox_off">Not Invited</span>
+                        </span>
+                    </label>
+                    <b><span class="slds-form-element__label slds-m-bottom_none">{!if(programInstance.Co_Client_Portal_User_Id__c != null, 'Registered', 'Not Registered')}</span></b>
+                </div>
+            </div> -->
+            
+        </div>
+    
+        <apex:actionFunction action="{!inviteClientAndCoClient}" oncomplete="alert('updated successfully')" name="changeAccess"/>
+    
+    </apex:form>                                        
+</apex:component>

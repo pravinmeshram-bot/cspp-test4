@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION" description="Event template">
+    
+    <aura:attribute name="isDisplayTaskAlert" type="Boolean"/>
+</aura:event>

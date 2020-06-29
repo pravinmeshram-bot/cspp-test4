@@ -1,0 +1,128 @@
+<apex:component controller="OfferDashboardComponentController">
+    <apex:attribute name="recordId" type="String" required="true" description="Record Id of the Parent Program." />
+    
+    <style>
+        .analyticsEmbeddedReportChart .aloha .asOfDate {
+        
+            display : none;
+        }
+        
+        .reportTitle h2 {
+        
+            font-weight: 700 !important;
+        }
+        
+        .offer-table th {
+        
+            white-space: normal !important;
+        }
+        
+        
+    </style>
+    
+    
+    <analytics:reportChart developerName="Offer_Status_Report"  size="medium" filter="[{column:'nu_dse__Offer__c.nu_dse__Program__c.Id',operator:'equals',value:'{!recordId}'}]" ></analytics:reportChart>
+            
+    <br />
+    <strong>Offer Dashboard Report</strong>
+    <div class="slds-panel slds-scrollable--x" >
+        <table id="offerDashboardTable" class="slds-table slds-table--bordered slds-table--cell-buffer slds-no-row-hover offer-table">
+        </table>
+    </div>
+    
+    <script>
+    
+        (function() {
+        
+            function getOfferReport() {
+            
+                OfferDashboardComponentController.getOfferDashboardReport('{!recordId}', function(response, event) {
+                    if(event) {
+                        console.log('OfferDashboardComponentController', response);
+                        if(response != null) {
+                        
+                            createofferDashboardTable(response);
+                        }
+                    } else {
+                        console.log('CreditorComponentController Error!', event);
+                    }
+                });
+            }
+            
+            function createofferDashboardTable(response) {
+            
+                var dashboardtable = document.getElementById('offerDashboardTable');
+                dashboardtable.innerHTML = '';
+                var headerList = response.offerStatusList;
+                var bodyList = response.tradelineOfferMap;
+                
+                dashboardtable.appendChild(createTableHeader_dashboard(headerList));
+                
+                dashboardtable.appendChild(createTableBody_dashboard(response));
+                
+            }
+            
+            function createTableHeader_dashboard(headerList) {
+            
+                var tableHead = document.createElement('thead');
+                var headTr = document.createElement('tr');
+                headTr.className = 'slds-text-title--caps';
+                
+                headTr.appendChild(createTh_dashboard(''));
+                for(var i = 0; i < headerList.length; i++) {
+                    
+                    headTr.appendChild(createTh_dashboard(headerList[i]));
+                }
+                tableHead.appendChild(headTr);
+                
+                return tableHead;
+            }
+            
+            function createTh_dashboard(header) {
+            
+                var th = document.createElement('th');
+                th.innerHTML = header;
+                
+                return th;
+            }
+            
+            function createTableBody_dashboard(response) {
+            
+                var tbody = document.createElement('tbody');
+                
+                var body = response.tradelineOfferMap;
+                for(var key in body) {
+                
+                    tbody.appendChild(createOfferDashboardRow(key, body[key], response.offerStatusList));
+                }
+                
+                return tbody;
+            }
+            
+            function createOfferDashboardRow(tradelineName, rowElement, headerList) {
+            
+                var tr = document.createElement('tr');
+                
+                var td = document.createElement('td');
+                td.innerHTML = tradelineName;
+                tr.appendChild(td);
+                
+                for(var i = 0; i < headerList.length; i++) {
+                    
+                    var td = document.createElement('td');
+                    td.innerHTML = 0;
+                    if(rowElement[headerList[i]]) {
+                    
+                        td.innerHTML = rowElement[headerList[i]]
+                    } 
+                    
+                    tr.appendChild(td);
+                }
+                return tr;
+            }
+            
+            getOfferReport();
+        
+        })();
+    </script>
+</apex:component>

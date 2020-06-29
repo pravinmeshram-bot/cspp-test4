@@ -1,0 +1,99 @@
+<apex:page controller="ManageRecordAllocationController" lightningStyleSheets="true" standardStylesheets="false" sidebar="false">
+    
+    <apex:includeScript value="{!$Resource.nu_dse__jquery}" />
+    <apex:slds />
+    
+    
+    
+    <apex:form >
+        <apex:actionStatus id="loadingStatus">
+            <apex:facet name="start">
+                <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.25; z-index: 1000; background-color: black;">
+                    &nbsp;
+                </div>
+                <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 15% 50%">
+                    <div style="display: inline-block; padding: 2px; background-color: #fff; width: 125px;">
+                        <img src="/img/loading.gif" style="float: left; margin: 8px;" />
+                        <span style="display: inline-block; padding: 10px 0px;">Please Wait...</span>
+                    </div>
+                </div>
+            </apex:facet>
+        </apex:actionStatus>
+        
+        
+        <apex:outputPanel id="detailPanel" layout="block"> 
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Lead Assignment Users">Pre-Sales Reps Users</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Option"></div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <apex:repeat value="{!lstUserWrapper}" var="userWrapper">
+                        <tr class="slds-hint-parent">
+                            <td data-label="Underwriter Users">
+                                <div class="slds-truncate" title="{!userWrapper.userName}">{!userWrapper.userName}</div>
+                            </td>
+                            <td data-label="Option">
+                                <div class="slds-truncate" title="">
+                                    <label class="slds-checkbox_toggle slds-grid">
+                                        <span class="slds-form-element__label slds-m-bottom_none">Round Robin Allocation</span>
+                                        <input type="checkbox" id="{!userWrapper.userId}" name="n_{!userWrapper.userId}" value="{!userWrapper.userId}" aria-describedby="chk{!userWrapper.userId}" onclick="setChangedValue(this, '{!userWrapper.userId}');" />
+                                        <span id="chk{!userWrapper.userId}" class="slds-checkbox_faux_container" aria-live="assertive">
+                                            <span class="slds-checkbox_faux"></span>
+                                            <span class="slds-checkbox_on">Enabled</span>
+                                            <span class="slds-checkbox_off">Disabled</span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                    </apex:repeat>
+                </tbody>
+            </table>
+            
+        </apex:outputPanel>
+        <apex:actionFunction action="{!setEnableChoice}" status="loadingStatus" name="setChoice" reRender="scriptPanel"  oncomplete="setValues();">
+            <apex:param value="" name="userId"/>
+            <apex:param value="" name="isSelected"/>
+        </apex:actionFunction>
+        
+        
+        <script>
+        $( document ).ready(function() {
+            console.log( "ready!" );
+            setValues();
+        });
+        
+        
+        function setChangedValue(chckbox, selectedUser){
+            console.log("--Selected value: " + selectedUser);
+            var checkbox = document.getElementById(selectedUser); 
+            console.log("--this : " + chckbox.checked);
+            setChoice(selectedUser, chckbox.checked);
+        }
+        </script>
+        
+        
+        <apex:outputPanel id="scriptPanel"> 
+            <script> 
+            function setValues(){
+                console.log('--In set values function!' );
+                
+                <apex:repeat value="{!lstUserWrapper}" var="useWrapper">
+                    //console.log('--useWrapper : ' + '{!useWrapper.isSelected}');
+                    var x = document.getElementById('{!useWrapper.userId}');
+                x.checked = {!useWrapper.isSelected};
+                console.log('--x value: ' + x.checked);
+                </apex:repeat>
+                
+            }
+            </script>
+        </apex:outputPanel>
+    </apex:form> 
+</apex:page>

@@ -1,0 +1,43 @@
+<apex:page standardController="nu_dse__Offer__c" extensions="ResubmitApprovalController" sidebar="false">
+<apex:form id="form">
+
+ <apex:pageMessages />
+ <apex:outputpanel >
+     <apex:actionstatus id="actStatusId">
+       <apex:facet name="start">
+      <div class="waitingSearchDiv" id="el_loading" style="background-color: #DCD6D6; height: 100%;opacity:0.65;width:100%;">
+      <div class="waitingHolder" style="top: 74.2px; width: 91px;">
+        <img class="waitingImage" src="/img/loading.gif"     title="Please Wait..." />
+        <span class="waitingDescription">Saving...</span>
+         </div>
+          </div>
+      </apex:facet>
+ </apex:actionstatus>
+    </apex:outputpanel>
+    
+<apex:pageBlock id="pgBlock" title="Edit Approval">
+<apex:pageMessages />
+<Apex:outputPanel rendered="{!showPanelFlag==false}"  id="pn1">
+  <apex:outputText value="{!$Label.Resubmit_Error}" style="font-weight:bold"/>
+</Apex:outputPanel>
+    <br/>  <br/>
+     <b> Approval Process  Name </b> :{!ApprovalProcessName}
+     <br/>  <br/>
+          
+    
+        Choose Approval Step: <apex:selectList value="{!selectedVal}" size="1" id="Test" label="Choose One"> 
+                    <apex:selectOptions value="{!ApprovalStepsNames}" /> 
+                </apex:selectList>
+  
+   
+
+  
+  
+  <apex:commandButton value="Save" action="{!UpdateApproval}"   rendered="{!buttonFlag==false}" rerender="pgBlock"  status="actStatusId"  >
+  <!--apex:param name="eventId" value="{!ApprovalName}" assignTo="{!selectedVal}"/-->
+   </apex:CommandButton>
+   
+  </apex:pageBlock>
+  
+  </apex:form>
+  </apex:Page>

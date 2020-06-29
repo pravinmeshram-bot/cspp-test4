@@ -1,0 +1,96 @@
+<apex:component controller="PymentStatusComponentController">
+    <apex:attribute name="recordId" type="String" required="true" description="Parent Program Id." />
+
+    <apex:slds />
+    
+    <style>
+        
+        .payment-status-item {
+            text-align: center;
+            color: #000;
+        }
+        
+        .payment-status-completed {
+            background-color: #11FF55;
+        }
+        
+        .payment-status-due {
+            background-color: #f60e0e;
+        }
+        
+        .payment-status-pending {
+            background-color: #FFFF22;
+        }
+        
+    </style>
+    
+    <table class="slds-table slds-table_bordered slds-table_fixed-layout">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="paymentPanel">
+            
+        </tbody>
+    </table>
+    
+    <!-- div id="" class="payment-status-panel">
+        
+    </div -->
+    
+    
+    <script>
+        (function() {
+            
+            var completedClass = 'payment-status-completed';
+            var dueClass = 'payment-status-due';
+            var notCompletedClass = 'payment-status-pending'
+            
+            function init() {
+                PymentStatusComponentController.getPayments('{!recordId}', function(response, event) {
+                    if(event.status) {
+                        console.log('PymentStatusComponentController', response);
+                        renderPaymentList(response);
+                    } else {
+                        console.log('error reading Payment Status.');
+                    }
+                });
+            }
+            
+            function renderPaymentList(paymentList) {
+                var paymentPanel = document.getElementById('paymentPanel');
+                if(paymentPanel) {
+                    paymentPanelmarkup = '';
+                    for(var i = 0; i < paymentList.length; i++) {
+                        paymentPanelmarkup += renderPaymentItem(paymentList[i]);
+                    }
+                    paymentPanel.innerHTML = paymentPanelmarkup;
+                }
+            }
+            
+            function renderPaymentItem(payment) {
+                var elementMarkup = '';
+                if(payment) {
+                    var colorClass = completedClass;
+                    if(!payment.completed) {
+                        colorClass = notCompletedClass;
+                        if(payment.pastDue) {
+                            colorClass = dueClass;
+                        }
+                    }
+                    elementMarkup = '<tr class="payment-status-item ' + colorClass + '"><td>' + payment.name + '</td><td>' + payment.dateString + '</td><td>' + payment.status+ '</td></tr>';
+                }
+                
+                return elementMarkup;
+            }
+            
+            
+            init();
+            
+        })();
+    </script>
+    
+</apex:component>

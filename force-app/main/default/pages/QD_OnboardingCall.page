@@ -1,0 +1,266 @@
+<apex:page controller="QD_AccountReview_CC" id="CCF_Form" tabStyle="Quick_Doc__c" sidebar="false" showHeader="false">
+    <script>
+    function loadtable(){
+    document.getElementById("spinner").style.display='inline';
+    }
+    function stoptable(){
+    document.getElementById("spinner").style.display='none';
+    }
+    
+    </script>
+    <style type="text/css">
+        table, td {
+        border: 2px solid black;
+        }
+        
+        tr th:nth-child(odd) {
+        text-align: center;
+        }
+        tr th:nth-child(even) {
+        text-align: center;
+        }
+        
+    </style>
+   <apex:slds /> 
+    <head>
+        <Title>ON BOARDING CALL - QUICK DOC TOOL</Title>
+    </head>
+    <body>
+    <apex:form style="background-color: #f2f2f2;" id="fm">
+    
+    <div class="slds-color__background_gray-12" id="mainpanel">
+    
+    
+    <div class="slds-grid">
+        <div class="slds-col"> </div>
+        <!-- <div class="slds-col"> <apex:commandButton value="CLEAR ALL VALUES" action="{!clearAll}" onclick="loadtable();" html-name="options" styleClass="btn slds-button slds-button--brand slds-not-selected"    id="btn3" /></div>
+        -->
+         <div class="slds-col slds-text-heading_large ">ON BOARDING CALL</div>
+    </div>
+   <!-- <apex:outputPanel id="errormessage">
+                    <apex:pagemessages id="errormessages" escape="false"></apex:pagemessages> 
+    </apex:outputPanel> -->
+ <!--   <apex:pageMessages rendered="{!Showms}"/>  -->
+    <br/>
+    <div class="slds-grid" id="subpanel">
+    <div class="slds-col">
+    
+       
+       
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-5 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Portfolio*</b></label>
+        </div>
+        
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_2-of-5 slds-combobox-picklist">                        
+            <apex:inputField value="{!QD1.Portfolio__c}" styleClass="slds-input">
+          
+               <apex:actionSupport event="onchange" action="{!ContactPage}" />
+              
+            </apex:inputField> 
+        </div>
+    </div>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <apex:outputLabel value="Error:You must enter a value" rendered="{!showmsa}" styleclass="slds-p-left_xx-large" style="color: Red">
+    </apex:outputLabel> 
+
+<!--   <apex:actionRegion rendered="{!ShowAccount }" id="idRegion"> -->
+
+    <apex:actionRegion rendered="{!QD1.Portfolio__c=='Timberline'}" id="idRegion">
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+              <div class="slds-p-horizontal_medium slds-size_1-of-5 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Account*</b></label>
+        </div>
+              <div class="slds-form-element__control slds-p-horizontal_small slds-size_2-of-5 slds-combobox-picklist">           
+             <!-- create look up for AccountId-->
+             <c:SLDSDynamicLookup SLDSResourceName="{!$Resource.slds}" ObjectApiName="Account" DisplayFieldApiNames="Name,Type" DisplayFieldsPattern="Name" LabelName="Set Account" SetValueToField="{!QD1.Account__c}"/>
+                <apex:messages />
+              </div>  
+              
+              
+    </div>
+      </apex:actionRegion> 
+    
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <apex:outputLabel value="Error:You must enter a value" rendered="{!showms}" styleclass="slds-p-left_xx-large" style="color: Red">
+    </apex:outputLabel> 
+
+    
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-5 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Caller</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right-large">
+                    <apex:inputCheckbox html-name="options" id="divsup4"  value="{!QD1.Applicant__c}">
+                        <apex:actionSupport event="onchange" action="{!ContactPage}" rerender="idNotePane"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup4" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Applicant</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+           
+            <div class="slds-form-element__control slds-col ">
+                <span class="slds-checkbox slds-m-left--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup3"  value="{!QD1.Co_Applicant__c}">
+                        <apex:actionSupport event="onchange" action="{!ContactPage}" rerender="idNotePane"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup3" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Co-Applicant</span>
+                    </apex:outputLabel>
+                </span> 
+            </div>
+        </div>
+        </div>
+    </div>
+    
+     <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-5 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Verified Last 4 Digit SSN</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right-large">
+                    <apex:inputCheckbox html-name="options" id="divsup5" value="{!QD1.Verified_Last_4_Digtit_SSN__c}">
+                        <apex:actionSupport event="onchange" action="{!ContactPage}" rerender="idNotePane"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup5" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+        </div>
+        </div>
+    </div>
+    
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-5 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Completed On Boarding Call</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right-large">
+                    <apex:inputCheckbox html-name="options" id="divsup6" value="{!QD1.Completed_On_Boarding_Call__c}">
+                        <apex:actionSupport event="onchange" action="{!ContactPage}" reRender="Panel1Id" rerender="idNotePane"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup6" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+        </div>
+        </div>
+    </div>
+    
+    
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-5 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Additional Information</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_2-of-5 slds-combobox-picklist">                        
+            <apex:inputField value="{!QD1.Additional_Information__c}" styleClass="slds-input">
+                <apex:actionSupport event="onchange" action="{!ContactPage}" reRender="Panel1Id"/>
+            </apex:inputField> 
+        </div>
+    </div>
+    
+    </div>
+
+   <div class="slds-col" id="contactpanel"> 
+        <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+            <div class="slds-p-horizontal_small" >
+            <label class="slds-form-element__label slds-float_right slds-text-heading_medium" for="text-input-id-1" ><b>Contact Information</b></label>
+            </div>
+        </div>
+     
+  
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-5 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Name
+            </b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_2-of-5 slds-combobox-picklist portfolio">                        
+             <apex:outputText value="{!quickDocScripts1[0].Name__c}" styleClass="slds-output" rendered="{!showname}" id="nameText"/>   
+        </div>
+    </div>
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-5 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Email
+            </b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_2-of-5 slds-combobox-picklist">                        
+             <apex:outputText value="{!quickDocScripts1[0].Email__c}" styleClass="slds-output" rendered="{!showEmail}"/>   
+        </div>
+    </div><div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-5 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Phone #
+            </b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_2-of-5 slds-combobox-picklist">                        
+            <apex:outputText value="{!quickDocScripts1[0].Phone__c}" styleClass="slds-output" rendered="{!showPhone}"/>       
+        </div>
+    </div><div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-5 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Fax #
+            </b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_2-of-5 slds-combobox-picklist">                        
+            <apex:outputText value="{!quickDocScripts1[0].Fax__c}" styleClass="slds-output" rendered="{!showFax}"/>       
+        </div>
+    </div>
+    </div>
+
+    </div>
+    
+   
+    <br/><br/><br/>
+    
+ <!--   <apex:outputLabel value="Kranthi" rendered="{!showms}" id="Kra">
+    </apex:outputLabel>  -->
+    <center>
+        <apex:commandButton value="Clear All Values" action="{!clearAll}" onclick="loadtable();" html-name="options" styleClass="btn slds-button slds-button--brand slds-not-selected"   style="text-decoration:black;padding:1px;;width:9pc;background:#0070d2;" id="btn3" />
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <apex:commandButton value="Save"  rendered="{!showsave}" action="{!saveQDOnboard}" onclick="loadtable();"   html-name="options" styleClass="btn slds-button slds-button--brand slds-not-selected"   style="text-decoration:black;padding:1px;;width:9pc;background:#0070d2;" id="btn8" />
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <apex:commandButton value="Cancel" immediate="true" action="{!CancelQD}" onclick="loadtable();" html-name="options" styleClass="btn slds-button slds-button--brand slds-not-selected"   style="text-decoration:black;padding:1px;;width:9pc;background:#0070d2;" id="btn5" />
+    
+    </center>
+    <br/>
+    <div class="demo-only" id="spinner"  style="display:none;">
+      <div role="status" class="slds-spinner slds-spinner_brand slds-spinner_large">
+        <span class="slds-assistive-text">Loading</span>
+        <div class="slds-spinner__dot-a"></div>
+        <div class="slds-spinner__dot-b"></div>
+      </div>
+    </div>
+    <apex:outputPanel id="Panel1Id">
+    <apex:outputPanel rendered="{!showPanel}">
+    <!--<table  class="slds-table slds-table_bordered slds-table_cell-buffer">-->
+    <apex:pageBlock >  
+
+        <apex:pageBlockTable value="{!quickDocScripts1}" var="n" style="border:2px solid black;" id="idNotePane">
+        <apex:column value="{!n.Description__c}" width="50%" style="padding-left: 10px; padding-right:10px; border:2px solid black;" headerValue="Script Pane"/>
+        <apex:column value="{!n.Notes__c}" style="padding-left: 10px; padding-right:10px; border:2px solid black; " headerValue="Notes Pane"/>  
+        </apex:pageBlockTable>
+        
+    </apex:pageBlock>
+    </apex:outputPanel>
+    </apex:outputPanel>
+    <br/>
+    
+    </div>
+    
+    </apex:form>
+    <apex:includeScript value="{!$Resource.SLDSDynamicLookupScript}"/>  
+    </body>
+    
+</apex:page>

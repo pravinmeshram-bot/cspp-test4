@@ -1,0 +1,328 @@
+<aura:component controller="SFSPortal_DashboardMetricsController" implements="forceCommunity:availableForAllPageTypes" 
+                extends="c:abstractServer">
+    
+    <link href="https://fonts.googleapis.com/css?family=Noto+Serif+KR:700" rel="stylesheet" />
+    <aura:attribute name="dashboardMetricsMap" type="Map" access="public" default="{}" />
+    <aura:attribute name="dashBoardMetricData1" type="Map" access="public" default="{}" />
+    <aura:attribute name="dashBoardMetricData2" type="Map" access="public" default="{}" />
+    <aura:attribute name="objectInfo" type="String" access="public" default=""/>
+    <aura:attribute name="isModal" type="Boolean" default="false" access="public" />
+    <aura:attribute name="showDashboard" type="Boolean" default="false" access="public" />
+    <aura:attribute name="newGroupTaskInstance" type="Map" default="{'sobjectType' : 'nu_dse__Group_Task__c'}"/>
+    <aura:attribute name="adhocPaymentWrapper" type="Map" access="public" />
+    <aura:registerEvent name="appEvent" type="c:SetHeaderValue"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+    
+    <div class="{!v.showDashboard}" style="padding:7px;">        
+        <div class="slds-wrap slds-border_bottom custom-title_container" id="dashboardCmp"  >
+            <span class="custom-title_text">Your Account Overview:</span>
+        </div>
+        <div class="slds-grid slds-wrap slds-grid_align-center">
+            <div class="slds-col slds-size_1-of-1 slds-medium-size--6-of-12 slds-large-size--4-of-12 slds-show_large"
+                 style="font-family:Prompt;padding-top: 20px;">
+                <div class="slds-grid slds-gutters slds-wrap">
+                    <div class="slds-col slds-grid slds-size_12-of-12" style="background-color : #f2f0f0; 
+                                                                              margin-top : 5px; height : 31px">
+                        <div class="slds-col slds-size_8-of-12 custom-column-label" style="background-color : #f2f0f0" >
+                            <span class="verticalAlign-middle">Program Start Date:</span>
+                        </div>
+                        <div class="slds-col slds-size_4-of-12 custom-column-value" style="background-color : #f2f0f0">
+                            <span class="verticalAlign-middle">
+                                <ui:outputDate aura:id="oDate" 
+                                               value="{!v.dashboardMetricsMap.accountOverviewWrapper.programStartDate}" 
+                                               format="MM/dd/yyyy"/>
+                                &nbsp;
+                            </span>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-grid slds-size_12-of-12 slds-grid_vertical-align-center" 
+                         style="background-color : #e5e2e2; margin-top : 5px; height : 31px">
+                        <div class="slds-col slds-size_6-of-12 custom-column-label" style="background-color : #e5e2e2">
+                            <span class="verticalAlign-middle">Enrolled Debt:</span>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12 custom-column-value" style="background-color : #e5e2e2">
+                            <span class="verticalAlign-middle">
+                                <lightning:formattedNumber value="{!v.dashboardMetricsMap.accountOverviewWrapper.enrolledDebt}" 
+                                                           style="currency" currencyCode="USD"/>
+                                &nbsp;
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="slds-col slds-grid slds-size_12-of-12 slds-grid_vertical-align-center" 
+                         style="background-color : #f2f0f0; margin-top : 5px; height : 31px">
+                        <div class="slds-col slds-size_6-of-12 custom-column-label" style="background-color : #f2f0f0">
+                            <span class="verticalAlign-middle">Adjusted Debt*:</span>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12 custom-column-value" style="background-color : #f2f0f0">
+                            <span class="verticalAlign-middle">
+                                <lightning:formattedNumber value="{!v.dashboardMetricsMap.accountOverviewWrapper.adjustedDebt}" 
+                                                           style="currency" currencyCode="USD"/>
+                                &nbsp;
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="slds-col slds-grid slds-size_12-of-12 slds-grid_vertical-align-center" 
+                         style="background-color : #e5e2e2; margin-top : 5px; height : 31px">
+                        <div class="slds-col slds-size_6-of-12 custom-column-label" style="background-color : #e5e2e2">
+                            <span class="verticalAlign-middle">Resolved Debt:</span>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12 custom-column-value" style="background-color : #e5e2e2">
+                            <span class="verticalAlign-middle">
+                                <lightning:formattedNumber value="{!v.dashboardMetricsMap.accountOverviewWrapper.resolvedDebt}" 
+                                                           style="currency" currencyCode="USD"/>
+                                &nbsp;
+                            </span>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-grid slds-size_12-of-12 slds-grid_vertical-align-center" 
+                         style="background-color : #f2f0f0; margin-top : 5px; height : 31px">
+                        <div class="slds-col slds-size_7-of-12 custom-column-label" style="background-color : #f2f0f0">
+                            <span class="verticalAlign-middle">Enrolled Creditors:</span>
+                        </div>
+                        <div class="slds-col slds-size_5-of-12 custom-column-value" style="background-color : #f2f0f0">
+                            <span class="verticalAlign-middle">
+                                {!v.dashboardMetricsMap.accountOverviewWrapper.enrolledCreditors}
+                                &nbsp;
+                            </span>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-grid slds-size_12-of-12 slds-grid_vertical-align-center" 
+                         style="background-color : #e5e2e2; margin-top : 5px; height : 31px">                    
+                        <div class="slds-col slds-size_9-of-12 custom-column-label" style="background-color : #e5e2e2">
+                            <span class="verticalAlign-middle">Resolved Creditors:</span>
+                        </div>
+                        <div class="slds-col slds-size_3-of-12 custom-column-value" style="background-color : #e5e2e2">
+                            <span class="verticalAlign-middle">
+                                {!v.dashboardMetricsMap.accountOverviewWrapper.resolvedCreditors}
+                                &nbsp;
+                            </span>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-grid slds-size_12-of-12 slds-grid_vertical-align-center" 
+                         style="font-family: NotoSansKR-Medium!important; font-size: 13px; font-color: #000000; 
+                                padding-top: 1rem; margin-top: 5px;text-align: center;padding-bottom: 1rem;">
+                        <span>
+                            *Your total debt amount is subject to change prior to final settlement agreement.
+                            <a onclick="{!c.navigatetoFAQ}">
+                                <span style="color:#087296 !important" >
+                                    <u>Learn More</u>
+                                </span> 
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-medium-size--6-of-12 slds-large-size--4-of-12">
+                <div class="slds-align_absolute-center" style="padding-top : 15px;">
+                    <span class="sub-heading-overview">Amount of your Debt Settled:</span>
+                </div>
+                <div style="padding-top : 0px;">
+                    <c:CircularProgress actualData="{!v.dashBoardMetricData1}" size="medium"/>
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-medium-size--6-of-12 slds-large-size--4-of-12">
+                <div class="slds-align_absolute-center" style="padding-top : 15px;">
+                    <span class="sub-heading-overview">Percent of Creditors Resolved:</span>
+                </div>
+                <div style="padding-top : 0px;">
+                    <c:CircularProgress actualData="{!v.dashBoardMetricData2}" size="medium"/>
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-medium-size--12-of-12 slds-large-size--4-of-12 slds-hide_large">
+                <div class="slds-align_absolute-center slds-hide_medium" >
+                    <span style="font-family : NotoSansKR-Medium">
+                        <span>Your next draft amount of </span>
+                        <ui:outputCurrency class="portalStatus_value" 
+                                           value="{!v.dashboardMetricsMap.dashBoardMetricsList[0].portalStatus}"/>
+                        <span> is due on </span>
+                        <ui:outputDate class="portalStatus_value" aura:id="oDate" 
+                                       value="{!v.dashboardMetricsMap.dashBoardMetricsList[1].portalStatus}" 
+                                       format="MMM dd, yyyy"/>.
+                        <a style="color:#046899 !important;font-size : 17px;" href="/s/payments"><u >Get Details</u></a>
+                    </span>
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-medium-size--6-of-12 slds-large-size--4-of-12 slds-hide_large"
+                 style="font-family:Prompt;padding-top:20px;">
+                <div class="slds-col slds-grid slds-size_12-of-12" style="background-color : #f2f0f0; margin-top : 8px">
+                    <div class="slds-col slds-size_7-of-12 custom-column-label" style="background-color : #f2f0f0" >
+                        <span>Program Start Date:</span>
+                    </div>
+                    <div class="slds-col slds-size_5-of-12 custom-column-value" style="background-color : #f2f0f0">
+                        <span>
+                            <ui:outputDate aura:id="oDate" 
+                                           value="{!v.dashboardMetricsMap.accountOverviewWrapper.programStartDate}" 
+                                           format="MM/dd/yyyy"/>
+                            &nbsp;
+                        </span>
+                    </div>
+                </div>
+                <div class="slds-col slds-grid slds-size_12-of-12 slds-grid_vertical-align-center" 
+                     style="background-color : #e5e2e2; margin-top : 8px">
+                    <div class="slds-col slds-size_7-of-12 custom-column-label" style="background-color : #e5e2e2">
+                        <span>Enrolled Debt:</span>
+                    </div>
+                    <div class="slds-col slds-size_5-of-12 custom-column-value" style="background-color : #e5e2e2">
+                        <span>
+                            <lightning:formattedNumber value="{!v.dashboardMetricsMap.accountOverviewWrapper.enrolledDebt}" 
+                                                       style="currency" currencyCode="USD"/>
+                            &nbsp;
+                        </span>
+                    </div>
+                </div>
+                <div class="slds-col slds-grid slds-size_12-of-12 slds-grid_vertical-align-center" 
+                     style="background-color : #f2f0f0; margin-top : 8px">
+                        <div class="slds-col slds-size_7-of-12 custom-column-label" style="background-color : #f2f0f0">
+                            <span>Adjusted Debt*:</span>
+                        </div>
+                        <div class="slds-col slds-size_5-of-12 custom-column-value" style="background-color : #f2f0f0">
+                            <span >
+                                <lightning:formattedNumber value="{!v.dashboardMetricsMap.accountOverviewWrapper.adjustedDebt}" 
+                                                           style="currency" currencyCode="USD"/>
+                                &nbsp;
+                            </span>
+                        </div>
+                    </div>
+                <div class="slds-col slds-grid slds-size_12-of-12 slds-grid_vertical-align-center" 
+                     style="background-color : #e5e2e2; margin-top : 8px">
+                    <div class="slds-col slds-size_7-of-12 custom-column-label" style="background-color : #e5e2e2">
+                        <span>Resolved Debt:</span>
+                    </div>
+                    <div class="slds-col slds-size_5-of-12 custom-column-value" style="background-color : #e5e2e2">
+                        <span>
+                            <lightning:formattedNumber value="{!v.dashboardMetricsMap.accountOverviewWrapper.resolvedDebt}" 
+                                                       style="currency" currencyCode="USD"/>
+                            &nbsp;
+                        </span>
+                    </div>
+                </div>
+                <div class="slds-col slds-grid slds-size_12-of-12 slds-grid_vertical-align-center" 
+                     style="background-color : #f2f0f0; margin-top : 8px">
+                    <div class="slds-col slds-size_7-of-12 custom-column-label" style="background-color : #f2f0f0">
+                        <span>Enrolled Creditors:</span>
+                    </div>
+                    <div class="slds-col slds-size_5-of-12 custom-column-value" style="background-color : #f2f0f0">
+                        <span>
+                            {!v.dashboardMetricsMap.accountOverviewWrapper.enrolledCreditors}
+                            &nbsp;
+                        </span>
+                    </div>
+                </div>
+                <div class="slds-col slds-grid slds-size_12-of-12 slds-grid_vertical-align-center" 
+                     style="background-color : #e5e2e2; margin-top : 8px">
+                    <div class="slds-col slds-size_7-of-12 custom-column-label" style="background-color : #e5e2e2">
+                        <span>Resolved Creditors:</span>
+                    </div>
+                    <div class="slds-col slds-size_5-of-12 custom-column-value" style="background-color : #e5e2e2">
+                        <span>
+                            {!v.dashboardMetricsMap.accountOverviewWrapper.resolvedCreditors}
+                            &nbsp;
+                        </span>
+                    </div>
+                </div>
+                <div class="slds-col slds-grid slds-size_12-of-12 slds-grid_vertical-align-center" 
+                     style="font-family: NotoSansKR-Medium!important; font-size: 13px; font-color: #000000; 
+                            padding-top: 1rem; margin-top: 5px;text-align: center;padding-bottom: 1rem;">
+                    <span>
+                        *Your total debt amount is subject to change prior to final settlement agreement.
+                        <a onclick="{!c.navigatetoFAQ}">
+                            <span style="color:#087296!important" >
+                                <u>Learn More</u>
+                            </span> 
+                        </a>
+                    </span>
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-medium-size--6-of-12 slds-large-size--4-of-12 slds-hide_large" 
+                 style="padding-top : 15px; padding-right : 10px;">
+                <div class="slds-align_absolute-center slds-hide_large slds-show_medium" 
+                     style="text-align : center; padding : 20px;" >
+                    <span style="font-family:NotoSansKR-Medium">
+                        <span>Your next draft amount of </span>
+                        <ui:outputCurrency class="portalStatus_value" 
+                                           value="{!v.dashboardMetricsMap.dashBoardMetricsList[0].portalStatus}"/>
+                        <span> is due on </span>
+                        <ui:outputDate class="portalStatus_value" aura:id="oDate" 
+                                       value="{!v.dashboardMetricsMap.dashBoardMetricsList[1].portalStatus}" 
+                                       format="MMM dd, yyyy"/>.
+                        <a style="color : #046899 !important; font-size : 17px;" href="/s/payments"><u >Get Details</u></a>
+                    </span>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_12-of-12 slds-large-size_3-of-12" 
+                     style="margin-top : 5px;">
+                    <lightning:button aura:id="addFundsbtn_dashboardMetrics" class="custom-add-fund-button" 
+                                      name="New ADHOC"
+                                      title="Payment"
+                                      label="Add Funds Now" variant="brand"
+                                      onclick="{!c.ShowModal}" iconName="utility:add"
+                                      iconPosition="left"/>
+                    <br />
+                    <div id="offerListTop" class="slds-text-body_small" 
+                         style="font-family : NotoSansKR-Medium ; font-size : 13px; font-color : #000000; 
+                                text-align : center; padding-top : 1rem;">
+                        <div class="slds-align_absolute-center">Reach Settlement Faster By Adding Extra Funds.</div>
+                        <a aura:id="mypopover" onclick="{!c.handleShowPopOver}">
+                            <u style="color : #087296;">Learn More</u>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slds-grid slds-wrap slds-show_large">
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_4-of-12 ">
+                <lightning:button aura:id="addFundsbtn_dashboardMetrics" 
+                                  class="custom-add-fund-button slds-align_absolute-center" name="New ADHOC"
+                                  title="Payment"
+                                  label="Add Funds Now" variant="brand"
+                                  onclick="{!c.ShowModal}" iconName="utility:add"
+                                  iconPosition="left"/>
+                <div id="offerListTop1" class="slds-text-body_small " 
+                     style="font-family : NotoSansKR-Medium !important; font-size : 13px; font-color : #000000; 
+                            padding-top : 1rem;">
+                    <div class="slds-align_absolute-center">Reach Settlement Faster By Adding Extra Funds.</div>
+                    <a aura:id="mypopover" href="javascript:void(0);" 
+                       class="mypopover slds-align-middle slds-align_absolute-center"
+                       onclick="{!c.handleShowPopOver}"
+                       tabindex="-1">
+                        <u style="color : #087296;">Learn More</u>
+                    </a>
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_8-of-12 draft-amount-container" 
+                 style="margin-top : 5px;">
+                <div class="slds-align_absolute-center draft-amount" >
+                    <span>Your next draft amount of &nbsp;</span>
+                    <ui:outputCurrency class="portalStatus_value" 
+                                       value="{!v.dashboardMetricsMap.dashBoardMetricsList[0].portalStatus}"/>
+                    <span>&nbsp; is due on&nbsp;</span>
+                    <ui:outputDate class="portalStatus_value" aura:id="oDate" 
+                                   value="{!v.dashboardMetricsMap.dashBoardMetricsList[1].portalStatus}" 
+                                   format="MMM dd, yyyy"/>.&nbsp;
+                    <a style="color : #046899 !important; font-size : 17px;" onclick="{!c.redirectToPayments}">
+                        <u>Get Details</u>
+                    </a>
+                    <br />
+                </div>
+            </div>
+        </div>
+        <aura:if isTrue="{!v.dashboardMetricsMap.accountOverviewWrapper.congratsMessage}">
+            <c:customModal header="CONGRATULATION" headerStyle="slds-theme_alert-texture slds-theme_success" 
+                           modalSize="slds-modal_small">
+                <aura:set attribute="body">
+                    <div class="slds-text-align_center slds-m-top_xx-large">
+                        Congrats, You have successfully paid the Settlement amount on time.
+                    </div>
+                </aura:set>
+                <aura:set attribute="footer">
+                    <lightning:button aura:id="nobtn_newTradeline" variant="brand" label="Close" title="Close"  
+                                      onclick="{!c.closeCongratsModel}" />
+                </aura:set>
+            </c:customModal>
+        </aura:if>
+        <c:paymentAndBankModal objectInfo="Payment" adhocPaymentWrapper="{!v.adhocPaymentWrapper}" isModal="{!v.isModal}"/>
+    </div>    
+</aura:component>

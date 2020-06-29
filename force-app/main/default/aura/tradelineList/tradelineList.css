@@ -1,0 +1,252 @@
+.THIS .custom_margin_bottom {
+    margin-bottom:0rem !important;
+}
+.THIS .slds-grid_align-end {
+    justify-content: flex-start !important;
+}
+.THIS lightning-primitive-cell-types {
+    text-align: left;
+}
+.THIS .text-align_absolute-center {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    margin: auto;
+}
+.THIS .slds-icon_container,.THIS .slds-icon__container {
+    cursor: pointer !important;
+}
+.THIS .debt-card {
+    text-align: center;
+    margin: 5px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #efefef;
+    border-radius: 0.25rem;
+}
+.THIS .debt-card .slds-card__body {
+    background-color: #f2f2f2;
+}
+.THIS .slds-card__header {
+    padding: .2rem 1rem 0;
+    margin: 0 0 .2rem;
+}
+.THIS .slds-card__body {
+    margin-bottom: 0px !important;
+}
+.THIS .slds-button {
+    line-height:1.5rem !important;
+}
+.THIS .slds-icon_container_circle {
+    padding:0.2rem !important;
+}
+.THIS .slds-modal__content:last-child {
+    box-shadow:none !important;
+}
+
+.THIS .custom-addNewDebt-button {
+    float: right;
+    background-color:#046899!important;
+    border-color:#0A202D!important;
+    font-size: 23px;
+    font-family:NotoSansKR-Medium !important;
+    color:#ffffff;
+    font-weight:500;
+    display: block;
+    width:100% !important;
+    min-width: 140px;
+    max-width:255px!important;
+    height:50px!important;
+    overflow:hidden;
+    margin-left: auto;
+    margin-right: auto; 
+    cursor: pointer;
+    padding: 5px;
+    border-radius: .50rem;
+}
+.THIS .custom-addNewDebt-button:hover {
+    background-color : #0E7AAE !important;
+}
+.THIS .slds-form-layout__custom {
+    background-color:#f1f1f1;
+}
+.THIS .slds-form-layout__custom_left {
+    border-right:2px solid #efefef !important;
+}
+.THIS .slds-button_brand,.THIS .slds-button--brand {
+    background-color:#046899;
+    border-color:#0A202D;
+}
+.THIS .set-padding {
+    padding: 0px !important;
+}
+.THIS .custom-title_text {
+    color: #0A202D;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 30px !important;
+}
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen 
+    and (min-device-width : 320px) 
+    and (max-device-width : 480px) {
+    /* Styles */
+    .THIS .custom-addNewDebt-button {
+        float:none;
+        width:100% !important;
+    }
+    .THIS .custom-title_text {
+        font-size: 28px!important;
+    }
+    .THIS .set-padding {
+        padding: 5px !important;
+        margin :0px !important;
+    }
+}
+
+@media (min-width: 320px) and (max-width: 568px) {
+    .THIS .custom-title_text {
+        font-size: 22px!important;
+    }
+}
+@media (min-width: 375px) and (max-width: 812px) {
+    .THIS .custom-title_text {
+        font-size: 24px!important;
+    }
+}
+/* Smartphones (landscape) ----------- */
+@media only screen and (min-width : 321px) {
+    /* Styles */
+    .THIS .custom_margin_bottom {
+        margin-bottom:15px;
+    }
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen 
+    and (max-width : 320px) {
+    /* Styles */
+    .THIS .mobile-debt-status { 
+        display: inline-block;
+        text-align: left !important;
+        padding-left: 1rem;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+    .THIS .custom-addNewDebt-button {
+        float:none;
+        width:65% !important;
+    }
+}
+.THIS .debt-status {
+    font-family:'Noto Serif KR', serif;
+    font-size: 22px;
+    color:#0A202D!important;
+}
+.THIS .debt-settlement-status {
+    float:left;
+    font-family:'Noto Serif KR', serif;
+    font-size: 22px;
+}
+
+@media (min-width: 1025px) and (max-width: 1279px) {
+    .THIS .debt-status {
+        font-family:'Noto Serif KR', serif;
+        font-size: 17px;
+        color:#0A202D!important;
+    }
+    .THIS .debt-settlement-status {
+        float:left;
+        font-family:'Noto Serif KR', serif;
+        font-size: 18px;
+    }
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen 
+    and (min-device-width : 768px) 
+    and (max-device-width : 1024px) {
+    /* Styles */
+    .THIS .debt-status {
+        font-family:'Noto Serif KR', serif;
+        font-size: 17px;
+        color:#0A202D!important;
+    }
+}
+
+/* iPads (landscape) ----------- */
+@media only screen 
+    and (min-device-width : 768px) 
+    and (max-device-width : 1024px) 
+    and (orientation : landscape) {
+    /* Styles */
+    .THIS .custom-addNewDebt-button {
+        width:35% !important;
+    }
+    .THIS .debt-settlement-status {
+        float:left;
+        font-family:'Noto Serif KR', serif;
+        font-size: 18px;
+    }
+}
+/* iPads (landscape) ----------- */
+@media only screen 
+    and (min-device-width : 1024px) 
+    and (max-device-width : 1366px) 
+    and (orientation : portrait) {
+    .THIS .debt-settlement-status {
+        float:left;
+        font-family:'Noto Serif KR', serif;
+        font-size: 18px;
+    }    
+}
+
+/* iPads (portrait) ----------- */
+@media only screen 
+    and (min-device-width : 768px) 
+    and (max-device-width : 1024px) 
+    and (orientation : portrait) {
+    /* Styles */
+    .THIS .custom-addNewDebt-button {
+        width:35% !important;
+    }
+}
+
+.THIS .mobile-debt-status { 
+    display: inline-block;
+    text-align: center;
+}
+
+.THIS .setbackgroundcolor {
+    font-weight: bold;
+    font-family: NotoSansKR-Medium;
+    border-radius: .25rem;
+    margin: 5px;
+}
+
+.THIS .custom-layout {
+    width: 100%;
+}
+.THIS .active-debt {
+    background-color: #046899;
+    height:0.4rem;
+}
+.THIS .paymentHeader {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 20px !important;
+    color: #000000;
+    font-weight:500;
+}
+.THIS .slds-vertical-tabs__content {
+    padding: 0rem !important;
+}
+.THIS .slds-section-color {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 15px;
+    color:#666666;
+    background:#ece7e7;
+    width:100%;
+    text-align: left;
+}

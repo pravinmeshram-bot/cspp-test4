@@ -1,0 +1,106 @@
+.THIS a {
+    color: #258ca6;
+    font-weight: bold
+}
+
+.THIS .custom-title_subtext {
+    font-family: 'Noto Serif KR', sans-serif;
+    font-size: 30px !important;
+    color: #0A202D;
+    font-weight:500;
+    margin-top: 20px; 
+    Top: 100px; 
+    padding-left:7px;
+}
+
+
+.THIS hr {
+    margin: 0em;
+}
+
+.THIS .linktag {
+    margin-left: 10px;
+}
+
+
+.THIS .documentTable {
+    font-family: 'Noto', sans-serif;
+    font-size: 15px;
+    margin-right: 15px;
+    margin-top: 10px;
+    page-break-inside:auto;
+} 
+
+
+.THIS .download {
+    text-align: center;
+}
+
+.THIS .download img {
+    	width: 30px;
+        
+	}
+
+.THIS .tipList{
+    background-color: #D5DEE1;
+    padding: 20px;
+    font-size: 17px;
+}
+
+.THIS .tipList ul {
+    margin-top: 1vw;
+}
+
+.THIS .tipList li {
+    margin: 0 0 1.5vw 0
+}
+
+/* @media screen and (max-width: 420px) {
+    .THIS .documentTable {
+        font-size: 20px !important; 
+    }
+} */
+
+
+@media screen and (max-width: 1020px) {
+	.THIS .slds-table td  {
+        padding-bottom: 1.25rem;
+    	padding-top: 1.25rem;
+    }
+    
+    .THIS .slds-table td img  {
+        width: 125%;
+    }
+    
+    .THIS .slds-table tr td {
+ 		white-space: normal
+    }
+    
+    .THIS .download img {
+    	height: 50px;
+        
+	}
+    
+    .THIS .tipList{
+        background-color: #D5DEE1;
+        padding: 10px;
+	}
+    
+    .THIS .sidepadding {
+        padding: 0px;
+    }
+    
+    
+}
+
+@media screen and (min-width: 1550px) { 
+	.THIS .custom-title_subtext {
+        margin-top: 35px; 
+    }
+    
+  /*  .THIS .helptext {
+        margin-top: 50%;
+    }*/
+}
+
+/* Document Listing CSS ends */

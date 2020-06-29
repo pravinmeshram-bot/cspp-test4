@@ -1,0 +1,563 @@
+<apex:component controller="SFSPortal_CommunityTemplateController" allowDML="true" >
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <apex:attribute name="actionType" assignTo="{!actionString}" description="Type of Action sending" type="String" required="true" />
+    
+    <apex:slds />
+    
+    <style>
+            
+        <!--   .custom-background .upleft { 
+            width:100px; 
+            height: 300px; 
+            background:red; float:left; 
+            }
+            
+            .custom-background .upright { 
+            width:300px; 
+            height:200px; 
+            background:blue; 
+        float:left  -->
+        
+        
+        .custom-background .sourceFont{
+        	font-family: SourceSerifPro-Regular;
+}
+@font-face {
+   font-family: SourceSerifPro-Regular;
+  src: url(/resource/SourceSerifProFont);
+}
+        }
+        
+         .custom-background {
+            background-size: cover;
+            min-height: 100%;
+            width: 100%;
+            position: absolute;
+             
+        }
+        
+        @media screen and (max-width: 1100px) {
+            
+            .custom-background .maintenace-content {
+            
+                margin: 12rem 1rem 6rem 2rem !important;
+                width: 93%;
+            }
+            
+             .custom-background .change-password-content {
+                 
+                 margin-top: 24%!important;
+             }
+        }
+        
+        @media screen and (max-width: 30em) {
+            
+            .custom-background .horizontal-mobile-responsive .subheadingText {
+            
+                border-top: 1px solid lightgrey;
+                padding-top: 0.5rem;
+            }
+        }
+        
+        @media screen and (min-width: 1100px) {
+            
+            .custom-background .maintenace-content {
+            
+                margin: 15rem 8rem 10rem 8rem;
+                width: 80%;
+            }
+            
+             .custom-background .horizontal-mobile-responsive .subheadingText {
+            
+                border-top: none;
+                padding-top: 0;
+            }
+            
+        }   
+        
+        /* 
+        ##Device = Desktops
+        ##Screen = 1281px to higher resolution desktops
+        */
+        
+        @media (min-width: 1280px) {
+            
+            .custom-background .change-password-content {
+                 
+                 margin-top: 14%!important;
+            }
+        }
+        
+        /* 
+        ##Device = Laptops, Desktops
+        ##Screen = B/w 1025px to 1280px
+        */
+        
+        @media (min-width: 1025px) and (max-width: 1279px) {
+            
+            .custom-background .change-password-content {
+                 
+                 margin-top: 14%!important;
+            }
+        }
+        
+        /* 
+        ##Device = Tablets, Ipads (portrait)
+        ##Screen = B/w 768px to 1024px
+        */
+        
+        @media (min-width: 768px) and (max-width: 1024px) {
+            
+            .custom-background .change-password-content {
+                 
+                 margin-top: 14%!important;
+            }
+        }
+        
+        /* 
+        ##Device = Tablets, Ipads (landscape)
+        ##Screen = B/w 768px to 1024px
+        */
+        
+        @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+            
+            .custom-background .change-password-content {
+                 
+                 margin-top: 20%!important;
+            }
+        }
+        
+        /* 
+        ##Device = Low Resolution Tablets, Mobiles (Landscape)
+        ##Screen = B/w 481px to 767px
+        */
+        
+        @media (min-width: 481px) and (max-width: 767px) {
+            
+            .custom-background .change-password-content {
+                 
+                 margin-top: 30%!important;
+                
+            }
+        }
+        
+        /* 
+        ##Device = Most of the Smartphones Mobiles (Portrait)
+        ##Screen = B/w 320px to 479px
+        */
+        
+        @media (min-width: 320px) and (max-width: 480px) {
+            
+            .custom-background .change-password-content {
+                 
+                 margin-top: 45%!important;
+            
+            }
+        }
+        
+     <!--   @media (max-width : 400px) {
+        .custom-background .small-device {
+        width:50%;
+        }
+        }
+        
+        @media (max-device-width : 414px) {
+       .custom-background .small-device {
+        width:50%;
+        }
+        } -->
+        
+        .custom-background .horizontal {
+        
+       <!-- border-style: solid; -->
+        border-color: white;
+        border-width: 1px 0 0 0;
+        margin-left: 0px;
+        margin-top: 15px;
+        <!-- margin-top: 0px; -->
+        
+        }
+   
+        
+        
+        .custom-background .maintenace-content {
+            background: linear-gradient(to right, #414345, #232526);
+            margin: 15rem 8rem 10rem 8rem;
+            padding: 1rem;
+            opacity:0.9;
+            border-radius:6px;
+            font-family: Raleway !important;
+            width: 80% !important
+        }
+        
+        .custom-background .change-password-content {
+            padding:1em;
+            text-align: left;
+            min-width: 280px;
+            max-width: 430px;
+            margin: auto;
+            display: inline-block;
+            position: relative;
+            font-family: Raleway !important;
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.8);
+            text-decoration: none;
+            vertical-align: middle;
+            z-index: 0;
+            background: #232526;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            opacity:0.9;
+            border-radius:6px;
+            margin-top: 14%;
+            margin-bottom: 4rem!important;
+        }
+        
+        .custom-background .footer-content {
+        
+            background: #232526;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            opacity:0.9;
+            padding:1.2rem; 
+            color:white !important; 
+            
+        }
+        
+        .custom-background a{
+          <!--  color:white !important; -->
+        }
+        
+        .custom-background .subheadingText{
+            color: #36b2c1;
+            font-size:17px;
+            
+        }
+        
+        .custom-background .footerleft {
+          padding-right: 2rem!important;
+         <!-- margin-right:10px!important;
+          padding-right:60px!important;  -->
+        }
+        
+        .custom-background .submit-button {
+            background: transparent !important;
+            padding: .5rem !important;
+            border: 1px solid lightgrey !important;
+            border-radius: 4px !important;
+            color: #36b2c1 !important;
+        }
+        
+        .custom-background .change-password-button {
+        
+            width: 100%;
+            margin-top: 12px;
+            margin-bottom: 5px;
+            background-color: #0070d2;
+            border-color: #357ebd;
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            background-image: none;
+            border: none !important;
+            white-space: nowrap;
+            padding: 8px 10px;
+            font-weight: bold !important;
+            font-size: 18px !important;
+            color: white !important;
+            font-family:Raleway !important;
+            border-radius: 8px!important;
+        }
+        
+        .slds-scope {
+            font-family: 'Raleway' !important;
+                
+        }
+        
+        .custom-background .fixed-header {
+            width: 100%;
+            position: fixed;
+            z-index: 5;
+            top: 0;
+        }
+        
+        .custom-background support-phone a:hover {
+            text-decoration:none !important;
+        }
+        
+        
+        
+      <!--  
+        .custom-background .slds-m-top--medium {
+        
+        font-size:15px !important;
+        /*margin-right: -260px !important;
+        margin-right: -200px;*/
+
+        }
+        
+        .custom-background .slds-m-top_medium{
+        margin-right: -100px;
+        }
+        
+        .custom-background .slds-grid slds-wrap{
+        padding-left:0px;
+        }
+        
+        .custom-background .vertical {
+        border-left:1px solid lightgrey;
+        padding-left:15px;
+        }
+        
+        .custom-background .textalign {
+        color: #36b2c1;
+        font-size:17px;
+        padding-left:0px;
+        }
+ 
+        .custom-background .Padding-right {
+        padding-right:0px;
+        }
+             
+        .custom-background .Padding-left1 {
+        padding-left:50px;
+        padding-left:3rem !important;
+        }
+ 
+        -->
+    </style>
+    
+    <apex:form >
+        
+        <div class="custom-background" style="{!if(uiInstance.Type__c == 'Background Color', ('background-color:' + uiInstance.Value__c), ('background: url(' + imageURLMap['backgroundImageURL'] + ') 50% 50%/cover no-repeat fixed #f4f4f4;background-color'))}">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-size_1-of-1 fixed-header " style="postion:inherit;height:6rem;position:absolute;top:0px;left:0rem;">
+                    <c:SFSPortal_unauthenticatedHeader uiInstance="{!uiInstance}" imageURLMap="{!imageURLMap}"/><br /><br /><br /><br />
+                    <!-- <img src="{!imageURLMap['companyLogoURL']}"/> -->
+                </div><br /><br /><br /><br />
+                <div class="{! 'slds-size_10-of-12 slds-small-size_12-of-12 ' + (if(actionType == 'InMaintenance', 'maintenace-content', 'change-password-content'))} ">
+                    <apex:outputPanel rendered="{!actionType == 'InMaintenance'}">
+                        <div >
+                            <p style="color:darkblue;font-size:22px;text-align:center">We apologize, but our website is down for routine site maintenance. <br />
+                                It will be back up very shortly
+                            </p>
+                            <br />
+                            <br />
+                            <p style="color:darkblue;font-size:22px;text-align:center">For urgent request, 
+                                please <a href="{!'tel:' + portfolioInstance.Support_Phone_Number__c}" style="font-size:22px !important;"> call us </a> or send us <a href="{!'mailto:' + portfolioInstance.Support_Email__c}" style="font-size:22px !important;"> an email </a>, <br />
+                                and we will be happy to assist you
+                            </p>
+                            
+                        </div>
+                    </apex:outputPanel>
+                   
+                        
+                   
+                    <apex:outputPanel rendered="{!actionType == 'ChangePassword'}" id="changePasswordModal" >
+                       <!-- <div class="slds-col slds-size_1-of-1 footer-content" style="width:30em;height:30em; position:relative;margin-left: -14em;left: 50%;opacity: 0.9; {!'background-color:' + (if(uiInstance.Footer_Background_Color__c != null, uiInstance.Footer_Background_Color__c, '#414345')) 
+                            + ' !important;color:' + (if(uiInstance.Footer_Text_Color__c != null, uiInstance.Footer_Text_Color__c,'white ')) +' !important' }"> -->
+                        <div class="">
+                            
+                          
+                        <span class="slds-p-around_small" >
+                               <div style="text-align:center">
+                                   <span style="color:orange;font-size:22px;">Change Password </span>
+                               </div>
+                                <div style="color:white;font-size:18px;" class="slds-p-top_medium"> 
+                                   <div>
+                                     <!--   <p style="color:orange;">&nbsp;&nbsp;&nbsp;*Password must contain a mix of alpha and numeric &amp; characters &amp; the length should be at-least 8 characters. </p>-->
+                                     <p style="color:orange;text-align:center">&nbsp;&nbsp;&nbsp;Your password must be at least 8 characters, &nbsp;&nbsp;&nbsp;contain uppercase, lowercase, and a number. </p>
+                                    </div>
+                                    
+                                    <div style="text-align:center;">
+                                        <h4 style="color:white;background:red;"> {!exceptionText} 
+                                        </h4>
+                                    </div>
+                                    
+                                    <div class="slds-form-element slds-m-around_small">
+                                        <span style="font-weight: bold;"> New Password  </span>
+                                        <div class="slds-form-element__control">
+                                            <apex:inputSecret value="{!passwordString}" styleClass="slds-input" style="line-height: 2.2rem;border-radius: 1rem;color: black;" />
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="slds-form-element slds-p-top_medium slds-m-around_small">
+                                        <span style="font-weight: bold;" >Confirm New Password</span>
+                                        <div class="slds-form-element__control">
+                                            <apex:inputSecret value="{!confirmPasswordString}" styleClass="slds-input" style="line-height: 2.2rem;border-radius: 1rem;color: black;" />
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    
+                                </div>
+                            </span>
+                            
+                            <div align="center">
+                                <button class="slds-m-top_large change-password-button" style="border-radius: 50px;width:90%;height: 40px;{!'background-color:' + uiInstance.Action_Button_Color__c}" type="button" onclick="changeUserPasssword()">Change Password</button>
+                            </div>
+                        </div>
+                    </apex:outputPanel>
+                      
+                    <br /><br /><br /><br />
+                </div>
+                <!-- Footer -->
+                <div class="slds-col slds-size_1-of-1 footer-content" style=" {!'background-color:' + (if(uiInstance.Footer_Background_Color__c != null, uiInstance.Footer_Background_Color__c, '#414345')) 
+                            + ' !important;color:' + (if(uiInstance.Footer_Text_Color__c != null, uiInstance.Footer_Text_Color__c,'white ')) +' !important' }">
+                   
+               <!--  <div class="slds-grid slds-wrap" style="margin:40px;">  --> 
+                     <div class="slds-grid slds-wrap" style="margin:0px;">
+                 <div class="slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_2-of-12 slds-large-size_2-of-12">
+
+                 <!--  <div  size="12" class="col-md-2 slds-p-bottom_x-small" smallDeviceSize="12" mediumDeviceSize="2" largeDeviceSize="2" style="float:left">  -->
+   
+                    <div class="slds-form-element slds-m-top_medium slds-p-top_large">
+                                        <h3 class="subheadingText " style="font-family: Raleway;font-size: 21px;margin-bottom:0px;color:darkblue;">Business Hours</h3>
+                                        
+                                        <div class=" slds-grid slds-wrap ">
+                                            <!--============================================================================================= --> 
+                                            <div class="{!if((footerLinkList != null && footerLinkList.size > 0), 'slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_12-of-12 slds-m-top_medium', 'slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_12-of-12 slds-m-top_medium')}">
+                                                <div class="slds-form-element ">
+                                                    <p><b style="font-family: Raleway;font-size: 18px;font-color: #ffffff;margin-bottom:0px;font-weight: bold;">Monday-Friday</b></p>
+                                                    <div class="slds-form-element__control" style="padding-bottom:25px">
+                                                        <p style="padding-top:0px;font-family: Raleway;font-size: 21px;color:darkblue;">{!portfolioInstance.Business_Hours__c}</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="slds-form-element ">
+                                                    <p style="padding-bottom:0px;font-size:21px; font-family:Raleway;font-weight: bold;">Phone</p>
+                                                    <div class="slds-form-element__control" style="padding-bottom:20px;font-family: Raleway;font-size: 21px;color:darkblue;">
+                                                        <span class="slds-p-left_xx-small support-phone">
+                                                            {!portfolioInstance.Support_Phone_Number__c}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="slds-form-element ">
+                                                    <p style="padding-bottom:0px;font-size:21px; font-family:Raleway;font-weight: bold;">Fax</p>
+                                                    <div class="slds-form-element__control" style="font-family: Raleway;font-size: 21px;color:darkblue;">
+                                                        <span class="slds-p-left_xx-small support-phone">
+                                                           {!portfolioInstance.Support_Fax_Number__c}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                          </div>
+                                       </div>                                           
+                    
+                                     </div>
+                                        
+                     <!--============================================================================================= --> 
+                     
+                <div class="slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_10-of-12 slds-large-size_10-of-12 ">
+  
+                  <!-- <div class= "col-md-10" size="10" smallDeviceSize="12" mediumDeviceSize="10" largeDeviceSize="10" style="float:right"> -->
+                    <div style="padding-left: 0px;"> 
+                     <div class="Padding-left"> 
+                             
+                        <div class=" slds-wrap">
+                         <!--   <div size="10" smallDeviceSize="12"> -->
+                                <div class= "col-md-10" size="10" smallDeviceSize="12" mediumDeviceSize="10" largeDeviceSize="10">
+
+                                        <div class="slds-grid slds-wrap " style="padding-bottom:0px;">
+                                            
+                                             <!--   <div class="slds-col slds-p-top_xx-large" style="text-align:left;padding-bottom: 25px;width:60%; "> -->
+                                            <div class="slds-col slds-p-top_xx-large" style="text-align:left;padding-bottom: 30px;width:25%; ">
+                                                
+                                                   <span>
+                                                      <apex:outputPanel rendered="{!portfolioInstance.Facebook_URL__c != null}">
+                                                      <a class="slds-m-left_medium" href="{!portfolioInstance.Facebook_URL__c}" target="_blank" style="margin-left:0px" >
+                                                          <apex:image url="{!$Resource.facebookLogo}" width="40" height="40"/>
+                                                         <!-- Facebook   <i style="color:white; font-size:36px; text-align: center;display: inline-block;"  class="fa fa-facebook-square" title="Facebook"></i> -->
+                                                     </a>
+                                                      </apex:outputPanel>
+                                                       
+                                                       <apex:outputPanel rendered="{!portfolioInstance.Linkedin_URL__c != null}">
+                                                       <a class="slds-m-left_medium" href="{!portfolioInstance.Linkedin_URL__c}" target="_blank" > 
+                                                          <apex:image url="{!$Resource.linkedInLogo}" width="40" height="40"/>  
+                                                          <!--LinkedIn <i style="color:white; font-size:36px;text-align: center;display: inline-block; margin-left: -0px;" class="fa fa-linkedin-square" title="LinkedIn"></i> -->
+                                                      </a>
+                                                       </apex:outputPanel>
+                                                      
+                                                   </span>
+                                                </div>
+                                         <!--  <div style="width:36%"> -->
+                                                 <div class= "col-md-10" size="10" smallDeviceSize="12" mediumDeviceSize="10" largeDeviceSize="10">
+                                            <!--    <div   class="slds-col" style="float:left; padding-top:0px;width:56%;text-align:right;"> -->
+                                                    <div   class="slds-col slds-wrap " style="float:left; padding-top:0px;width:45%;text-align:right;">
+                                                    
+                                                    <!--  <div style="text-align:center;" class="slds-p-top_medium"> -->
+                                                    <p style="font-size:14px;margin-top:45px;margin-left:-50px;">{!portfolioInstance.Footer_Name__c}.<br/> All rights reserved</p>
+                                                    </div>
+                                            <!--    <div class="slds-col" style="float:right;width:35%;"> -->
+                                                     <div class="slds-col slds-wrap" style="float:right;width:55%;">
+                                                        <span>
+                                                       <!-- <h2><img src="{!imageURLMap['companyLogoURL']}" style="width:150px;margin-top:45px;"/></h2> -->
+                                                        <h2><img src="{!imageURLMap['companyLogoURL']}" style="width:152px;margin-top:5px; margin-left: 15px;float:right;"/></h2>
+                                                        </span>  
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            </div>
+                                         </div>
+                                       </div>
+                                    </div>
+                              <div style="border-style: solid; border-color: white; border-width: 1px 0 0 0;">
+                                  
+                              </div >
+                                                <p class="horizontal slds-p-bottom_small"/>
+                                                <p style="text-align: justify;font-size:14px;margin-top: 0px;" class="sourceFont">
+                                                   {!portfolioInstance.Footer_Contact_Content__c} </p>
+                                                <p>
+                                                  <!--  {!footerLinkList} -->
+                                                </p> 
+                    
+                    <div class="slds-grid slds-wrap">
+                        
+                       
+                      <!--============================================================================================= -->   
+                        <div class="slds-size_10-of-12 slds-small-size_12-of-12 slds-medium-size_10-of-12 slds-large-size_10-of-12 ">
+                            <div > 
+                                
+                                <div class="slds-grid slds-wrap">
+                                   
+                                    
+                                    <!--============================================================================================= --> 
+                                    <div class="{!if((footerLinkList != null && footerLinkList.size > 0), 'slds-size_10-of-12 slds-small-size_10-of-12 slds-medium-size_6-of-12 slds-large-size_6-of-12 ', 'slds-hide')}">
+                                        <div class=" slds-grid slds-wrap" style="padding-top: 25px;color:darkblue;">
+                                            <apex:repeat value="{!footerLinkList}" var="footerLink"> 
+                                                <div class="slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_4-of-12 slds-m-top_medium" style="width: 49.333333%;">
+                                                    <apex:outputPanel rendered="{!footerLink.Article_Label__c == 'Contact Us'}">
+                                                        <div>
+                                                            <a href="{!'mailto:' + portfolioInstance.Support_Email__c}" >Contact Us</a>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!footerLink.Article_Label__c != 'Contact Us'}">
+                                                        <div>
+                                                            <a  style="text-decoration: underline; font-family:Times New Roman, Times, serif;font-size:14px;color:darkblue;" href="{!footerLink.Article_URL__c}" target="__blank">{!footerLink.Article_Label__c}</a>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </div>
+                                            </apex:repeat>
+                                        </div>
+                                    </div>
+                                  <!--============================================================================================= -->   
+                                    
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                       </div>
+                    <!--</div>-->
+                    
+                </div>
+            </div>    
+        </div>
+        
+        <apex:actionFunction action="{!changeUserPasssword}" name="changeUserPasssword" reRender="changePasswordModal"/>
+        </div> 
+    </apex:form>
+</apex:component>

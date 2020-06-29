@@ -1,0 +1,118 @@
+<apex:component controller="CreditorComponentController">
+    <apex:attribute name="recordId" type="String" description="Parent Program Id" required="true" />
+    
+    <apex:slds />
+    
+    <style>
+        .creditor-active {
+            background-color: #11FF55;
+        }
+        
+        .creditor-inactive {
+            background-color: #FFFF22;
+        }
+        
+        .creditor-panel {
+        
+        }
+        
+        .creditor-item {
+            color: #000;
+            width: 100%;
+            height: 50px;
+            padding-left: 10px;
+            line-height: 50px;
+        }
+        
+        .creditor-button {
+            margin: 8px !important;
+            float: right;
+        }
+    </style>
+    
+    <table class="slds-table slds-table_bordered slds-table_fixed-layout">
+        <thead>
+            <tr>
+                <th>Tradeline name</th>
+                <th>Original creditor</th>
+                <th>Original account number</th>
+                <th>New creditor</th>
+                <th>New account number</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="creditorPanel" class="creditor-panel">
+            
+        </tbody>
+    </table>
+    <!--<div id="creditorPanel" class="creditor-panel">
+        
+    </div>-->
+    
+    <script>
+        (function() {
+        
+            var activeClass = 'creditor-item creditor-active';
+            var inactiveCalss = 'creditor-item creditor-inactive';
+        
+            function init() {
+                CreditorComponentController.getCreditors('{!recordId}', function(response, event) {
+                    if(event) {
+                        console.log('CreditorComponentController', response);
+                        renderCreditorPanel(response);
+                    } else {
+                        console.log('CreditorComponentController Error!', event);
+                    }
+                });
+            }
+            
+            function renderCreditorPanel(creditorList) {
+                var markup = '';
+                var creditorPanel = document.getElementById('creditorPanel');
+                if(creditorPanel) {
+                    
+                    if(creditorList.length > 0) {
+                    
+                        for(var i = 0; i < creditorList.length; i++) {
+                            markup += renderCreditorItem(creditorList[i]);
+                        }
+                    } else {
+                        
+                        markup = '<tr><td style="Text-align:Center" colspan="6">No Creditor(s) Found</td></tr>';
+                    }
+                }
+                
+                creditorPanel.innerHTML = markup;
+            }
+            
+            function renderCreditorItem(creditor) {
+               var markup = '';
+               if(creditor) {
+                   var colorClass = inactiveCalss;
+                   
+                   if(creditor.verified) {
+                       colorClass = activeClass;
+                   }
+               
+                   markup = '<tr class="' + colorClass + '"><td>' + creditor.name + '</td><td>' + creditor.originalCreditor + '</td><td>' + creditor.originalAccountNum + '</td><td>' + creditor.newCreditor + '</td><td>' + creditor.newAccountNumber + '</td><td><button type="button" class="slds-button slds-button--brand slds-m-right_xx-small creditor-button" onclick="openTradeline(\''  + creditor.recordId +'\'); return false; ">View Tradeline</button> </td></tr>'
+                   
+               } 
+               
+               return markup;
+            }
+            
+            init();
+            
+        })();
+        
+        
+        window.openTradeline = function(tradelineId) {
+            if(tradelineId) {
+               window.open('/' + tradelineId, '_blank');
+            }
+             
+            return false; 
+        }
+    </script>
+    
+</apex:component>

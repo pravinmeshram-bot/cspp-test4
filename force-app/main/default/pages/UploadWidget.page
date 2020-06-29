@@ -1,0 +1,8 @@
+<apex:page controller="BoxFiles" showHeader="false" sidebar="false">
+<style>
+header {
+    display:none !important;
+}
+</style>
+ <!-- <script src="{!UploadWidgetLink}" type="text/javascript"></script> -->
+</apex:page>

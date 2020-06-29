@@ -1,0 +1,77 @@
+<apex:component controller="PaymentAggregationController">
+    <apex:attribute name="recordId" assignTo="{!programId}" type="String" description="Parent record Id" required="true" />
+    <apex:slds />
+    
+    <head>
+        <style>
+            .slds-scope .slds-box {
+                border: 0;
+            }
+            .nudebt-section-header-primary {
+                background: rgb(34,54,117) !important;
+            }
+            .font-color-white {
+                color: white;
+            }
+            
+            .column {
+                width: 20%;
+            }
+            .bold-text {
+                font-weight: bold;
+            }
+            
+            .highlighter {
+                background-color: #ececec !important;
+            }
+        </style>
+    </head>
+    
+    <apex:form >
+        <div class="slds-scope">            
+            <div class="slds-card nudebt-section-header-primary">
+                <div class="slds-card__header slds-grid">
+                    <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                        <h2>
+                            <span class="slds-text-heading--small font-color-white" >Payment Aggregation</span>
+                        </h2>
+                    </header>
+                </div>
+                <div class="slds-card__body slds-panel">
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+                        <thead >
+                            <apex:repeat value="{!paymentHeadingList}" var="paymentHeading">   
+                                <th class="slds-text-title_caps highlighter" scope="col">
+                                    <apex:outputLabel value="{!paymentHeading}" styleClass="bold-text"></apex:outputLabel>  
+                                </th>
+                            </apex:repeat>
+                        </thead>
+                        <tbody>
+                        <apex:outputPanel rendered="{!program.size > 0}">
+                            <apex:repeat value="{!program}" var="program">
+                                <apex:repeat value="{!paymentTypeList}" var="paymentType">
+                                    <tr>
+                                        <td class="column highlighter">
+                                            <span class="bold-text">
+                                                {!paymentType}
+                                            </span>
+                                        </td>
+                                        <apex:repeat value="{!paymentAggregationMap[paymentType]}" var="paymentAggregationFields">
+                                            <td>
+                                                <apex:outputField styleClass="slds-input" value="{!program[paymentAggregationFields]}"/>
+                                            </td>
+                                        </apex:repeat>
+                                    </tr>
+                                </apex:repeat>
+                            </apex:repeat>                        
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!program.size <= 0}">
+                            <span class="slds-align_absolute-center">No Records to Display</span>
+                        </apex:outputPanel>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </apex:form>
+</apex:component>

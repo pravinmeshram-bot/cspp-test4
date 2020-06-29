@@ -1,0 +1,25 @@
+<aura:component controller="ManageRecordAllocationController">
+    <aura:attribute name="user" type="User" required="true" description="Instance of a user record"/>
+    
+    <div class="slds-grid slds-p-vertical_x-small slds-p-horizontal_small slds-border_bottom">
+        <div class="slds-media slds-media_center slds-has-flexi-truncate">
+            <div class="slds-media__figure slds-align_top">
+                <lightning:icon iconName="standard:user" alternativeText="User" size="small"/>
+            </div>
+            <div class="slds-media__body slds-align_top">
+                <h2 class="slds-card__header-title slds-truncate">
+                    <span class="slds-text-body_regular" style="font-weight: 600 !important;">{!v.user.Name}</span>
+                </h2>
+                <p class="slds-text-color_weak" style="font-size: 10px;">{!v.user.Username}</p>
+            </div>
+        </div>
+        <div class="slds-no-flex slds-align_top">
+            <lightning:input aura:id="roundRobinAllocFlag" type="toggle" label="Round-Robin Allocation"
+                             name="roundRobinAllocFlag" onchange="{!c.onToggleRoundRobinFlag}"
+                             checked="{!v.user.IsRoundRobinAllocationEnabled__c}" 
+                             messageToggleActive="Enabled" 
+                             messageToggleInactive="Disabled"/>
+        </div>
+    </div>
+	
+</aura:component>

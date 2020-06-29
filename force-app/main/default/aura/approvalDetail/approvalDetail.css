@@ -1,0 +1,209 @@
+@font-face {
+    font-family: NotoSansKR-Bold;
+    src: url("/s/sfsites/c/resource/NewCustomFont_1/NotoSansKR-Bold.otf");
+}
+@font-face {
+    font-family: NotoSans-Regular;
+    src: url("/s/sfsites/c/resource/CustomFonts_V2/Noto_Sans/NotoSans-Regular.ttf");
+}
+@font-face {
+    font-family: NotoSansKR-Regular;
+    src: url("/s/sfsites/c/resource/CustomFonts_V2/Noto_Sans_KR/NotoSansKR-Regular.otf");
+}
+.THIS .modalContentCls {
+    font-family: NotoSans-Regular !important;
+}
+.THIS {
+    background:whitesmoke !important;
+    border-color:whitesmoke !important;
+}
+
+.THIS .slds-card__header {
+    padding: .2rem 1rem 0;
+    margin: 0 0 .2rem;
+}
+
+.THIS .slds-card__body {
+    margin-bottom: 0px !important;
+}
+.THIS .horizontalLine {
+    margin: 1px !important;
+    border-top: 1px solid rgb(233, 234, 236) !important;
+}
+.THIS .slds-modal__footer {
+    text-align:center;
+}
+.THIS .sldsbutton {
+    border-color: darkgray;
+    width: 10rem;
+    border-width: 1px;
+    font-family: NotoSansKR-Medium !important;
+    font-size:23px
+}
+/* 
+##Device = Desktops
+##Screen = 1281px to higher resolution desktops
+*/
+@media (min-width: 1280px) {
+    .THIS .custom-close_button{
+        position: fixed; 
+        left: 95%;
+    }
+}
+/* 
+##Device = Laptops, Desktops
+##Screen = B/w 1025px to 1280px
+*/
+@media (min-width: 1025px) and (max-width: 1279px) {
+    .THIS .custom-close_button{
+        position: fixed; 
+        left: 95%;
+    }
+}
+/* 
+##Device = Tablets, Ipads (portrait)
+##Screen = B/w 768px to 1024px
+*/
+@media (min-width: 768px) and (max-width: 1024px) {
+    .THIS .custom-close_button{
+        position: relative; 
+        left: 95%;
+    }
+    .THIS .slds-modal__container{
+        width: auto !important;
+    }
+}
+/* 
+##Device = Tablets, Ipads (landscape)
+##Screen = B/w 768px to 1024px
+*/
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    .THIS .custom-close_button{
+        position: relative; 
+        left: 85%;
+    }
+}
+@media (max-width: 320px) {
+    .THIS .custom-title_text {
+        font-size: 20px !important;
+    }
+}
+@media (min-width: 321px) and (max-width: 568px){
+    .THIS .custom-title_text {
+        font-size: 22px !important;
+    }
+    
+    .THIS .custom-close_button{
+        position: relative; 
+        left: 85%;
+    }
+}
+
+/* 
+##Device = Low Resolution Tablets, Mobiles (Landscape), Most of the Smartphones Mobiles (Portrait)
+##Screen = B/w 375px to 812px
+*/
+@media (min-width: 375px) and (max-width: 812px) {
+    .THIS .custom-close_button{
+        position: relative; 
+        left: 85%;
+    }
+    .THIS .custom-title_text {
+        font-size: 24px !important;
+    }
+}
+
+.THIS .slds-modal__content:last-child{
+    box-shadow:none !important;
+}
+.THIS .slds-modal__footer {
+    padding:0rem;
+    border-top:0px;
+}
+.THIS .slds-modal__header {
+    padding:0rem;
+    border-bottom:0px;
+}
+.THIS .slds-modal__content {
+    background: linear-gradient(to top, #ffffff -50%, #d7d7d7 200%);
+    text-align: right !important;
+    font-family: NotoSans-Regular;
+    font-size: 16px;
+    color: #000000;
+}
+
+.THIS .b1{
+    margin-top:1rem;
+    background-color: #ffffff !important;
+    color:black;
+    padding-left:4rem;
+    padding-right:1rem;
+    padding-top:0.2rem;
+    padding-bottom:0.2rem;
+    text-align: center !important;
+    border-radius: 5px;
+    border-color:black !important;
+    font-family: NotoSansKR-Regular !important;
+}
+
+.THIS .b1:hover{
+    border-color:#282828 !important;
+    background-color:#ff9666 !important;
+    filter: invert(1);}
+
+.THIS .iconColor{
+    text-align:right !important;
+    background:#ffffff;
+    color:black;
+    border-radius: 5px;
+    border: 1px solid rgb(217, 219, 221);
+}
+.THIS .slds-icon {
+    fill: black;
+}
+@media (max-width: 900px) and (min-width: 768px){
+    .THIS .slds-modal__content {
+        margin-left: 120px;
+        text-align:center;
+    }
+    .THIS .iconColor{
+        text-align:right !important;
+        background-image: linear-gradient( 90deg, #ffffff, #d7d7d7); 
+        color:black;
+        border-radius: 5px;
+        border: 1px solid rgb(217, 219, 221);
+    }
+}
+@media (max-width: 767px) and (min-width: 320px){
+    .THIS .slds-modal__content {
+        margin-left: 30px;
+        margin-right: 30px;
+        text-align:center;
+    }
+    .THIS .iconColor{
+        text-align:right !important;
+        background:#ffffff;
+        color:black;
+        border-radius: 5px;
+        border: 1px solid rgb(217, 219, 221);
+    }
+}
+.THIS .slds-button_neutral, .THIS .b3{
+    padding-left: 0.7 rem !important;
+    padding-right: 0.7 rem !important;
+}
+.THIS .b3{
+    background-color:#ffffff;
+    border-radius: 5px;
+    border-color:black !important;
+    padding-bottom: 9px;
+    padding-top: 9px;
+    padding-left: 9px;
+    padding-right: 9px;
+    font-family: NotoSansKR-Regular !important;
+}
+.THIS .b3:hover{
+    border-color:#282828 !important;
+    background-color:#ff9666 !important;
+    filter: invert(1);
+}

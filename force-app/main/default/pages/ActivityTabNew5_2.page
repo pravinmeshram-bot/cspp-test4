@@ -1,0 +1,2098 @@
+<apex:page controller="testVFClass2" showHeader="False" sidebar="false" docType="HTML-5.0">
+    
+    <apex:form id="thePage">
+    <apex:param name="recordId"  assignTo="{!vfParam}" value="recordId" />
+    
+    <!-- Jquery -->  
+    <apex:includeScript value="//code.jquery.com/jquery-1.11.3.min.js" />  
+    <apex:stylesheet value="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css" />  
+    <!-- DataTable -->  
+    <apex:includeScript value="//cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js" />  
+    <apex:stylesheet value="//cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css" />  
+    <!-- Search Highlight -->  
+    <apex:includeScript value="//bartaz.github.io/sandbox.js/jquery.highlight.js" />  
+    <apex:includeScript value="//cdn.datatables.net/plug-ins/1.10.9/features/searchHighlight/dataTables.searchHighlight.min.js" />  
+    <apex:stylesheet value="//cdn.datatables.net/plug-ins/1.10.9/features/searchHighlight/dataTables.searchHighlight.css" />  
+    
+    <!--CSS-->
+    <style type="text/css">
+        .field-style {
+        border: 1px solid rgb(221, 219, 218)!important;
+        border-radius: .25rem!important; 
+        height: 2rem;
+        width: 16rem;
+         resize:vertical;
+        }
+        .datePicker {
+        z-index: 9001;
+         <!-- position: fixed;-->
+        }
+        .myClass {
+            color:white !important;
+            background: Green !important;
+            float: right;
+            
+        }
+        .dataTables_length {
+        padding-bottom:15px;
+        
+        }
+        .mainTitle {
+        color: #f3f3ec !important;
+        }
+        .pbHeader {
+        background: #16325c !important;
+        }
+        
+        /* toast message css */
+        .required-true.fieldRequired, .required-true.error {
+        border: 2px solid rgb(255, 1, 13) !important;
+        }
+        
+        .requiredInput .errorMsg {
+        display: none !important;
+        }
+        .slds-scope .slds-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+        }
+        .slds-scope .slds-button__icon--stateful, .slds-scope .slds-button__icon_stateful {                
+        width: 1rem !important;
+        height: 1rem !important;
+        }
+        .required-true {            
+        border-left-color: red !important;
+        border-left-width: medium !important;
+        }
+        .messageClass-error {
+        
+        background-color : rgb(194, 57, 52) !important;
+        color : white !important;
+        }
+        
+        .messageClass-success {
+        
+        background-color : green !important;
+        color : white !important;
+        }
+        
+        .messageClass {
+        
+        background-color : black !important;
+        }
+        
+        /* End of toast message css */
+        
+    </style>
+    <script type="text/javascript">  
+    
+    var j$ = jQuery.noConflict();
+    
+    j$(document).ready(function() {
+        
+        documentReady();
+    });  
+    j$.fn.dataTableExt.oApi.fnFilterAll = function(oSettings, sInput, iColumn, bRegex, bSmart) {  
+        
+        var settings = j$.fn.dataTableSettings;  
+        for (var i = 0; i < settings.length; i++) { 
+            
+            settings[i].oInstance.fnFilter(sInput, iColumn, bRegex, bSmart);  
+        }  
+    };  
+    
+    function documentReady() {
+        
+        var casesTable1 = j$('[cid$="casesTable1"]').parent('table').eq(0).DataTable({  
+            
+            //enables results highlight  
+            searchHighlight: true,  
+            
+            //sets record lengths to show in picklist  
+            aLengthMenu: [  
+                [5,10, 25, 50, 100],  
+                [5,10, 25, 50, 100]  
+            ], 
+            
+            "iDisplayLength": 5,  
+            
+            //adds copy, print buttons...  
+            dom: 'lBrtip', //l=length, B=buttons, f=filter(search), r=processing, t=the table, I=table summary, p=page controls  
+            buttons: [],  
+        });
+        
+        var casesTable2 = j$('[cid$="casesTable2"]').parent('table').eq(0).DataTable({  
+            
+            //enables results highlight  
+            searchHighlight: true,  
+            
+            //sets record lengths to show in picklist  
+            aLengthMenu: [  
+                [5,10, 25, 50, 100],  
+                [5,10, 25, 50, 100]
+            ],  
+            
+            "iDisplayLength": 5,  
+            
+            //adds copy, print buttons...  
+            dom: 'lBrtip', //l=length, B=buttons, f=filter(search), r=processing, t=the table, I=table summary, p=page controls  
+            buttons: [],  
+        });  
+        
+        var casesTable2 = j$('[cid$="casesTable3"]').parent('table').eq(0).DataTable({  
+            
+            //enables results highlight  
+            searchHighlight: true,  
+            
+            //sets record lengths to show in picklist  
+            aLengthMenu: [  
+                [5,10, 25, 50, 100],  
+                [5,10, 25, 50, 100]  
+            ],  
+            
+            "iDisplayLength": 5,  
+            
+            //adds copy, print buttons...  
+            dom: 'lBrtip', //l=length, B=buttons, f=filter(search), r=processing, t=the table, I=table summary, p=page controls  
+            buttons: [],  
+        });  
+        
+        var casesTable2 = j$('[cid$="casesTable4"]').parent('table').eq(0).DataTable({  
+            
+            //enables results highlight  
+            searchHighlight: true,  
+            
+            //sets record lengths to show in picklist  
+            aLengthMenu: [  
+                [5,10, 25, 50, 100],  
+                [5,10, 25, 50, 100]  
+            ],  
+            
+            "iDisplayLength": 5,  
+            
+            //adds copy, print buttons...  
+            dom: 'lBrtip', //l=length, B=buttons, f=filter(search), r=processing, t=the table, I=table summary, p=page controls  
+            buttons: [],  
+        });  
+        
+        var casesTable2 = j$('[cid$="casesTable5"]').parent('table').eq(0).DataTable({  
+            
+            //enables results highlight  
+            searchHighlight: true,  
+            
+            //sets record lengths to show in picklist  
+            aLengthMenu: [  
+                 [5,10, 25, 50, 100],  
+                [5,10, 25, 50, 100]  
+            ],  
+            
+            "iDisplayLength": 5,  
+            
+            //adds copy, print buttons...  
+            dom: 'lBrtip', //l=length, B=buttons, f=filter(search), r=processing, t=the table, I=table summary, p=page controls  
+            buttons: [],  
+        });  
+        
+        var casesTable2 = j$('[cid$="casesTable6"]').parent('table').eq(0).DataTable({  
+            
+            //enables results highlight  
+            searchHighlight: true,  
+            
+            //sets record lengths to show in picklist  
+            aLengthMenu: [  
+                 [5,10, 25, 50, 100],  
+                [5,10, 25, 50, 100]  
+            ],  
+            
+            "iDisplayLength": 5,  
+            
+            //adds copy, print buttons...  
+            dom: 'lBrtip', //l=length, B=buttons, f=filter(search), r=processing, t=the table, I=table summary, p=page controls  
+            buttons: [],  
+        });  
+        
+        var casesTable2 = j$('[cid$="casesTable7"]').parent('table').eq(0).DataTable({  
+            
+            //enables results highlight  
+            searchHighlight: true,  
+            
+            //sets record lengths to show in picklist  
+            aLengthMenu: [  
+                 [5,10, 25, 50, 100],  
+                [5,10, 25, 50, 100]  
+            ],  
+            
+            "iDisplayLength": 5,  
+            
+            //adds copy, print buttons...  
+            dom: 'lBrtip', //l=length, B=buttons, f=filter(search), r=processing, t=the table, I=table summary, p=page controls  
+            buttons: [],  
+        });  
+        
+        var casesTable2 = j$('[cid$="casesTable8"]').parent('table').eq(0).DataTable({  
+            
+            //enables results highlight  
+            searchHighlight: true,  
+            
+            //sets record lengths to show in picklist  
+            aLengthMenu: [  
+                 [5,10, 25, 50, 100],  
+                [5,10, 25, 50, 100] 
+            ],  
+            
+            "iDisplayLength": 5,  
+            
+            //adds copy, print buttons...  
+            dom: 'lBrtip', //l=length, B=buttons, f=filter(search), r=processing, t=the table, I=table summary, p=page controls  
+            buttons: [],  
+        });  
+        
+        var casesTable2 = j$('[cid$="casesTable9"]').parent('table').eq(0).DataTable({  
+            
+            //enables results highlight  
+            searchHighlight: true,  
+            
+            //sets record lengths to show in picklist  
+            aLengthMenu: [  
+                 [5,10, 25, 50, 100],  
+                [5,10, 25, 50, 100]
+            ],  
+            
+            "iDisplayLength": 5,  
+            
+            //adds copy, print buttons...  
+            dom: 'lBrtip', //l=length, B=buttons, f=filter(search), r=processing, t=the table, I=table summary, p=page controls  
+            buttons: [],  
+        });  
+        
+        var casesTable2 = j$('[cid$="casesTable10"]').parent('table').eq(0).DataTable({  
+            
+            //enables results highlight  
+            searchHighlight: true,  
+            
+            //sets record lengths to show in picklist  
+            aLengthMenu: [  
+                 [5,10, 25, 50, 100],  
+                [5,10, 25, 50, 100]  
+            ],  
+            
+            "iDisplayLength": 5,  
+            
+            //adds copy, print buttons...  
+            dom: 'lBrtip', //l=length, B=buttons, f=filter(search), r=processing, t=the table, I=table summary, p=page controls  
+            buttons: [],  
+        });  
+        
+        j$("#table1, #table2, #table3, #table4, #table5").dataTable({  
+            
+            "bPaginate": false, 
+        });
+        
+        var oTable0 = j$("#table1, #table2, #table3, #table4, #table5, #table6, #table7, #table8, #table9, #table10").dataTable();  
+        j$("#Search_All1, #Search_All2, #Search_All3, #Search_All4, #Search_All5, #Search_All6, #Search_All7, #Search_All8, #Search_All9, #Search_All10").keyup(function() { 
+            
+            // Filter on the column (the index) of this element  
+            oTable0.fnFilterAll(this.value);  
+        }); 
+        
+        
+        //j$("#example").dataTable({
+        //      "data": [{"Id":"a0Z2200000085O7EAI","nu_dse__Subject__c":"Process Documents","nu_dse__ActivityDate__c":1560729600000,"nu_dse__Description__c":"Process client documents.","nu_dse__Status__c":"Not Started","Owner_Name__c":"Lit Department","RecordTypeId":"01241000000vLv9AAE"},{"Id":"a0Z2200000085OCEAY","nu_dse__Subject__c":"Request for Refund","nu_dse__ActivityDate__c":1560729600000,"nu_dse__Description__c":"Client request for refund.","nu_dse__Status__c":"Not Started","Owner_Name__c":"Payment Processing","RecordTypeId":"01241000000vLv9AAE"},{"Id":"a0Z2200000085OHEAY","nu_dse__Subject__c":"Review Garnishment Documents","nu_dse__ActivityDate__c":1560729600000,"nu_dse__Description__c":"Review Garnishment Documents","nu_dse__Status__c":"Not Started","Owner_Name__c":"Lit Department","RecordTypeId":"01241000000vLv9AAE"},{"Id":"a0Z2200000085f6EAA","nu_dse__Subject__c":"Client follow â€“up (litigation)","nu_dse__ActivityDate__c":1560988800000,"nu_dse__Description__c":"Client follow â€“up (litigation)","nu_dse__Status__c":"Not Started","Owner_Name__c":"Negotiations Associate","RecordTypeId":"01241000000vLv9AAE"}],
+        //      "columns": [{"data":"Id"},{"data":"nu_dse__Subject__c"},{"data":"nu_dse__ActivityDate__c"},{"data":"nu_dse__Description__c"},{"data":"nu_dse__Status__c"},{"data":"Owner_Name__c"},{"data":"RecordTypeId"}]
+        //});
+        
+        getGT();
+        getGTH();
+        getOpenTask();
+        getOpenTaskHistory();
+        getOpenEvent();
+        getEventHistory();
+        getNotetHistory();
+        getOpenHistory();
+    }
+    <!-- document.ready -->
+    //Get Group Task
+    function getGT(){
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.testVFClass2.getGroupTask}',
+            '{!RecordId}', 
+            function(result, event){ 
+                if (event.status) {
+                    
+                    if(result != null){
+                        var rJson = JSON.parse(result.replace(/(&quot\;)/g,"\""));
+                        j$("#groupData").dataTable({
+                            "destroy" : true,
+                            "data": rJson,
+                            //"aaSorting": [[ 2, "desc" ]],
+                            "columns" : [{"data":"Id"},
+                                        {"data":"NUDSESubject"},
+                                        {"data":"NUDSEActivityDate"},
+                                        {"data":"NUDSEType"},
+                                        {"data":"NUDSEDescription"},
+                                        {"data":"NUDSEStatus"},
+                                        {"data":"NDSAssigned"},
+                                        {"data":"NDSCreatedBy"},
+                                        {"data":"OwnerName"}],
+                            "columnDefs": [ {
+                                "targets": 0,
+                                "data": "Action",
+                                "render": function ( data, type, row, meta ) {
+                                    return '<a href="JavaScript:void(0);" onclick="gtViewFun(\'' + data.trim() + '\')">View</a>&nbsp;|&nbsp;<a href="javascript:void(0)" onclick="gtEditFun(\'' + data.trim() + '\')">Edit</a>';
+                                }
+                             },
+                             {
+                                  targets: 2,
+                                  render: function ( data, type, row, meta ) {
+                                      var date = new Date(data);
+                                        return (date.getMonth()+1) + '/' + (date.getDate()) + '/' + date.getFullYear();
+                                  }
+                             }
+                             ]
+                        });
+                    }
+                } else if (event.type === 'exception') {
+                    console.log('Error Message >> ' + event.message + ' >> Where >> ' + event.where);
+                } else {
+                    console.log('Error Message >> ' + event.message);
+                }
+            }, 
+            {escape: true}
+        );
+    }
+    
+    //Get Group Task History
+    function getGTH(){
+        //Group Task History
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.testVFClass2.getGroupTaskHistory}',
+            '{!RecordId}', 
+            function(result, event){ 
+                if (event.status) {
+                    //console.log('result >> ' + result.replace(/(&quot\;)/g,"\""));
+                    
+                    if(result != null){
+                        var rJson = JSON.parse(result.replace(/(&quot\;)/g,"\""));
+                        j$("#groupTaskHistory").dataTable({
+                            "destroy" : true,
+                            "data": rJson,
+                            "columns" : [{"data":"Id"},
+                                        {"data":"NUDSESubject"},
+                                        {"data":"NUDSEActivityDate"},
+                                        {"data":"NUDSEType"},
+                                        {"data":"NUDSEDescription"},
+                                        {"data":"NUDSEStatus"},
+                                        {"data":"NDSAssigned"},
+                                        {"data":"NDSCreatedBy"},
+                                        {"data":"OwnerName"}],
+                            "columnDefs": [ {
+                                "targets": 0,
+                                "data": "Action",
+                                "render": function ( data, type, row, meta ) {
+                                    
+                                    return '<a href="JavaScript:void(0);" onclick="gtViewFun(\'' + data.trim() + '\')">View</a>&nbsp;</a>';
+                                    //return '<a href="JavaScript:void(0);" onclick="gtViewFun(\'' + data.trim() + '\')">View</a>&nbsp;|&nbsp;<a href="javascript:void(0)" onclick="gtEditFun(\'' + data.trim() + '\')">Edit</a>';
+                                }
+                             },
+                             {
+                                  targets: 2,
+                                  render: function ( data, type, row, meta ) {
+                                      var date = new Date(data);
+                                        return (date.getMonth()+1) + '/' + (date.getDate()) + '/' + date.getFullYear();
+                                  }
+                             }
+                             ]
+                        });
+                    }
+                } else if (event.type === 'exception') {
+                    console.log('Error Message >> ' + event.message + ' >> Where >> ' + event.where);
+                } else {
+                    console.log('Error Message >> ' + event.message);
+                }
+            }, 
+            {escape: true}
+        );
+    }
+    
+    //Get Open Task
+    function getOpenTask(){
+        //Group Task History
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.testVFClass2.getOpenTask}',
+            '{!RecordId}', 
+            function(result, event){ 
+                if (event.status) {
+                    
+                    if(result != null){
+                        var rJson = JSON.parse(result.replace(/(&quot\;)/g,"\""));
+                        j$("#openTask").dataTable({
+                            "destroy" : true,
+                            "data": rJson,
+                            "columns" : [{"data":"Id"},
+                                        {"data":"Subject"},
+                                        {"data":"ActivityDate"},
+                                        {"data":"Status"},
+                                        {"data":"Priority"},
+                                        {"data":"Description"},
+                                        {"data":"CreatedBy"},
+                                        {"data":"Owner"}],
+                            "columnDefs": [ {
+                                "targets": 0,
+                                "data": "Action",
+                                "render": function ( data, type, row, meta ) {
+                                    return '<a href="JavaScript:void(0);" onclick="otViewFun(\'' + data.trim() + '\')">View</a>&nbsp;|&nbsp;<a href="javascript:void(0)" onclick="otEditFun(\'' + data.trim() + '\')">Edit</a>' + 
+                                                '&nbsp;|&nbsp;<a href="javascript:void(0)" onclick="showFullSpinner();otCloseFun(\'' + data.trim() + '\')">Close</a>';
+                                    
+                                }
+                             },
+                             {
+                                  targets: 2,
+                                  render: function ( data, type, row, meta ) {
+                                      var date = new Date(data);
+                                        return (date.getMonth()+1) + '/' + (date.getDate()) + '/' + date.getFullYear();
+                                  }
+                             }
+                             ]
+                        });
+                    }
+                } else if (event.type === 'exception') {
+                    console.log('Error Message >> ' + event.message + ' >> Where >> ' + event.where);
+                } else {
+                    console.log('Error Message >> ' + event.message);
+                }
+            }, 
+            {escape: true}
+        );
+    }
+    
+    //Get Open Task History
+    function getOpenTaskHistory(){
+        //Group Task History
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.testVFClass2.getOpenTaskHistory}',
+            '{!RecordId}', 
+            function(result, event){ 
+                if (event.status) {
+                    
+                    if(result != null){
+                        var rJson = JSON.parse(result.replace(/(&quot\;)/g,"\""));
+                        j$("#openTaskHistory").dataTable({
+                            "destroy" : true,
+                            "data": rJson,
+                            "columns" : [{"data":"Id"},
+                                        {"data":"Subject"},
+                                        {"data":"ActivityDate"},
+                                        {"data":"Status"},
+                                        {"data":"Priority"},
+                                        {"data":"Description"},
+                                        {"data":"CreatedBy"},
+                                        {"data":"Owner"}],
+                            "columnDefs": [ {
+                                "targets": 0,
+                                "data": "Action",
+                                "render": function ( data, type, row, meta ) {
+                                      return '<a href="JavaScript:void(0);" onclick="otViewFun(\'' + data.trim() + '\')">View</a>&nbsp;</a>';
+                                    //  return '<a href="JavaScript:void(0);" onclick="otViewFun(\'' + data.trim() + '\')">View</a>&nbsp;|&nbsp;<a href="javascript:void(0)" onclick="otEditFun(\'' + data.trim() + '\')">Edit</a>';
+                                }
+                             },
+                             {
+                                  targets: 2,
+                                  render: function ( data, type, row, meta ) {
+                                      var date = new Date(data);
+                                        return (date.getMonth()+1) + '/' + (date.getDate()) + '/' + date.getFullYear();
+                                  }
+                             }
+                             ]
+                        });
+                    }
+                } else if (event.type === 'exception') {
+                    console.log('Error Message >> ' + event.message + ' >> Where >> ' + event.where);
+                } else {
+                    console.log('Error Message >> ' + event.message);
+                }
+            }, 
+            {escape: true}
+        );
+    }
+    
+    //Get Open Event
+    function getOpenEvent(){
+        
+        //Group Task History
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.testVFClass2.getOpenEvent}',
+            '{!RecordId}', 
+            function(result, event){ 
+                if (event.status) {
+                    
+                    if(result != null){
+                        var rJson = JSON.parse(result.replace(/(&quot\;)/g,"\""));
+                        j$("#openEvent").dataTable({
+                            "destroy" : true,
+                            "data": rJson,
+                            "columns" : [{"data":"Id"},
+                                        {"data":"Subject"},
+                                        {"data":"ActivityDate"},
+                                        {"data":"StartDateTime"},
+                                        {"data":"EndDateTime"},
+                                        {"data":"Description"}],
+                            "columnDefs": [ {
+                                "targets": 0,
+                                "data": "Action",
+                                "render": function ( data, type, row, meta ) {
+                                    return '<a href="JavaScript:void(0);" onclick="evViewFun(\'' + data.trim() + '\')">View</a>&nbsp;|&nbsp;<a href="javascript:void(0)" onclick="evEditFun(\'' + data.trim() + '\')">Edit</a>';
+                                }
+                             },
+                             {
+                                  targets: 2,
+                                  render: function ( data, type, row, meta ) {
+                                      var date = new Date(data);
+                                        return (date.getMonth()+1) + '/' + (date.getDate()+1) + '/' + date.getFullYear();
+                                  }
+                             }
+                             ]
+                        });
+                    }
+                } else if (event.type === 'exception') {
+                    console.log('Error Message >> ' + event.message + ' >> Where >> ' + event.where);
+                } else {
+                    console.log('Error Message >> ' + event.message);
+                }
+            }, 
+            {escape: true}
+        );
+    }
+    
+    function getEventHistory(){
+        //Group Task History
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.testVFClass2.getEventHistory}',
+            '{!RecordId}', 
+            function(result, event){ 
+                if (event.status) {
+                    
+                    if(result != null){
+                        var rJson = JSON.parse(result.replace(/(&quot\;)/g,"\""));
+                        
+                        j$("#eventHistory").dataTable({
+                            "destroy" : true,
+                            "data": rJson,
+                            "columns" : [{"data":"Id"},
+                                        {"data":"Subject"},
+                                        {"data":"ActivityDate"},
+                                        {"data":"StartDateTime"},
+                                        {"data":"EndDateTime"},
+                                        {"data":"Description"}],
+                            "columnDefs": [ {
+                                "targets": 0,
+                                "data": "Action",
+                                "render": function ( data, type, row, meta ) {
+                                    return '<a href="JavaScript:void(0);" onclick="evViewFun(\'' + data.trim() + '\')">View</a>&nbsp;|&nbsp;<a href="javascript:void(0)" onclick="evEditFun(\'' + data.trim() + '\')">Edit</a>';
+                                }
+                             },
+                             {
+                                  targets: 2,
+                                  render: function ( data, type, row, meta ) {
+                                      var date = new Date(data);
+                                        return (date.getMonth()+1) + '/' + (date.getDate()+1) + '/' + date.getFullYear();
+                                  }
+                             }
+                             ]
+                        });
+                    }
+                } else if (event.type === 'exception') {
+                    console.log('Error Message >> ' + event.message + ' >> Where >> ' + event.where);
+                } else {
+                    console.log('Error Message >> ' + event.message);
+                }
+            }, 
+            {escape: true}
+        );
+    }
+    
+        // get notes History
+        function getNotetHistory(){
+        //Group Task History
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.testVFClass2.getNotestHistory}',
+            '{!RecordId}', 
+            function(result, event){ 
+                if (event.status) {
+                    
+                    if(result != null){
+                        var rJson = JSON.parse(result.replace(/(&quot\;)/g,"\""));
+                        console.log(rJson);
+                        j$("#openNoteHistory").dataTable({
+                             "destroy" : true,
+                            "data": rJson,
+                            "aaSorting": [[ 1, "desc" ]],
+                            "columns" : [
+                                        {"data":"Subject"},
+                                        {"data":"ActivityDate"},
+                                        {"data":"Status"},
+                                        {"data":"Priority"},
+                                        {"data":"Description"},
+                                        {"data":"CreatedBy"}],
+                                // {"data":"LastModifiedDate"},
+                                // {"data":"Owner"}],
+                            "columnDefs": [ {
+                                "targets": 0,
+                                "data": "Action",
+                                "render": function ( data, type, row, meta ) {
+                                    return '<a href="/' + row.Id + '" target="_blank">' + data.trim() + '</a>';
+                                }
+                             },
+                             {
+                                  targets: 1,
+                                  render: function ( data, type, row, meta ) {
+                                      var date = new Date(data);
+                                        return (date.getMonth()+1) + '/' + (date.getDate()) + '/' + date.getFullYear();
+                                  }
+                             }
+                             ]
+                        });
+                    }
+                } else if (event.type === 'exception') {
+                    console.log('Error Message >> ' + event.message + ' >> Where >> ' + event.where);
+                } else {
+                    console.log('Error Message >> ' + event.message);
+                }
+            }, 
+            {escape: true}
+        );
+    }
+        
+        // get notes open
+        function getOpenHistory(){
+        //Notes open
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.testVFClass2.getOpenNotes}',
+            '{!RecordId}', 
+            function(result, event){ 
+                if (event.status) {
+                    
+                    if(result != null){
+                        var rJson = JSON.parse(result.replace(/(&quot\;)/g,"\""));
+                        console.log(rJson);
+                        j$("#openNote").dataTable({
+                            "destroy" : true,
+                            "data": rJson,
+                            "aaSorting": [[ 1, "desc" ]],
+                            "columns" : [
+                                        {"data":"Subject"},
+                                        {"data":"ActivityDate"},
+                                        {"data":"Status"},
+                                        {"data":"Priority"},
+                                        {"data":"Description"},
+                                        {"data":"CreatedBy"}],
+                                // {"data":"CreatedDate"},
+                                // {"data":"Owner"}],
+                            "columnDefs": [ {
+                                "targets": 0,
+                                "data": "Action",
+                                "render": function ( data, type, row, meta ) {
+                                    return '<a href="/' + row.Id + '" target="_blank">' + data.trim() + '</a>';
+                                }
+                             },
+                             {
+                                  targets: 1,
+                                  render: function ( data, type, row, meta ) {
+                                      var date = new Date(data);
+                                        return (date.getMonth()+1) + '/' + (date.getDate()) + '/' + date.getFullYear();
+                                  }
+                             }
+                             ]
+                        });
+                    }
+                } else if (event.type === 'exception') {
+                    console.log('Error Message >> ' + event.message + ' >> Where >> ' + event.where);
+                } else {
+                    console.log('Error Message >> ' + event.message);
+                }
+            }, 
+            {escape: true}
+        );
+    }
+    
+    
+    function getInfo(){
+        groupTaskId = j$("#groupTaskIdSpan").text();
+        //Group Task History
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.testVFClass2.getGTInfo}',
+            groupTaskId, 
+            function(result, event){ 
+                if (event.status) {
+                    debugger;
+                    var tbl =j$("#noteTbl");
+                    if(result != null){
+                        var rJson = JSON.parse(result.replace(/(&quot\;)/g,"\""));
+                        j$("#noteTbl").dataTable({
+                            "paging":   false,
+                            "searching": false,
+                            "destroy" : true,
+                            "data": rJson.noteList,
+                            "columns" : [
+                                        {"data":"Title"},
+                                        {"data":"Body"},
+                                        {"data":"CreatedBy"},
+                                        {"data":"CreatedDate"}],
+                            "columnDefs": [{
+                                "targets": 0,
+                                "data": "Action",
+                                "render": function ( data, type, row, meta ) {
+                                    return '<a href="/' + row.noteId + '" target="_blank">' + data.trim() + '</a>';
+                                }
+                             }]
+                        });
+                        
+                        
+                        j$("#attTbl").dataTable({
+                            "paging":   false,
+                            "searching": false,
+                            "destroy" : true,
+                            "data": rJson.attchList,
+                            "columns" : [
+                                        {"data":"Id"},
+                                        {"data":"Name"}],
+                            "columnDefs": [{
+                                "targets": 0,
+                                "data": "Action",
+                                "render": function ( data, type, row, meta ) {
+                                    return '<a href="/' + data.trim() + '" target="_blank">View</a>';
+                                }
+                             }]
+                        });
+                        //servlet/servlet.FileDownload?file=
+                        
+                        j$("#historyTbl").dataTable({
+                            "paging":   false,
+                            "searching": false,
+                            "destroy" : true,
+                            "data": rJson.gthList,
+                            "columns" : [
+                                        {"data":"CreatedDate"},
+                                        {"data":"CreatedBy"},
+                                        {"data":"Field"}]
+                        });
+                        
+                    }
+                } else if (event.type === 'exception') {
+                    console.log('Error Message >> ' + event.message + ' >> Where >> ' + event.where);
+                } else {
+                    console.log('Error Message >> ' + event.message);
+                }
+            }, 
+            {escape: true}
+        );
+    }
+    
+    //Group Task VIEW link Click Function
+    function gtViewFun(gtId){
+        showFullSpinner();
+        gtViewActionFun(gtId);
+        j$("#groupTaskIdSpan").text(gtId);
+        //getInfo(gtId);
+    }
+    //Group Task EDIT link Click Function
+    function gtEditFun(gtId){
+        showFullSpinner();
+        gtEditActionFun(gtId);
+        j$("#groupTaskIdSpan").text(gtId);
+    }
+    //Group Task Create
+    function gtCreate(){
+        showFullSpinner();
+        createGroupTaskActionFun();
+    }
+    
+    //Group Task cancel
+    function cancelGT(){
+        showFullSpinner();
+        cancelGTActionFun();
+    }
+    
+    //Open Task cancel
+    function cancelOT(){
+        showFullSpinner();
+        cancelOTActionFun();
+    }
+    //Event cancel
+    function cancelEv(){
+        showFullSpinner();
+        cancelEvActionFun();
+    }
+    
+    //Group Task Save
+    function saveGroupTask(){
+        var validation = true;
+        j$(".gtField.required-true").each(function (index, value) {
+            if(j$(this).attr('value') == ''){
+                hideFullSpinner();
+                //alert('Please enter mandetory field.');
+                showMessage_Toast('Please enter mandetory field.', '-error', false);
+                validation = false;
+                return;
+            }
+        });
+        
+        j$('.gtField.required-true option:selected').each(function (index, value) {
+            if(j$(this).text() == '--None--'){
+                hideFullSpinner();
+                //alert('Please select mandetory field.');
+                showMessage_Toast('Please select mandetory field.', '-error', false);
+                validation = false;
+            }
+        });
+        
+       /* j$('.lookupInput').each(function (index, value) {
+            console.log('div' + index + ':' + j$(this).text());
+            console.log('--input value: ' + j$(this).find("input").value);
+            if(j$(this).find("input").value == ''){
+                hideFullSpinner();
+                //alert('Please select mandetory field.');
+                showMessage_Toast('Please select mandetory field.', '-error', false);
+                validation = false;
+            }
+        });*/
+        
+        j$("input[type='text']").each(function (index, value) {
+            //var parentElement = j$(this).parent();
+            //console.log('div' + index + ':' + j$(this).text());
+            if(j$(this).hasClass("required-true") && (j$(this).val() == '' || j$(this).val() == null)){
+                hideFullSpinner();
+                //alert('Please select mandetory field.');
+                showMessage_Toast('Please select mandetory field.', '-error', false);
+                validation = false;
+            }
+        });
+        
+        j$(".lookupInput input[type='text']").each(function (index, value) {
+            //var parentElement = j$(this).parent();
+            if(j$(this).parent().parent().hasClass("required-true") && (j$(this).val() == '' || j$(this).val() == null)){
+                hideFullSpinner();
+                //alert('Please select mandetory field.');
+                showMessage_Toast('Please enter owner Id.', '-error', false);
+                validation = false;
+            }
+        });
+        
+        if(validation == true){
+            var file = document.querySelector('input[type=file]').files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function(e) {
+                    SaveGroupTaskValueFile(file.name, file.type, e.target.result);
+                }
+            }
+            else{
+                saveGTActionFun();   
+            }
+        }
+    }
+    
+    //Task Save
+    function saveOT(){
+        var validation = true;
+        j$('.otField.required-true').each(function (index, value) {
+            if(j$(this).attr('value') == ''){
+                hideFullSpinner();
+                //alert('Please enter mandetory field.');
+                showMessage_Toast('Please enter mandetory field.', '-error', false);
+                validation = false;
+            }
+            
+        });
+        
+        j$('.otField.required-true option:selected').each(function (index, value) {
+            if(j$(this).text() == '--None--'){
+                hideFullSpinner();
+                showMessage_Toast('Please select mandetory field.', '-error', false);
+                validation = false;
+            }
+        });
+        
+        
+        if(validation == true){
+            var file = document.querySelector('input[id=taskFileInput]').files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function(e) {
+                    SaveTaskValueFile(file.name, file.type, e.target.result);
+                }
+            }
+            else{
+                saveOTActionFun();   
+            }
+        }
+        
+    }
+    
+    //Event Save
+    function saveEv(){
+        var validation = true;
+        j$('.evField.required-true').each(function (index, value) {
+            debugger;
+            if(j$(this).val() == ''){
+                hideFullSpinner();
+                //alert('Please select mandetory field.');
+                showMessage_Toast('Please enter mandetory field.', '-error', false);
+                validation = false;
+            }
+            
+        });
+        
+        if(validation == true){
+            schEventSaveActionFun();
+        }
+    }
+    
+    //Save Note
+    function saveNote(){
+        var validate = true;
+        var nTitle = j$('[id$="noteTitle"]').val();
+        var nBody = j$('[id$="noteBody"]').val();
+        if(typeof nTitle !== 'undefined' && nTitle.trim() == ''){
+            hideFullSpinner();
+            //alert('Please select mandetory field.');
+            showMessage_Toast('Please enter mandetory field.', '-error', false);
+            validate = false;
+        }
+        
+        else{
+            validate = true;
+            showFullSpinner();
+        }
+        
+        if(validate == true){
+            var gtId = j$("#groupTaskIdSpan").text();
+            saveNoteActionFunction(gtId);
+        }
+    }
+    
+    function cancelNote(){
+        cancelNoteActionFunction();
+    }
+    
+    //Task VIEW link Click Function
+    function otViewFun(tId){
+        showFullSpinner();
+        otViewActionFun(tId);
+    }
+    //Task EDIT link Click Function
+    function otEditFun(tId){
+        showFullSpinner();
+        otEditActionFun(tId);
+    }
+    //Task Create Function
+    function schTask(){
+        showFullSpinner();
+        schTaskActionFun();
+    }
+    //Task CLOSE link Click Function
+    function otCloseFun(tId){
+        //showMessage_Toast('Task closed successfully', '-success', true);
+        showFullSpinner();
+        otCloseActionFun(tId);
+    }
+    //Event Create Function
+    function schEvent(){
+        showFullSpinner();
+        schEventActionFun();
+    }
+    
+    //Event VIEW link Click Function
+    function evViewFun(evId){
+        showFullSpinner();
+        evViewActionFun(evId);
+    }
+    //Event EDIT link Click Function
+    function evEditFun(evId){
+        showFullSpinner();
+        evEditActionFun(evId);
+    }
+    
+    
+    function serverErrorHandling(error){
+        if(error != ''){
+            //alert(error);
+            j$("#toastmessage-content").html(error);
+            j$("#toastmessage_container").removeAttr("style");
+        }
+    }
+    
+    /* full spinner script */        
+    function showFullSpinner() {
+        
+        var spinner = document.getElementById('fullSpinner');
+        
+        if(spinner && spinner.style.setProperty) {
+            
+            spinner.style.setProperty('display', 'block');
+        
+        } else {
+            
+            spinner.style.display = 'block';
+        }
+    }
+    
+    function hideFullSpinner() {
+        
+        var spinner = document.getElementById('fullSpinner');
+        if(spinner && spinner.style.setProperty) {
+            
+            spinner.style.setProperty('display', 'none');
+        
+        } else {
+            
+            spinner.style.display = 'none';
+        }
+    }
+    
+    /* End of full spinner script */
+    
+    /* Toast message script */
+    
+    function showMessage_Toast(message, type, issuccess) {
+        
+        if(message) {
+            
+            var dafaultTheme = 'slds-theme_';
+            var dafaultTheme = 'messageClass';
+            
+            if(type) {
+                
+                dafaultTheme += '-error';
+            }  else if (issuccess) {
+                
+                dafaultTheme += '-success';
+            }
+            var messageContainer = document.getElementById('toastmessage_container');
+            var messageTheme = document.getElementById('message_toast-theme');
+            var messageContent = document.getElementById('toastmessage-content');
+            
+            messageContent.innerHTML = message;
+            messageContent.className = dafaultTheme;
+            messageTheme.className = 'slds-notify slds-notify_toast ' + dafaultTheme;
+            messageContainer.style.display = 'block';
+            setTimoutClose();
+        }
+    }
+    
+    function hideMessage_Toast() {
+        
+        document.getElementById('toastmessage_container').style.display = 'none';
+    }
+    
+    function setTimoutClose() {
+        
+        var timeId = window.setTimeout(function (){
+            hideMessage_Toast();
+        }, 5000);
+    }
+    
+    function refreshPage() {
+    
+        window.location.href = '/apex/ActivityTabNew5_2?recordId='+{!recordId};
+        
+    }
+    
+    function refreshNotes(){
+        showFullSpinner();
+        refreshNotesAF();
+        openNotesTab();
+    }
+    
+    function refreshAttNotes(){
+        showFullSpinner();
+        refreshAttNotesAF();
+        openAttNotesTab();
+    }
+    
+     function openNotesTab(){
+        
+        //Re-build notes table
+        var casesTable2 = j$('[cid$="casesTable7"]').parent('table').eq(0).DataTable({  
+            destroy: true,
+            //enables results highlight  
+            searchHighlight: true,  
+            
+            //sets record lengths to show in picklist  
+            aLengthMenu: [  
+                 [5,10, 25, 50, 100],  
+                [5,10, 25, 50, 100]  
+            ],  
+            
+            "iDisplayLength": 5,  
+            
+            //adds copy, print buttons...  
+            dom: 'lBrtip', //l=length, B=buttons, f=filter(search), r=processing, t=the table, I=table summary, p=page controls  
+            buttons: [],  
+        }); 
+        
+        //Re-build notes history table
+         var casesTable2 = j$('[cid$="casesTable8"]').parent('table').eq(0).DataTable({  
+            destroy: true,
+            //enables results highlight  
+            searchHighlight: true,  
+            
+            //sets record lengths to show in picklist  
+            aLengthMenu: [  
+                 [5,10, 25, 50, 100],  
+                [5,10, 25, 50, 100] 
+            ],  
+            
+            "iDisplayLength": 5,  
+            
+            //adds copy, print buttons...  
+            dom: 'lBrtip', //l=length, B=buttons, f=filter(search), r=processing, t=the table, I=table summary, p=page controls  
+            buttons: [],  
+        });
+        
+        changeSettingsTab("notesItem_Id");
+        hideFullSpinner();
+     }
+     
+     function openAttNotesTab(){
+        
+        //Re-build notes table
+        var casesTable2 = j$('[cid$="casesTable9"]').parent('table').eq(0).DataTable({  
+            destroy: true,
+            //enables results highlight  
+            searchHighlight: true,  
+            
+            //sets record lengths to show in picklist  
+            aLengthMenu: [  
+                 [5,10, 25, 50, 100],  
+                [5,10, 25, 50, 100]  
+            ],  
+            
+            "iDisplayLength": 5,  
+            
+            //adds copy, print buttons...  
+            dom: 'lBrtip', //l=length, B=buttons, f=filter(search), r=processing, t=the table, I=table summary, p=page controls  
+            buttons: [],  
+        }); 
+        
+        //Re-build notes history table
+         var casesTable2 = j$('[cid$="casesTable10"]').parent('table').eq(0).DataTable({  
+            destroy: true,
+            //enables results highlight  
+            searchHighlight: true,  
+            
+            //sets record lengths to show in picklist  
+            aLengthMenu: [  
+                 [5,10, 25, 50, 100],  
+                [5,10, 25, 50, 100] 
+            ],  
+            
+            "iDisplayLength": 5,  
+            
+            //adds copy, print buttons...  
+            dom: 'lBrtip', //l=length, B=buttons, f=filter(search), r=processing, t=the table, I=table summary, p=page controls  
+            buttons: [],  
+        });
+        
+        changeSettingsTab("attorneyNotesItem_Id");
+        hideFullSpinner();
+     }
+    
+    /* End of Toast message script */
+    </script>
+    
+    
+    
+    <apex:slds />
+    Group Id : <span id="groupTaskIdSpan"></span>
+    <apex:outputPanel id="tabView">
+        <div class="slds-tabs--default" >
+            <ul class="slds-tabs--default__nav" role="tablist" style="background: #16325c;" >
+                <li class="slds-tabs--default__item slds-text-heading--label slds-active" title="Group Task" role="presentation" style="color: white;">
+                    <a class="slds-tabs--default__link" href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" aria-controls="groupTaskContent_Id" id="groupTask_Id">Group Task </a>
+                </li>
+                <li class="slds-tabs--default__item slds-text-heading--label" title="Tasks" role="presentation" style="color: white;">
+                    <a class="slds-tabs--default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="true" aria-controls="tasksContent_Id" id="tasksItem_Id">Tasks</a>
+                </li>
+                <li class="slds-tabs--default__item slds-text-heading--label" title="Events" role="presentation" style="color: white;">
+                    <a class="slds-tabs--default__link" href="javascript:void(0);" role="tab" tabindex="-2" aria-selected="true" aria-controls="eventsContent_Id" id="eventsItem_Id">Events</a>
+                </li>
+                <li class="slds-tabs--default__item slds-text-heading--label" title="Notes" role="presentation" style="color: white;">
+                    <a class="slds-tabs--default__link" href="javascript:void(0);" role="tab" tabindex="-3" aria-selected="true" aria-controls="notesContent_Id" id="notesItem_Id">Notes</a>
+                </li>
+                <li class="slds-tabs--default__item slds-text-heading--label" title="Attorney Notes" role="presentation" style="color: white;">
+                    <a class="slds-tabs--default__link" href="javascript:void(0);" role="tab" tabindex="-4" aria-selected="true" aria-controls="attorneyNotesContent_Id" id="attorneyNotesItem_Id">Attorney Notes</a>
+                </li>
+            </ul>
+            
+            <div>
+                <div id="fullSpinner" class="slds-spinner_container" style="display:none;">
+                    <div class="slds-spinner--brand slds-spinner slds-spinner--medium" role="alert">
+                        <span class="slds-assistive-text">Loading</span>
+                        <div class="slds-spinner__dot-a"></div>
+                        <div class="slds-spinner__dot-b"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Toast message block -->
+            <div id="toastmessage_container" class="slds-notify_container" style="display:none;">
+                <div id="message_toast-theme" class="slds-notify slds-notify_toast " role="alert">
+                    <span class="slds-assistive-text">success</span>
+                    <button class="slds-button slds-notify__close slds-button--icon-inverse" onclick="hideMessage_Toast();" type="button">
+                        <span style="font-family: Arial,Helvetica,sans-serif;">X</span>
+                    </button>
+                    <div id="toastmessage-content" class="slds-notify__content" style="font-family: Arial,Helvetica,sans-serif;"></div>
+                </div>
+            </div>
+            <!-- END OF Toast message block -->
+            
+            <div id="groupTaskContent_Id" class="slds-tabs--default__content slds-show" role="tabpanel" aria-labelledby="groupTask_Id">
+                <apex:outputPanel id="grouptaskTableContentId">
+                    
+                    <apex:pageBlock title="Open Group Tasks" id="opengroupTaskContent_Id" >
+                        <apex:pageBlockButtons location="top">
+                            <apex:actionFunction name="createGroupTaskActionFun" action="{!CreateGroupTask}" reRender="gtViewEditPageBlock" oncomplete="hideFullSpinner();">
+                            </apex:actionFunction>
+                            <button type="button" class="btn slds-button myClass" onclick="getGT();">Refresh</button>
+                            <button type="button" class="btn slds-button myClass" onclick="gtCreate();">Create Group Task</button>
+                        </apex:pageBlockButtons>
+                        
+                        
+                        <apex:actionFunction name="gtViewActionFun" action="{!viewGroupTask}" reRender="gtViewEditPageBlock" oncomplete="hideFullSpinner();getInfo();">
+                            <apex:param name="gtId" assignTo="{!groupTaskId}" value="" />
+                        </apex:actionFunction>
+                        
+                        <apex:actionFunction name="gtEditActionFun" action="{!EditGroupTask}" reRender="gtViewEditPageBlock" oncomplete="hideFullSpinner();getInfo();">
+                            <apex:param name="gtId" assignTo="{!groupTaskId}" value="" />
+                        </apex:actionFunction>
+                        
+                        <table id="groupData">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>Subject</th>
+                                    <th>Due Date</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                    <th>Status</th>
+                                    <th>NDS Created By</th>
+                                    <th>NDS Assigned</th>
+                                    <th>Owner Name</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </apex:pageBlock><br />
+                    
+                    <apex:pageBlock title="Group Tasks History">    
+                        <table id="groupTaskHistory">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>Subject</th>
+                                    <th>Due Date</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                    <th>Status</th>
+                                    <th>NDS Created By</th>
+                                    <th>NDS Assigned</th>
+                                    <th>Owner Name</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </apex:pageBlock>
+                </apex:outputPanel>
+                
+            </div>
+            <div id="tasksContent_Id" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="tasksItem_Id">
+                <apex:pageBlock title="Open Tasks" id="cases1" >
+                    <apex:pageBlockButtons location="top">   
+                        <apex:actionFunction name="schTaskActionFun" action="{!scheduleTask}" reRender="otViewEditPageBlock" oncomplete="hideFullSpinner();">
+                        </apex:actionFunction>
+                        <!--<div id="systemTaskPanel" style="display: inline-block; margin-left: 10px; float: right;">
+                            <div class="slds-form-element"><label class="slds-checkbox--toggle slds-grid">
+                                <input type="checkbox" id="systemTaskCheck" onchange="systemTaskVisible();" style="display: inline-block; margin-left: 10px; float: right;"/>
+                                <span id="toggle-desc" class="slds-checkbox--faux_container nudebt" aria-live="assertive">
+                                    <span class="slds-checkbox--faux"></span>
+                                    <span class="slds-checkbox--on" Style="color:white !important;">Hide System Tasks</span>
+                                    <span class="slds-checkbox--off" Style="color:white !important;">Show System Tasks</span>
+                                </span>
+                                </label>
+                            </div>
+                        </div>-->
+                        <button type="button" class="btn slds-button myClass" onclick="getOpenTask();">Refresh</button>
+                        <button type="button" class="btn slds-button myClass" onclick="schTask()">Schedule Task</button>
+                        
+                    </apex:pageBlockButtons>
+                    
+                    <apex:actionFunction name="otViewActionFun" action="{!viewTask}" reRender="otViewEditPageBlock,taskAttachmentJS" oncomplete="hideFullSpinner();getTaskAttachments();">
+                        <apex:param name="tId" assignTo="{!TaskId}" value="" />
+                    </apex:actionFunction>
+                    
+                    <apex:actionFunction name="otEditActionFun" action="{!EditTask}" reRender="otViewEditPageBlock,taskAttachmentJS" oncomplete="hideFullSpinner();getTaskAttachments();">
+                        <apex:param name="tId" assignTo="{!TaskId}" value="" />
+                    </apex:actionFunction>
+                    
+                    <apex:actionFunction name="otCloseActionFun" action="{!closeTask}" reRender="otViewEditPageBlock,taskAttachmentJS" oncomplete="hideFullSpinner();getOpenTask();getOpenTaskHistory();">
+                        <apex:param name="tId" assignTo="{!TaskId}" value="" />
+                    </apex:actionFunction>
+                    
+                    <table id="openTask">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Subject</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                                <th>Priority</th>
+                                <th>Description</th>
+                                <th>Created By</th>
+                                <th>Assigned To</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </apex:pageBlock><br />
+                <apex:pageBlock title="Tasks History" >
+                    <table id="openTaskHistory">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Subject</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                                <th>Priority</th>
+                                <th>Description</th>
+                                <th>Created By</th>
+                                <th>Assigned To</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </apex:pageBlock>
+            </div> 
+            <div id="eventsContent_Id" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="eventsItem_Id">
+                <apex:pageBlock title="Open Events" id="cases2" >
+                    <apex:pageBlockButtons location="top">   
+                        <apex:actionFunction name="schEventActionFun" action="{!scheduleEvent}" reRender="evViewEditPageBlock" oncomplete="hideFullSpinner();">
+                        </apex:actionFunction>
+                        
+                        <button type="button" class="btn slds-button myClass" onclick="getOpenEvent();">Refresh</button>
+                        <button type="button" class="btn slds-button myClass" onclick="schEvent();">Schedule Event</button>
+                        
+                    </apex:pageBlockButtons>
+                    
+                    <apex:actionFunction name="evViewActionFun" action="{!viewEvent}" reRender="evViewEditPageBlock" oncomplete="hideFullSpinner();">
+                            <apex:param name="evId" assignTo="{!EventId}" value="" />
+                    </apex:actionFunction>
+                    
+                    <apex:actionFunction name="evEditActionFun" action="{!EditEvent}" reRender="evViewEditPageBlock" oncomplete="hideFullSpinner();">
+                        <apex:param name="evId" assignTo="{!EventId}" value="" />
+                    </apex:actionFunction>
+                    
+                    
+                    <table id="openEvent">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Subject</th>
+                                <th>ActivityDate</th>
+                                <th>StartDateTime</th>
+                                <th>EndDateTime</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </apex:pageBlock><br />
+                <apex:pageBlock title="Event History" >
+                    <table id="eventHistory">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Subject</th>
+                                <th>ActivityDate</th>
+                                <th>StartDateTime</th>
+                                <th>EndDateTime</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </apex:pageBlock>
+            </div>  
+            
+            <apex:actionFunction name="refreshNotesAF" reRender="notesSection"  action="{!refreshNotesApex}" oncomplete="openNotesTab();">
+            </apex:actionFunction>
+            
+            <div id="notesContent_Id" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="notesItem_Id">
+              <!--  <apex:outputPanel id="notesSection">
+                <apex:pageBlock title="Open Notes" id="cases3" >
+                    <apex:pageBlockButtons location="top">-->
+                        
+<!--                         <apex:commandButton styleClass="slds-button myClass" style="padding:0px 16px;" value="Refresh" reRender="notesSection"  action="{!Refresh}" oncomplete="openNotesTab();"/>  action="https://c.ap4.visual.force.com/apex/newPatient"/> -->
+              <!--          <button class="slds-button myClass" style="padding:0px 16px;" onclick="refreshNotes();return false;"> 
+                            Refresh
+                        </button>-->
+                        
+<!--                         <apex:commandButton styleClass="slds-button myClass" style="padding:0px 16px;" value="Refresh" reRender="notesSection"  action="{!Refresh}" oncomplete="openNotesTab();"/>  -->
+                       <!-- <apex:commandButton styleClass="slds-button myClass" style="padding:0px 16px;" onclick="showFullSpinner();" value="Schedule Note"/> --> <!-- action="https://c.ap4.visual.force.com/apex/newPatient"/>-->
+                   <!-- </apex:pageBlockButtons>
+                    <div class="dataTables_filter" style="display:inline;float:right;">
+                        <label>Search:</label>  
+                        <input type="text" id="Search_All7"  />
+                    </div>
+                    <apex:pageBlockTable value="{!openNoteList}" var="acc" html-cid="casesTable7" id="table7">
+                        <apex:column style="align:left" headerValue="Subject">
+                            <!--<apex:outputField value="{!acc.subject}"/>-->
+                          <!--   <a href="/{!acc.id}" target="_blank">{!acc.Subject}</a>      
+                        </apex:column>
+                        <apex:column style="align:left" headerValue="ActivityDate">
+                            <apex:outputField value="{!acc.ActivityDate}"/>    
+                        </apex:column>
+                        <apex:column style="align:left" value="{!acc.Status}" headerValue="Status">
+                           <!-- <apex:outputField value="{!acc.Status}"/> -->    
+                       <!-- </apex:column>
+                        <apex:column style="align:left" headerValue="Priority">
+                            <apex:outputField value="{!acc.Priority}"/>    
+                        </apex:column>
+                        <apex:column style="align:left" headerValue="Description">
+                            <apex:outputField value="{!acc.Description}"/>    
+                        </apex:column>
+                          <apex:column style="align:left" headerValue="Created By">
+                            <apex:outputField value="{!acc.CreatedById}"/>    
+                        </apex:column>
+                        <apex:column style="align:left" headerValue="CreatedDate">
+                            <apex:outputField value="{!acc.CreatedDate}"/>    
+                        </apex:column>
+                      </apex:pageBlockTable>
+                </apex:pageBlock><br />-->
+                
+                 <apex:pageBlock title="Open Notes" id="cases3" >
+                    <apex:pageBlockButtons location="top">   
+                        <apex:actionFunction name="schTaskActionFun" action="{!scheduleTask}" reRender="otViewEditPageBlock" oncomplete="hideFullSpinner();">
+                        </apex:actionFunction>
+                        <!--<div id="systemTaskPanel" style="display: inline-block; margin-left: 10px; float: right;">
+                            <div class="slds-form-element"><label class="slds-checkbox--toggle slds-grid">
+                                <input type="checkbox" id="systemTaskCheck" onchange="systemTaskVisible();" style="display: inline-block; margin-left: 10px; float: right;"/>
+                                <span id="toggle-desc" class="slds-checkbox--faux_container nudebt" aria-live="assertive">
+                                    <span class="slds-checkbox--faux"></span>
+                                    <span class="slds-checkbox--on" Style="color:white !important;">Hide System Tasks</span>
+                                    <span class="slds-checkbox--off" Style="color:white !important;">Show System Tasks</span>
+                                </span>
+                                </label>
+                            </div>
+                        </div>-->
+                        <button type="button" class="btn slds-button myClass" onclick="getOpenHistory();">Refresh</button>
+                      <!--  <button type="button" class="btn slds-button myClass" onclick="schTask()">Schedule Task</button>-->
+                        
+                    </apex:pageBlockButtons>
+                    
+                  <!--  <apex:actionFunction name="otViewActionFun" action="{!viewTask}" reRender="otViewEditPageBlock,taskAttachmentJS" oncomplete="hideFullSpinner();getTaskAttachments();">
+                        <apex:param name="tId" assignTo="{!TaskId}" value="" />
+                    </apex:actionFunction>
+                    
+                    <apex:actionFunction name="otEditActionFun" action="{!EditTask}" reRender="otViewEditPageBlock,taskAttachmentJS" oncomplete="hideFullSpinner();getTaskAttachments();">
+                        <apex:param name="tId" assignTo="{!TaskId}" value="" />
+                    </apex:actionFunction>
+                    
+                    <apex:actionFunction name="otCloseActionFun" action="{!closeTask}" reRender="otViewEditPageBlock,taskAttachmentJS" oncomplete="hideFullSpinner();getOpenTask();getOpenTaskHistory();">
+                        <apex:param name="tId" assignTo="{!TaskId}" value="" />
+                    </apex:actionFunction>-->
+                    
+                    <table id="openNote">
+                        <thead>
+                            <tr>
+                                 
+                                <th>Subject</th>
+                                <th>ActivityDate</th>
+                                <th>Status</th>
+                                <th>Priority</th>
+                                <th>Description</th>
+                                <th>Created By</th>
+                                
+                            </tr>
+                        </thead>
+                    </table>
+                </apex:pageBlock><br />
+                <apex:pageBlock title="Notes History" >
+                    <table id="openNoteHistory">
+                        <thead>
+                            <tr>
+                               
+                                <th>Subject</th>
+                                <th>ActivityDate</th>
+                                <th>Status</th>
+                                <th>Priority</th>
+                                <th>Description</th>
+                                <th>Created By</th>
+                                
+                            </tr>
+                        </thead>
+                    </table>
+                </apex:pageBlock>                
+                
+                
+                
+               <!-- <apex:pageBlock title="Notes History" >
+                    <div class="dataTables_filter" style="display:inline;float:right;">
+                        <label>Search:</label>  
+                        <input type="text" id="Search_All8"  />
+                    </div>
+                    <apex:pageBlockTable value="{!ClosedNoteList }" var="acc" html-cid="casesTable8" id="table8">
+                       <apex:column style="align:left" headerValue="Subject">
+                           <a href="/{!acc.id}" target="_blank">{!acc.Subject}</a>   
+                        </apex:column>
+                        <apex:column style="align:left" headerValue="ActivityDate">
+                            <apex:outputField value="{!acc.ActivityDate}"/>    
+                        </apex:column>
+                        <apex:column style="align:left" headerValue="Status">
+                            <apex:outputField value="{!acc.Status}"/>    
+                        </apex:column>
+                        <apex:column style="align:left" headerValue="Priority">
+                            <apex:outputField value="{!acc.Priority}"/>    
+                        </apex:column>
+                        <apex:column style="align:left" headerValue="Description">
+                            <apex:outputField value="{!acc.Description}"/>    
+                        </apex:column>
+                        <apex:column style="align:left" headerValue="Created By">
+                            <apex:outputField value="{!acc.CreatedById}"/>    
+                        </apex:column>
+                         <apex:column style="align:left" headerValue="CreatedDate">
+                            <apex:outputField value="{!acc.CreatedDate}"/>    
+                        </apex:column>
+                    </apex:pageBlockTable>
+                </apex:pageBlock> 
+                </apex:outputPanel>-->
+            </div> 
+            <div id="attorneyNotesContent_Id" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="attorneyNotesItem_Id">
+                        <apex:outputPanel id="attNotesSection">
+                   <!--       <apex:pageBlock title="Open Attorrney Notes" id="cases11" >
+                        <apex:pageBlockButtons location="top">   
+                           <apex:commandButton styleClass="slds-button myClass" style="padding:0px 16px;" value="Refresh"  action="{!refreshNotesApex}"/>  action="https://c.ap4.visual.force.com/apex/newPatient"/> 
+                            <button class="slds-button myClass" style="padding:0px 16px;" onclick="refreshAttNotes();return false;"> 
+                                Refresh
+                            </button>
+                        </apex:pageBlockButtons>
+                        <div class="dataTables_filter" style="display:inline;float:right;">
+                            <label>Search:</label>  
+                            <input type="text" id="Search_All9"  />
+                        </div>
+                        <apex:pageBlockTable value="{!openAttTaskList}" var="acc1" html-cid="casesTable9" id="table9">
+                           
+                            <apex:column style="align:left" headerValue="Subject">
+                                <apex:outputField value="{!acc1.Subject}"/>   -->
+                             <!--   <a href="/{!acc1.Id}">{!acc1.Subject}</a>   
+                            </apex:column>  
+                            <apex:column style="align:left" headerValue="Due Date">
+                                <apex:outputField value="{!acc1.ActivityDate}"/>       
+                            </apex:column>
+                            <apex:column style="align:left" headerValue="Status">
+                                <apex:outputField value="{!acc1.Status}"/> 
+                            </apex:column>
+                            <apex:column style="align:left" headerValue="Priority">
+                                <apex:outputField value="{!acc1.Priority}"/>   
+                            </apex:column>
+                            <apex:column style="align:left" headerValue="Description">
+                                <apex:outputField value="{!acc1.Description}"/>   
+                            </apex:column>
+                            
+                            <apex:column style="align:left" headerValue="Created By Name">
+                                <apex:outputField value="{!acc1.CreatedById}"/>   
+                            </apex:column>
+                            <apex:column style="align:left" headerValue="Assigned To Name">
+                                <apex:outputField value="{!acc1.OwnerId}"/>    
+                            </apex:column>
+                        </apex:pageBlockTable>
+                    </apex:pageBlock><br /> -->
+                    <apex:pageBlock title="Attorney Notes History" >
+                    <apex:pageBlockButtons location="top">   
+                         <!--<apex:commandButton styleClass="slds-button myClass" style="padding:0px 16px;" value="Refresh"  action="{!refreshNotesApex}"/> --> 
+                            <button class="slds-button myClass" style="padding:0px 16px;" onclick="refreshAttNotes();return false;"> 
+                                Refresh
+                            </button>
+                        </apex:pageBlockButtons>
+                        <div class="dataTables_filter" style="display:inline;float:right;">
+                            <label>Search:</label>  
+                            <input type="text" id="Search_All10"  />
+                        </div>
+                        <apex:pageBlockTable value="{!ClosedAttTaskList}" var="acc1" html-cid="casesTable10" id="table10">
+                            
+                            <apex:column style="align:left" headerValue="Subject">
+<!--                                <apex:outputField value="{!acc1.Subject}"/>   -->
+                                <a href="/{!acc1.Id}" target="_blank">{!acc1.Subject}</a>
+                            </apex:column>
+                            <apex:column style="align:left" headerValue="Due Date">
+                                <apex:outputField value="{!acc1.ActivityDate}"/>       
+                            </apex:column>
+                            <apex:column style="align:left" headerValue="Status">
+                                <apex:outputField value="{!acc1.Status}"/> 
+                            </apex:column>
+                            <apex:column style="align:left" headerValue="Priority">
+                                <apex:outputField value="{!acc1.Priority}"/>   
+                            </apex:column>
+                            <apex:column style="align:left" headerValue="Description">
+                                <apex:outputField value="{!acc1.Description}"/>   
+                            </apex:column>
+                            
+                            <apex:column style="align:left" headerValue="Tradeline">
+                                <apex:outputField value="{!acc1.Excela_Tradeline__c}"/>
+                            </apex:column>
+                            <apex:column style="align:left" headerValue="Assigned To Name">
+                                <apex:outputField value="{!acc1.OwnerId}"/>    
+                            </apex:column>
+                        </apex:pageBlockTable>
+                    </apex:pageBlock> 
+                </apex:outputPanel>
+                    <!--  <apex:pageBlock title="The Work Is in Progress"  >
+                        <apex:pageMessage severity="Error" summary="Attorney Notes Currently Unavailable." strength="1"></apex:pageMessage>
+                        
+                    </apex:pageBlock> -->
+                </div>  
+            
+            <!-- Create Group Task Modal -->  
+            <div>
+                <apex:pageBlock Id="gtViewEditPageBlock">
+                    <!--rendered="{!isGrouptask}" -->
+                    <apex:outputPanel id="groupTaskModal" style="{!if(isGrouptask == true, '' , 'display:none')}">
+                        <div class="demo-only" >
+                            <div role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+                                <div class="slds-modal__container">
+                                    <div class="slds-modal__header" style="background: #16325c; color: white">
+                                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate" style="background: #16325c; color: white" column ="1">Group Task</h2>
+                                    </div>
+                                    <div class="slds-modal__content slds-p-around_medium" id="grouptaskModalFields_Id">
+                                        <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                                                <apex:repeat value="{!$ObjectType.nu_dse__Group_Task__c.FieldSets.nu_dse__CreateGroupTask}" var="f"> 
+                                                    <div class="slds-p-horizontal--small slds-p-top_medium  slds-size_3-of-12">
+                                                        <label class="slds-form-element__label" for="text-input-id-1">{!f.Label}</label>
+                                                    </div>
+                                                    <div id="grouptaskInput_Id" class="slds-p-horizontal--small slds-p-top_medium slds-form-element slds-size_4-of-6">
+                                                        <apex:outputPanel rendered="{!groupView == 'New' || groupView == 'Edit'}" >
+                                                            <div class="slds-form-element__control">
+                                                                <div>
+                                                                    <apex:inputField value="{!createGroupTask[f.fieldPath]}" label="{f.Label}" styleClass="gtField field-style required-{!OR(f.required, f.dbrequired)}" required="false" / >
+                                                                </div>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        
+                                                        <apex:outputPanel rendered="{!groupView == 'View'}">
+                                                            <apex:outputField value="{!createGroupTask[f.fieldPath]}" label="{f.Label}"  /> 
+                                                        </apex:outputPanel>
+                                                    </div> 
+                                                </apex:repeat>
+                                                <div style="{!if((groupView == 'New' || groupView == 'Edit'), '' , 'display:none')}" >
+                                                    <input type="file"/>
+                                                </div>
+                                                    
+                                                
+                                            </div>
+                                            <!--rendered="{!groupView != 'New'}"-->
+                                            <apex:outputPanel style="{!if(groupView != 'New', '' , 'display:none')}" >
+                                                <div class="slds-tabs--default" >
+                                                    <ul class="slds-tabs--default__nav" role="tablist" style="background: #16325c;" >
+                                                        <li class="slds-tabs--default__item slds-text-heading--label" title="Notes" role="presentation" style="color: white;">
+                                                            <a onclick="tabClick(this)" class="slds-tabs--default__link" href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" aria-controls="NotesContent_Id" id="Notes_Id">Notes</a>
+                                                        </li>
+                                                        <li class="slds-tabs--default__item slds-text-heading--label" title="Attachments" role="presentation" style="color: white;">
+                                                            <a onclick="tabClick(this)" class="slds-tabs--default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="true" aria-controls="AttachmentsContent_Id" id="attachments_Id">Attachments</a>
+                                                        </li>
+                                                        <li class="slds-tabs--default__item slds-text-heading--label" title="History" role="presentation" style="color: white;">
+                                                             <a onclick="tabClick(this)" class="slds-tabs--default__link" href="javascript:void(0);" role="tab" tabindex="-2" aria-selected="true" aria-controls="Historycontent_Id" id="History_Id">History</a>
+                                                        </li>
+                                                    </ul>
+                                                    <div id="NotesContent_Id" class="slds-tabs--default__content slds-show" role="tabpanel" aria-labelledby="Notes_Id">
+                                                        <div align="center">
+                                                            <apex:outputPanel id="NewNotesID">
+                                                                <apex:outputPanel rendered="{!!NewNote}">
+                                                                    <apex:commandButton reRender="NewNotesID" styleClass="slds-button" style="padding:0px 16px;color:white !important;background: Green !important;" title="New"  action="{!CreateNote}" value="New" /><br/><br/>
+                                                                </apex:outputPanel>
+                                                                <apex:outputPanel rendered="{!NewNote}">
+                                                                    <apex:pageBlock >
+                                                                    <apex:pageblockButtons location="top"/>
+                                                                            <apex:actionFunction name="saveNoteActionFunction" action="{!CreateNotesSave}" reRender="NewNotesID" oncomplete="hideFullSpinner();getInfo();">
+                                                                                 <apex:param value="" name="gtId" assignTo="{!groupTaskId}"/>
+                                                                            </apex:actionFunction>
+                                                                            
+                                                                            <apex:actionFunction name="cancelNoteActionFunction" action="{!cancelNotes}" reRender="NewNotesID" oncomplete="hideFullSpinner();">
+                                                                            </apex:actionFunction>
+                                                                                
+                                                                            <button type="button" class="slds-button" style="padding:0px 16px;color:white !important;background: Green !important;" onclick="saveNote();">Save</button>
+                                                                            <button type="button" class="slds-button" style="padding:0px 16px;color:white !important;background: Green !important;" onclick="cancelNote();">Cancel</button>
+                                                                        <apex:pageblockSection >
+                                                                            Title <apex:inputText id="noteTitle" title="Title" value="{!Titles}"  styleClass="required-true"  /> <br/>
+                                                                            Body  <apex:inputText id="noteBody" title="Body" value="{!Bd}" /> 
+                                                                          </apex:pageblockSection>
+                                                                    </apex:pageBlock><br/><br/>
+                                                                </apex:outputPanel>
+                                                            </apex:outputPanel>
+                                                               <!-- add table -->
+                                                          <apex:pageBlock >
+                                                              
+                                                                <table id="noteTbl">
+                                                                    <thead>
+                                                                        <tr> <th>Title</th>
+                                                                            <th>Body</th>
+                                                                            <th>Created By</th>
+                                                                            <th>Created Date</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                </table>
+                                                          </apex:pageBlock>
+                                                        <!-- add table -->
+                                                        </div>
+                                                    </div> 
+                                                   <div id="AttachmentsContent_Id" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="attachments_Id">
+                                                        <div align="center">
+                                                            <table id="attTbl">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Action</th>
+                                                                        <th>Name</th>
+                                                                    </tr>
+                                                                </thead>
+                                                            </table>
+                                                        </div>                           
+                                                    </div>
+                                                    <div id="Historycontent_Id" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="History_Id">
+                                                        <apex:pageBlock >
+                                                            <table id="historyTbl">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Action</th>
+                                                                        <th>Created Date</th>
+                                                                        <th>Created By</th>
+                                                                    </tr>
+                                                                </thead>
+                                                            </table>
+                                                        </apex:pageBlock>
+                                                    </div>   
+                                                </div>
+                                            </apex:outputPanel>
+                                        </div>
+                                        <div class="slds-modal__footer" style="background: #16325c; color: white">
+                                            <apex:actionFunction name="cancelGTActionFun" action="{!cancelGroupTaskModal}" reRender="gtViewEditPageBlock" oncomplete="hideFullSpinner();">
+                                            </apex:actionFunction>
+                                            
+                                            <button type="button" class="btn slds-button myClass" style="padding:0px 16px;margin:5px" onclick="showFullSpinner();cancelGT();">Cancel</button>
+                                            <apex:outputPanel rendered="{!groupView != 'View'}">
+                                                <apex:actionFunction name="saveGTActionFun" action="{!saveGroupTaskModal}" reRender="gtViewEditPageBlock" oncomplete="hideFullSpinner();getGT();getGTH();">
+                                                </apex:actionFunction>
+                                                <button type="button" class="btn slds-button myClass" style="padding:0px 16px;margin:5px" onclick="showFullSpinner();saveGroupTask();">Save</button>
+                                            </apex:outputPanel>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-backdrop slds-backdrop_open"></div>
+                            </div>
+                        </apex:outputPanel>
+                    </apex:pageBlock>
+                </div>
+                
+                <!-- Schedule Task Modal -->
+                <div id="taskModal_Id">
+                    <apex:pageBlock Id="otViewEditPageBlock">
+                        <apex:outputPanel rendered="{!istask}" id="taskModal">
+                            <div class="demo-only" >
+                                <div role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+                                    <div class="slds-modal__container">
+                                        <div class="slds-modal__header" style="background: #16325c; color: white">
+                                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate" style="background: #16325c; color: white" column ="1">Schedule Task</h2>
+                                        </div>
+                                        <div class="slds-modal__content slds-p-around_medium" >
+                                            <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                                                <apex:repeat value="{!$ObjectType.task.FieldSets.nu_dse__Activity_Tab_Edit}" var="f"> 
+                                                    <div class="slds-p-horizontal--small slds-p-top_medium slds-size_3-of-12">
+                                                        <label class="slds-form-element__label" for="text-input-id-1">{!f.Label}</label>
+                                                    </div>
+                                                    <div class="slds-p-horizontal--small slds-p-top_medium slds-size_4-of-6">
+                                                        <apex:outputPanel rendered="{!taskView == 'New' || taskView == 'Edit'}">
+                                                        
+                                                            <apex:inputField value="{!scheduleTask[f.fieldPath]}" label="{f.Label}" styleClass="otField field-style required-{!OR(f.required, f.dbrequired)}" required="false" /> 
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!taskView == 'View'}">
+                                                            <apex:outputField value="{!scheduleTask[f.fieldPath]}" label="{f.Label}"/> 
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                    <div id="taskattachment_Id" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="attachments_Id">
+                                         
+                                              
+                                                    <!--<div align="center">
+                                                            <table id="attTbl">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Action</th>
+                                                                        <th>Name</th>
+                                                                    </tr>
+                                                                </thead>
+                                                            </table>
+                                                        </div>-->                           
+                                                   
+                                                    </div>
+                                                </apex:repeat>
+                                                 <div style="{!if((taskView == 'New' || taskView == 'Edit'), '' , 'display:none')}" >
+                                                    <input type="file" id="taskFileInput"/>
+                                                </div>
+                                                <div style="width:60%">
+                                                       <br>
+                                         <strong>Attachments</strong></br>
+                                          <table class="slds-table"  id="attTblTask">
+                                              <thead>
+                                                  <tr>
+                                                      <td>Action</td>
+                                                      <td>Name</td>
+                                                  </tr>
+                                              </thead>
+                                              <tbody>
+                                                  <tr>
+                                                      <td colspan="2" style="text-align: center;">
+                                                     </td>
+                                                  </tr>                                       
+                                                   </tbody>
+                                           </table> 
+                                               
+                                                  
+                                                 </div>
+                                            </div>
+                                            <!--<apex:outputPanel rendered="{!taskView != 'New'}"> -->
+                                            <apex:outputPanel style="{!if(taskView != 'New', '' , 'display:none')}" >
+                                            
+                                            
+                                             <div class="slds-tabs--default" >
+                                                <div id="NotesContent_Id" class="slds-tabs--default__content slds-show" role="tabpanel" aria-labelledby="Notes_Id"/>
+                                                </div>
+                                            </apex:outputPanel>
+                                        </div>
+                                        <div class="slds-modal__footer" style="background: #16325c; color: white">
+                                            <apex:actionFunction name="cancelOTActionFun" action="{!cancelTaskModal}" reRender="otViewEditPageBlock" oncomplete="hideFullSpinner();">
+                                            </apex:actionFunction>
+                                            
+                                            <button type="button" class="btn slds-button myClass" style="padding:0px 16px;margin:5px" onclick="showFullSpinner();cancelOT();">Cancel</button>
+                                            <apex:outputPanel rendered="{!taskView != 'View'}">
+                                                 <apex:actionFunction name="saveOTActionFun" action="{!saveTaskModal}" reRender="otViewEditPageBlock" oncomplete="hideFullSpinner();getOpenTask();getOpenTaskHistory();">
+                                                </apex:actionFunction>
+                                                
+                                                <button type="button" class="btn slds-button myClass" style="padding:0px 16px;margin:5px" onclick="showFullSpinner();saveOT();">Save</button>
+                                                
+                                                <!--<apex:commandButton styleClass="slds-button myClass" style="padding:0px 16px;margin:5px" value="Save" action="{!saveTaskModal}"/>-->
+                                            </apex:outputPanel>
+                                            
+                                           <!--<apex:commandButton styleClass="slds-button myClass" style="padding:0px 16px;margin:5px" immediate="true" value="Cancel"  action="{!cancelTaskModal}"  />-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-backdrop slds-backdrop_open"></div>
+                            </div>
+                        </apex:outputPanel>
+                    </apex:pageBlock>
+                </div>
+                
+                <!-- -->
+                <!-- Schedule Event Modal -->    
+                <div >
+                    <apex:pageBlock id="evViewEditPageBlock">
+                        <apex:outputPanel rendered="{!isevent}" id="eventModal">
+                            <div class="demo-only" >
+                                <div role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+                                    <div class="slds-modal__container">
+                                        <div class="slds-modal__header" style="background: #16325c; color: white">
+                                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate" style="background: #16325c; color: white" column ="1">Schedule Event</h2>
+                                        </div>
+                                        <div class="slds-modal__content slds-p-around_medium" >
+                                            <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                                                <apex:repeat value="{!$ObjectType.event.FieldSets.nu_dse__Activity_Tab_Event_Fields}" var="f"> 
+                                                    <div class="slds-p-horizontal--small slds-p-top_medium slds-size_1-of-3">
+                                                        <label class="slds-form-element__label" for="text-input-id-1">{!f.Label}</label>
+                                                    </div>
+                                                    <div class="slds-p-horizontal--small slds-p-top_medium slds-size_1-of-2">
+                                                        <apex:outputPanel rendered="{!eventView  == 'New' || eventView  == 'Edit'}">
+                                                            <apex:inputField value="{!scheduleEvent[f.fieldPath]}" label="{f.Label}" styleClass="evField field-style required-{!OR(f.required, f.dbrequired)}"/> 
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!eventView == 'View'}">
+                                                            <apex:outputField value="{!scheduleEvent[f.fieldPath]}" label="{f.Label}" /> 
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                </apex:repeat>
+                                            </div>
+                                            <apex:outputPanel rendered="{!eventView != 'New'}">
+                                                <div class="slds-tabs--default" >
+                                                    <div id="NotesContent_Id" class="slds-tabs--default__content slds-show" role="tabpanel" aria-labelledby="Notes_Id">
+                                                    </div>
+                                                </div>
+                                            </apex:outputPanel>
+                                        </div>
+                                        <div class="slds-modal__footer" style="background: #16325c; color: white">
+                                             <apex:actionFunction name="cancelEvActionFun" action="{!canceleventModal}" reRender="evViewEditPageBlock" oncomplete="hideFullSpinner();">
+                                            </apex:actionFunction>
+                                            
+                                            <button type="button" class="btn slds-button myClass" style="padding:0px 16px;margin:5px" onclick="showFullSpinner();cancelEv();">Cancel</button>
+                                            <apex:outputPanel rendered="{!groupView != 'View'}">
+                                                <apex:actionFunction name="schEventSaveActionFun" action="{!saveeventModal}" reRender="evViewEditPageBlock" oncomplete="hideFullSpinner();getOpenEvent();getEventHistory();serverErrorHandling('{!Error}');">
+                                                </apex:actionFunction>
+                                                <button type="button" class="btn slds-button myClass" style="padding:0px 16px;margin:5px" onclick="showFullSpinner();saveEv();">Save</button>
+                                                
+                                                <!--<apex:commandButton styleClass="slds-button myClass" style="padding:0px 16px;margin:5px" value="Save" action="{!saveeventModal}"/>-->
+                                            </apex:outputPanel>
+                                            
+                                                                                        
+                                            <!--<apex:commandButton styleClass="slds-button myClass" style="padding:0px 16px;margin:5px" immediate="true" value="Cancel"  action="{!canceleventModal}"/>-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-backdrop slds-backdrop_open"></div>
+                            </div>
+                        </apex:outputPanel>
+                    </apex:pageBlock>
+                </div>
+                
+                <apex:actionFunction name="refreshAttNotesAF" reRender="attNotesSection"  action="{!refreshNotesApex}" oncomplete="openAttNotesTab();">
+                </apex:actionFunction>
+                    
+            
+             <!--   <div id="attorneyNotesContent_Id" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="attorneyNotesItem_Id">
+                    <apex:pageBlock title="The Work Is in Progress"  >
+                        <apex:pageMessage severity="Error" summary="Attorney Notes Currently Unavailable." strength="1"></apex:pageMessage>
+                        
+                    </apex:pageBlock>
+                </div>  -->
+            </div>
+           
+        </apex:outputPanel>
+        <!--<apex:actionFunction name="SaveGroupTaskValue" action="{!saveGroupTaskModal}" rendered="thePage" oncomplete="hideFullSpinner(); documentReady();"/>
+            
+        <apex:actionFunction name="saveGT" action="{!saveGroupTaskModal}" reRender="grouptaskTableContentId, thePage" oncomplete="hideFullSpinner(); "/>-->
+        
+        <apex:actionFunction name="SaveGroupTaskValueFile" action="{!saveGroupTaskModal}" reRender="gtViewEditPageBlock" oncomplete="hideFullSpinner();getGT();">
+            <apex:param name="param1" value=""/>
+            <apex:param name="param2" value=""/>
+            <apex:param name="param3" value=""/>
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="SaveTaskValueFile" action="{!saveTaskModal}" reRender="otViewEditPageBlock" oncomplete="hideFullSpinner();getOpenTask();getOpenTaskHistory();">
+            <apex:param name="taskAttachFileName" value=""/>
+            <apex:param name="taskAttachFileType" value=""/>
+            <apex:param name="taskAttachBody" value=""/>
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="editActionGT" reRender="thePage" action="{!EditGroupTask}">
+            <apex:param value=""  name="groupTaskId" assignTo="{!groupTaskId}"/>
+        </apex:actionFunction>
+
+
+</apex:form>
+    <script type="text/javascript">  
+        function tabClick(scope) {
+            debugger;
+            changeSettingsTab(j$(scope).attr('id'));
+        }
+        
+       
+        
+        /*SLDS Tabs JS*/
+        j$('.slds-tabs--default__link,.slds-tabs--scoped__link').click(function() {
+            debugger;
+            changeSettingsTab(j$(this).attr('id'));
+            
+        });
+        /*SLDS Tabs JS*/
+        
+        /*function saveGroupTaskModal() {
+            
+            console.log('$$$$$$');
+              if(true) {
+                showFullSpinner();
+                
+                var file = document.querySelector('input[type=file]').files[0];
+                
+                if (file) {
+                    var reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function(e) {
+                        console.log(e.target.result);
+                        //alert(e.target.result);
+                        showFullSpinner();
+                        SaveGroupTaskValueFile(file.name, file.type, e.target.result);
+                    }
+                
+                } else {
+                    console.log('calling saveGT');
+                    saveGT();
+                }
+                
+            } else {
+                 
+                 hideFullSpinner();
+                 showMessage_Toast('Populate the Required field value', true, false);
+            }
+        }*/
+        
+        function isFormValidate_ScriptSettings(panelIdToCheck) {
+                
+            var parentElement = document.querySelector('#'+panelIdToCheck);
+            var requiredFieldsCount = parentElement.querySelectorAll(".required-true");
+            var returnElement = true;
+            for(var fieldCount = 0; fieldCount < requiredFieldsCount.length; fieldCount++) {
+                
+                var formElement = requiredFieldsCount[fieldCount];
+                if(!formElement.value || formElement.value == null || formElement.value == '' || formElement.value < 0 || formElement.value == 0.00) {
+                    
+                    formElement.className += ' fieldRequired';
+                    returnElement = false;
+                } else if(formElement.classList.contains('fieldRequired')) {
+                    
+                    formElement.className = ' required-true';
+                }
+            }
+            return returnElement;
+        }
+        
+        function viewGroupTasksValue(grouptaskId) {
+            viewGroupTasks(grouptaskId);
+        }
+        
+        function changeSettingsTab (id) {
+            
+            j$('#'+id).parent().parent().find('.slds-tabs--default__link,.slds-tabs--scoped__link').attr('aria-selected','false');
+            j$('#'+id).attr('aria-selected','true');
+            j$('#'+id).parent().parent().find('.slds-tabs--default__link,.slds-tabs--scoped__link').attr('tabindex','-1');
+            j$('#'+id).attr('tabindex','0');
+            j$('#'+id).parent().addClass('slds-active').siblings().removeClass('slds-active');
+            j$('#'+id).parent().parent().parent().find('.'+j$('#'+id).parent().parent().parent().find('.slds-tabs--default__content,.slds-tabs--scoped__content')[0].classList[0]).removeClass('slds-show').addClass('slds-hide');
+            j$('#'+id).parent().parent().parent().find('#'+j$('#'+id).attr('aria-controls')).removeClass('slds-hide').addClass('slds-show');            
+            
+        }
+        
+        function editGT(accountId){
+        
+            editActionGT(accountId);
+            
+        }
+    </script>
+    
+    <apex:outputPanel id="taskAttachmentJS">
+        <script>
+            var attachList = '{!taskAttachmentList}';
+            
+            if(attachList != null && attachList != ''){
+                var attachJSON = JSON.parse(attachList.replace(/(&quot\;)/g,"\""));
+                j$("#attTblTask").dataTable({
+                    "paging":   false,
+                    "searching": false,
+                    "destroy" : true,
+                    "data": attachJSON,
+                    "columns" : [
+                                {"data":"Id"},
+                                {"data":"Name"}],
+                    "columnDefs": [{
+                        "targets": 0,
+                        "data": "Action",
+                        "render": function ( data, type, row, meta ) {
+                            return '<a href="/' + data.trim() + '" target="_blank">View</a>';
+                        }
+                     }]
+                });
+            
+            }
+            
+            /*function getTaskAttachments(taskIdForAttachments){
+                consol.log('--attachment list: ' + '{!taskAttachmentList}');
+            }*/
+        </script>
+    </apex:outputPanel>
+</apex:page>

@@ -1,0 +1,227 @@
+<apex:page Controller="HealthTabExtension" showHeader="false">
+    
+    <script src="{!URLFOR($Resource.nu_dse__jQueryDataTable, '/js/jquery-1-11-1-min.js')}" ></script>
+    
+    <script>
+        var j$ = jQuery.noConflict();
+    </script>
+    
+    <style>
+        
+        /* toast message css */
+        .messageClass-error {
+            
+            background-color : red !important;
+            color : white !important;
+        }
+        
+        .messageClass-success {
+            
+            background-color : green !important;
+            color : white !important;
+        }
+        
+        .messageClass {
+            
+            background-color : black !important;
+        }
+        
+        /* End of toast message css */
+    </style>
+    
+    
+    <!-- tabs -->
+    <div class="slds-tabs--default">
+        <ul class="slds-tabs--default__nav" role="tablist" style="background:whitesmoke;">
+            <li class="slds-tabs--default__item slds-text-heading--label slds-active" title="Dashboard" role="presentation">
+                <a class="slds-tabs--default__link" href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" aria-controls="dashboardContent_Id" id="dashboardItem_Id">Dashboard</a>
+            </li>
+            <li class="slds-tabs--default__item slds-text-heading--label" title="Portal Details" role="presentation">
+                <a class="slds-tabs--default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="true" aria-controls="portalDetailsContent_Id" id="portalDetailsItem_Id">Portal Details</a>
+            </li>
+            <li class="slds-tabs--default__item slds-text-heading--label" title="Settlement with Advance Funds" role="presentation">
+                <a class="slds-tabs--default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="true" aria-controls="settlementAdvanceFundContent_Id" id="settlementAdvanceFundItem_Id">Settlement with Advance Funds</a>
+            </li>
+            <li class="slds-tabs--default__item slds-text-heading--label" title="TradeLines with Offers and Payments" role="presentation">
+                <a class="slds-tabs--default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="true" aria-controls="tradelineOfferPaymentContent_Id" id="tradelineOfferPaymentItem_Id">TradeLines with Offers and Payments</a>
+            </li>
+        </ul>
+        
+        <div id="dashboardContent_Id" class="slds-tabs--default__content slds-show" role="tabpanel" aria-labelledby="dashboardItem_Id">
+            <div id = "backgroundDivId" > <!-- style = "background: {!backgroundColor} !important" -->
+                <apex:pageBlock >
+                    <apex:pageBlockSection columns="2" > <!-- html-style="background: {!backgroundColor} !important" -->
+                        <apex:outputText style="{! IF(prog.Portfolio__c != '','font-size:25px;color:green;','')}" label="Portfolio: " id="portfolio" value=" {!prog.Portfolio__r.Name }"/>
+                        <apex:outputText style="{! IF(prog.Assigned_to_Legal__c == true,'font-size:25px;color:red;','')}" label="Assigned To: " id="OwnerId" value=" {!prog.Owner.Name}"/>
+                        <apex:outputText style="{! IF(prog.Assigned_to_Legal__c == true,'font-size:25px;color:red;','')}" label="Subscribed to ALLG" id="ALLG" value="{!IF(prog.Subscribed_to_ALLG__c == true, 'Yes', 'No')}"/>
+                        <apex:outputText style="{! IF(prog.DNL_Status__c = 'Pre-TILA Signed','font-size:25px;color:red;','')}color:red;" label="DNL Status" id="DNL" value="{!prog.DNL_Status__c }"/>
+                        <!-- <apex:outputText label="Client Access"  >
+                            <c:ClientPortalAccess />
+                        </apex:outputText>
+                        -->
+            
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+            </div>
+            <p>
+                <strong>Sticky Note</strong>
+                <c:Sticky_Note recordId="{!$CurrentPage.parameters.pid}" />
+            </p>
+            <br />
+            <br /> 
+           
+         <!-- <p>
+                <strong>Status Component</strong>
+                <c:Status_Component recordId="{!$CurrentPage.parameters.pid}" />
+            </p>
+            <br />
+            <br /> -->
+          
+            <p>
+                <strong>Task List</strong>
+                <c:Task_View_Component recordId="{!$CurrentPage.parameters.pid}" />
+            </p>
+            <br />
+            <br /> 
+            
+            <p>
+                <strong>Payment Status</strong>
+                <c:Payment_Status_Component recordId="{!$CurrentPage.parameters.pid}" />
+            </p>
+            <br />
+            <br />
+        
+            <p>
+                <strong>Creditor Status</strong>
+                <c:Creditor_Status_Component recordId="{!$CurrentPage.parameters.pid}"  />
+            </p>
+            <br />
+            <br /> 
+        
+           <p>
+                <strong>Offer Status</strong>
+                <c:Offer_Status_Component recordId="{!$CurrentPage.parameters.pid}" />
+            </p>
+            <br />
+            <br /> 
+        
+           <p>
+                <strong>Case Status</strong>
+                <c:SFS_CASE_COMPONENT recordId="{!$CurrentPage.parameters.pid}" />
+            </p>
+          <!--  <br />
+            <br /> 
+            <p>
+                <strong>Reschedule Payment</strong>
+                <c:MakePaymentComponent recordId="{!$CurrentPage.parameters.pid}" /> reportId="00O0x000000OT4w" filter="[{column:'Program.ID',operator:'equals',value:'a0L0x0000000v3r'}]"
+            </p>  -->
+            <br />
+            <br />
+            <c:Offer_Dashboard_Component recordId="{!$CurrentPage.parameters.pid}" />
+            <br />
+            <br />
+            <!-- Commented on 05-03-2019 before deploy to production for health tab changes -->
+            <p>
+                <c:Payment_Aggregation_Component recordId="{!$CurrentPage.parameters.pid}" />
+            </p>   
+        </div>
+        
+        <div id="portalDetailsContent_Id" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="portalDetailsItem_Id">
+            <c:SFSPortal_portalDetails recordId="{!$CurrentPage.parameters.pid}" />
+        </div>
+        
+        <!-- S20-180 - Advancement Review Workflow - Amit Goyal on 09/11/2019-->
+        <div id="settlementAdvanceFundContent_Id" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="settlementAdvanceFundItem_Id">
+            <c:SFSPortal_AFSettlement recordId="{!$CurrentPage.parameters.pid}" />
+        </div>
+        
+        
+        <div id="tradelineOfferPaymentContent_Id" class="slds-tabs--default__content slds-hide" role="tabpanel" aria-labelledby="tradelineOfferPaymentItem_Id">
+            <c:TradeLinesWithOffersAndPayments recordId="{!$CurrentPage.parameters.pid}" /> 
+            <!-- <c:TradeLinesWithOffersAndPayments recordId="a0L2i0000006UMq" /> -->
+        </div>
+        
+    </div>
+    
+    <!-- Toast message block -->
+    <div id="toastmessage_container" class="slds-notify_container" style="display:none;">
+        <div id="message_toast-theme" class="slds-notify slds-notify_toast " role="alert">
+            <span class="slds-assistive-text">success</span>
+            <button class="slds-button slds-notify__close slds-button--icon-inverse" onclick="hideMessage_Toast();" type="button">
+                <span style="font-family: Arial,Helvetica,sans-serif;">X</span>
+            </button>
+            <div id="toastmessage-content" class="slds-notify__content" style="font-family: Arial,Helvetica,sans-serif;"></div>
+        </div>
+    </div>
+    <!-- END OF Toast message block -->
+    
+    <script type="text/javascript">
+        
+        /*SLDS Tabs JS*/
+        j$('.slds-tabs--default__link,.slds-tabs--scoped__link').click(function() {
+            
+            changeSettingsTab(j$(this).attr('id'));
+            
+        });
+        /*SLDS Tabs JS*/
+        
+        function changeSettingsTab (id) {
+            
+            console.log('Id---->',id);
+            j$('#'+id).parent().parent().find('.slds-tabs--default__link,.slds-tabs--scoped__link').attr('aria-selected','false');
+            j$('#'+id).attr('aria-selected','true');
+            j$('#'+id).parent().parent().find('.slds-tabs--default__link,.slds-tabs--scoped__link').attr('tabindex','-1');
+            j$('#'+id).attr('tabindex','0');
+            j$('#'+id).parent().addClass('slds-active').siblings().removeClass('slds-active');
+            j$('#'+id).parent().parent().parent().find('.'+j$('#'+id).parent().parent().parent().find('.slds-tabs--default__content,.slds-tabs--scoped__content')[0].classList[0]).removeClass('slds-show').addClass('slds-hide');
+            j$('#'+id).parent().parent().parent().find('#'+j$('#'+id).attr('aria-controls')).removeClass('slds-hide').addClass('slds-show');            
+            
+        }
+        
+        /* Toast message script */
+        
+        function showMessage_Toast(message, type) {
+            
+            if(message) {
+                
+                var dafaultTheme = 'slds-theme_';
+                var dafaultTheme = 'messageClass';
+                if(type) {
+                    
+                    dafaultTheme += '-error';
+                    
+                } else {
+                
+                    dafaultTheme += '-success';
+                }
+                
+                var messageContainer = document.getElementById('toastmessage_container');
+                var messageTheme = document.getElementById('message_toast-theme');
+                var messageContent = document.getElementById('toastmessage-content');
+                
+                messageContent.innerHTML = message;
+                messageContent.className = dafaultTheme;
+                messageTheme.className = 'slds-notify slds-notify_toast ' + dafaultTheme;
+                messageContainer.style.display = 'block';
+                setTimoutClose();
+                
+            }
+        }
+        
+        function hideMessage_Toast() {
+                
+            document.getElementById('toastmessage_container').style.display = 'none';
+        }
+        
+        function setTimoutClose() {
+            var timeId = window.setTimeout(function (){
+                hideMessage_Toast();
+                clearMessage();
+            }, 5000);
+        }
+        
+        /* End of Toast message script */
+        
+    </script>
+         
+</apex:page>

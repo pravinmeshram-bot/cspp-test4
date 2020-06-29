@@ -1,0 +1,157 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" 
+                controller="SFSPortal_CommunityUserDetailController" extends="c:abstractServer" access="public" >
+    
+    <aura:attribute name="userInstance" type="User" default="{ 'sobjectType': 'User' }" access="public"/>
+    <aura:attribute name="newUserInstance" type="User" default="{ 'sobjectType': 'User' }" access="public"/>
+    <aura:attribute name="statePickListValueList" type="List" access="public" />
+    <aura:attribute name="phoneVerificationStatus" type="String" access="public" />
+    <aura:attribute name="emailVerificationStatus" type="String" access="public" />
+    <aura:attribute name="isEdit" type="Boolean" default="false" access="public" />
+    <aura:attribute name="changedPhoneNumber" type="String" access="public" default=""/>
+    <aura:attribute name="toRenderModal" type="Map" access="public"  default="{ 'isModal':false, 'Name':'', 'HeaderName':'', 'Message':''}"/>
+    <aura:handler name="handleFlow" event="c:statusUpdateEvt" action="{!c.updatePhone}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" access="public" />
+    
+    <aura:if isTrue="{!v.userInstance.Id}">
+        <div class="slds-panel">
+            <lightning:layout class=" slds-wrap">
+                <!-- largeDeviceSize="9" -->
+                <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="12">
+                    <lightning:layout class=" slds-wrap custom-layout" >
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                            <label class="slds-form-element__label" >Last Name</label>
+                            <div>
+                                <ui:outputText value="{!v.userInstance.LastName}"/>
+                            </div>
+                            <div class="horizontalLine" />
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                            <label class="slds-form-element__label" >First Name</label>
+                            <div>
+                                <ui:outputText value="{!v.userInstance.FirstName}"/>
+                            </div>
+                            <div class="horizontalLine" />
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                            <label class="slds-form-element__label" >Email</label>
+                            <div class="{!!v.isEdit ? 'slds-form-element__control' : 'slds-hide'}">
+                                <ui:outputText value="{!v.userInstance.Email}"/>
+                                <lightning:helptext content="Email Address verification is in process" iconName="utility:warning" 
+                                                    class="{!equals(v.emailVerificationStatus,'Processing') ? 'warningIcon slds-m-left_medium' : 'slds-hide'}"
+                                                    iconVariant ="warning" title="Processing"/>
+                                <div class="horizontalLine" />
+                            </div>
+                            <div class="{!v.isEdit ? 'lightningInput slds-form-element__control' : 'slds-hide'}">
+                                <lightning:input aura:id="emailinput_communityUserDetail" name="Email" value="{!v.newUserInstance.Email}" label="Email" />
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                            <label class="slds-form-element__label" >Mobile Phone</label>
+                            <div class="{!!v.isEdit ? 'slds-form-element__control' : 'slds-hide'}">
+                                <ui:outputText value="{!v.userInstance.MobilePhone}"/>
+                                <lightning:helptext content="Enter verification code to complete the update" iconName="utility:warning" 
+                                                    class="{!v.changedPhoneNumber ? 'warningIcon slds-m-left_medium' : 'slds-hide'}"
+                                                    iconVariant ="warning" title="Processing"/>
+                                <div class="{!v.changedPhoneNumber  ?  '' : 'slds-hide'}">
+                                    <c:TriggerFlow aura:id="triggerTheFlow" userId="{!v.userInstance.Id}"/>
+                                </div>
+                                <div class="horizontalLine" />
+                            </div>
+                            <div class="{!v.isEdit ? 'lightningInput slds-form-element__control' : 'slds-hide'}">
+                                <lightning:input aura:id="mobileinput_communityUserDetail" name="Mobile Phone" value="{!v.newUserInstance.MobilePhone}" label="Mobile Phone" />
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                            <label class="slds-form-element__label" >Street</label>
+                            <div class="{!!v.isEdit ? 'slds-form-element__control' : 'slds-hide'}">
+                                <ui:outputText value="{!v.userInstance.Street}"/>
+                                <div class="horizontalLine" />
+                            </div>
+                            <div class="{!v.isEdit ? 'lightningInput slds-form-element__control' : 'slds-hide'}">
+                                <lightning:input aura:id="streetinput_communityUserDetail" name="Street" value="{!v.newUserInstance.Street}" label="Street" />
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                            <label class="slds-form-element__label" >City</label>
+                            
+                            <aura:if isTrue="{!v.isEdit}">
+                                <div class="lightningInput slds-form-element__control">
+                                    <lightning:input aura:id="validation" pattern="^[a-zA-Z ]+$" name="City" value="{!v.newUserInstance.City}" label="City" messageWhenPatternMismatch="Please populate valid city" />
+                                </div>
+                                <aura:set attribute="else">
+                                    <div class="slds-form-element__control">
+                                        <ui:outputText value="{!v.userInstance.City}"/>
+                                        <div class="horizontalLine" />
+                                    </div>
+                                </aura:set>
+                            </aura:if>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                            <label class="slds-form-element__label" >State</label>
+                            <div class="{!!v.isEdit ? 'slds-form-element__control' : 'slds-hide'}">
+                                <ui:outputText value="{!v.userInstance.State}"/>
+                                
+                                <div class="horizontalLine" />
+                            </div>
+                            <div class="{!v.isEdit ? 'lightningInput slds-form-element__control' : 'slds-hide'}">
+                                <lightning:select aura:id="stateselect_communityUserDetail" name="State" label="State" value="{!v.newUserInstance.State__c}">
+                                    <option value="">--None--</option>
+                                    <aura:iteration items="{!v.statePickListValueList}" var="state">
+                                    	<option value="{!state}">{!state}</option>
+                                    </aura:iteration>
+                                </lightning:select>
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" 
+                                              largeDeviceSize="6" padding="around-small">
+                            <label class="slds-form-element__label" >Postal Code</label>
+                            
+                            <aura:if isTrue="{!v.isEdit}">
+                                <div class="lightningInput slds-form-element__control">
+                                    <lightning:input aura:id="validation" pattern ="^[0-9]{5}(?:-[0-9]{4})?$" label="Postal Code"
+                                                     name="Postal Code" value="{!v.newUserInstance.PostalCode}" 
+                                                     messageWhenPatternMismatch="Please populate valid postal code" />
+                                </div>
+                                <aura:set attribute="else">
+                                    <div class="slds-form-element__control">
+                                        <ui:outputText value="{!v.userInstance.PostalCode}"/>
+                                        <div class="horizontalLine" />
+                                    </div>
+                                </aura:set>
+                            </aura:if>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                </lightning:layoutItem>
+            </lightning:layout>	 
+            <div align="center">
+                <aura:if isTrue="{!!v.isEdit}">
+                    <lightning:button aura:id="editbtn_communityUserDetail" label="Edit" variant="neutral" onclick="{!c.editUser}"/>
+                    <lightning:button aura:id="resetbtn_communityUserDetail" label="Reset Password" variant="neutral" onclick="{!c.resetPassword}"/>
+                    <aura:set attribute="else">
+                        <lightning:button aura:id="savebtn_communityUserDetail" label="Save" variant="neutral" onclick="{!c.updateModal}"/>
+                        <lightning:button aura:id="cancelbtn_communityUserDetail" label="Cancel" variant="neutral" onclick="{!c.cancelModal}"/>
+                    </aura:set>
+                </aura:if>
+            </div>
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.toRenderModal.isModal}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open modal1">
+            <div class="slds-modal__container" Style="overflow: hidden !important;">
+                <div class="slds-modal__content slds-p-around_medium modal1" id="modal-content-id-1">
+                    <lightning:button class="b3 " aura:id="nobtn_newTradeline" label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"  onclick="{!c.cancelConfirmationModal}" >
+                        <img src="{!$Resource.CloseIconSvg}" width="15" height="15" Style="align:right;"/>
+                    </lightning:button>
+                    <div class="slds-text-align_center slds-m-top_xx-small" Style="font-size:32px;font-family:NotoSansKR-Bold !important;">{!v.toRenderModal.Name}<br/></div>
+                    <div class="slds-text-align_center slds-m-top_xx-small" style="font-family: NotoSans-Regular !important;font-size:16px;">{!v.toRenderModal.Message}<br/><br/></div>
+                    <div class="slds-text-align_center slds-m-top_xx-small">
+                        <lightning:button class="b1" aura:id="nobtn_newTradeline" label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X" title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X"  onclick="{!c.cancelConfirmationModal}" >
+                            Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="{!$Resource.CloseIconSvg}" width="15" height="15"/>
+                        </lightning:button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>

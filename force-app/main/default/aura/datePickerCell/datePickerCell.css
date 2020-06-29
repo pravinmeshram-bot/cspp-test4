@@ -1,0 +1,17 @@
+.THIS .small-td {
+  padding: .2rem;
+}
+
+.THIS .normal-td.datepicker-table td {
+  padding: .25rem;
+}
+
+
+.THIS .small-span {
+  width: 1.2rem; height: 1.2rem; min-width: 0px; line-height: 1.3rem;
+}
+
+.THIS span.slds-is-selected.slds-day {
+    background: rgb(0, 112, 210);
+    color: rgb(255, 255, 255);
+}

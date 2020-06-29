@@ -1,0 +1,485 @@
+<apex:page controller="QD_AccountReview_CC" id="CCF_Form" tabStyle="Quick_Doc__c" sidebar="false" showHeader="false">
+    <script>
+    function loadtable(){
+    document.getElementById("spinner").style.display='inline';
+    }
+    function stoptable(){
+    document.getElementById("spinner").style.display='none';
+    }
+    
+    
+    </script>
+    <style type="text/css">
+        table, td {
+        border: 2px solid black;
+        }
+        
+        tr th:nth-child(odd) {
+        text-align: center;
+        }
+        tr th:nth-child(even) {
+        text-align: center;
+        }
+        
+    </style>
+   <apex:slds /> 
+    <head>
+        <Title>NEGOTIATIONS - QUICK DOC TOOL</Title>
+    </head>
+    <body>
+    <apex:form id="fm" style="background-color: #f2f2f2;">
+    
+        
+    <div class="slds-color__background_gray-12" id="mainpanel">
+    <apex:actionFunction name="textload"  action="{!SettlementSpreadPage}" reRender="idNotePane,Panel1Id"/>
+    <apex:actionFunction name="textload1"  action="{!SettlementSpreadPage}" reRender="fm, mainpanel, btn8 "/>
+    
+    <div class="slds-grid">
+        <div class="slds-col"> </div>
+        
+         <div class="slds-col slds-text-heading_large ">NEGOTIATIONS</div>
+    </div>
+    <br/>
+    <div class="slds-grid" id="subpanel">
+    <div class="slds-col">
+    
+       
+        <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+                <div class="slds-p-horizontal_small" >
+                <label class="slds-form-element__label slds-float_right slds-text-heading_medium" for="text-input-id-1" ><b>Settlement Offer</b></label>
+                </div>
+        </div>   
+    
+      <apex:actionRegion rendered="{!ShowAccount}">
+    
+        <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+              <div class="slds-p-horizontal_medium slds-size_1-of-8 " >
+                <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Account*</b></label>
+              </div>
+                  <div class="slds-form-element__control slds-p-horizontal_small slds-size_1-of-5 slds-combobox-picklist">           
+                 
+                     <c:SLDSDynamicLookup SLDSResourceName="{!$Resource.slds}" ObjectApiName="Account" DisplayFieldApiNames="Name,Type" DisplayFieldsPattern="Name" LabelName="Set Account" SetValueToField="{!QD1.Account__c}"/>
+                    
+                  </div>  
+              
+              
+        </div>
+       </apex:actionRegion>
+       
+       <apex:outputPanel id="idShowMsgError">
+       <apex:outputLabel value="Error:You must enter a value" rendered="{!showms}"  styleclass="slds-p-left_xx-large" style="color: Red; padding-left: 191px;">
+    </apex:outputLabel>
+    </apex:outputPanel> 
+        
+        <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+            <div class="slds-p-horizontal_small slds-size_1-of-8 " >
+                <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Creditor</b></label>  
+            </div>
+            <div class="slds-form-element__control slds-p-horizontal_small ">
+            <div class="slds-form-element slds-grid">
+                <div class="slds-form-element__control slds-col">
+                    <span class="slds-checkbox slds-m-right--xx-large">
+                        <apex:inputField html-name="options" id="divsup20"  styleClass="slds-input slds-combobox__input" value="{!QD1.Creditor_Values__c}">
+                            <apex:actionSupport event="onchange" action="{!SettlementSpreadPage}" reRender="panel1Id,idPanel2,idMsgPanel"/>
+                        </apex:inputField>
+                  <!--      <apex:outputLabel for="divsup20" styleClass="slds-checkbox__label">
+                            <span class="slds-checkbox--faux"></span>
+                            <span class="slds-form-element__label">Creditor/LF/Att Made Offer</span>
+                        </apex:outputLabel>  -->
+                    </span>   
+                </div>
+               &nbsp;
+                <div class="slds-form-element__control slds-col ">
+                    <span class="slds-checkbox slds-m-right-large">
+                        <apex:inputCheckbox html-name="options" id="divsup21"  value="{!QD1.Counter_Offer_Made__c}">
+                            <apex:actionSupport event="onchange" action="{!SettlementSpreadPage}" reRender="idNotePane,Panel1Id, idPanel1"/>
+                        </apex:inputCheckbox>
+                        <apex:outputLabel for="divsup21" styleClass="slds-checkbox__label">
+                            <span class="slds-checkbox--faux"></span>
+                            <span class="slds-form-element__label">Counter Offer Made ---></span>
+                        </apex:outputLabel>
+                    </span> 
+                </div>
+                &nbsp; &nbsp;&nbsp;&nbsp;
+                <apex:outputPanel id="idPanel1">
+                <div class="slds-form-element__control slds-col">
+                        <span class="slds-checkbox slds-m-right--xx-large">
+                            <apex:inputText styleClass="slds-input" onchange="textload()" value="{!InputText}" rendered="{!IF((QD1.Counter_Offer_Made__c),true,false)}" style="{!IF((QD1.Counter_Offer_Made__c),"background-color: #f4ce42;","")}"/>
+                        </span>   
+                </div>
+                </apex:outputPanel>
+            </div>
+            </div>
+            
+            
+        </div>
+    
+    
+     <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small  slds-size_1-of-8 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b></b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            
+           
+            <div class="slds-form-element__control slds-col ">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup23"  value="{!QD1.Waiting_For_Response__c}">
+                        <apex:actionSupport event="onchange" action="{!SettlementSpreadPage}" reRender="idNotePane,Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup23" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Waiting For Response</span>
+                    </apex:outputLabel>
+                </span> 
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="slds-form-element__control slds-col ">
+                <span class="slds-checkbox slds-m-right--xx-large slds-m-left--xx-large">
+                    <apex:inputCheckbox html-name="options" id="divsup24"  value="{!QD1.Will_Follow_Up__c}">
+                        <apex:actionSupport event="onchange" action="{!SettlementSpreadPage}" reRender="idNotePane,Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup24" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Will Follow Up</span>
+                    </apex:outputLabel>
+                </span> 
+            </div>
+            &nbsp;
+            <div class="slds-form-element__control slds-col ">
+                <span class="slds-checkbox slds-m-right--x-large slds-m-left--large">
+                    <apex:inputCheckbox html-name="options" id="divsup25"  value="{!QD1.Waiting_For_Attorney_Approval__c}">
+                        <apex:actionSupport event="onchange" action="{!SettlementSpreadPage}" reRender="idNotePane,Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup25" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Waiting For Attorney Approval</span>
+                    </apex:outputLabel>
+                </span> 
+            </div> 
+            
+        </div>
+        </div>
+    </div>
+    <br/>
+    
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-8 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Applicant(s)</b></label>
+        </div>
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputField html-name="options"  styleClass="slds-input slds-combobox__input" value="{!QD1.Applicant_Values__c}">
+                            <apex:actionSupport event="onchange" action="{!SettlementSpreadPage}" rerender="idPanel2,idMsgPanel,Panel1Id"/>
+                    </apex:inputField>
+                </span>   
+            </div>
+       
+            &nbsp;&nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--small slds-m-left--small">
+                    <apex:inputCheckbox html-name="options" id="divsup9" value="{!QD1.Recorded_Authorization__c}">
+                        <apex:actionSupport event="onchange" action="{!SettlementSpreadPage}" reRender="idNotePane,Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup9" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Recorded Authorization</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;&nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--x-large">
+                    <apex:inputCheckbox html-name="options" id="divsup10" value="{!QD1.Client_Direct__c}">
+                        <apex:actionSupport event="onchange" action="{!SettlementSpreadPage}" reRender="idNotePane,Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsup10" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">Client Direct</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--x-large">
+                    <apex:inputCheckbox html-name="options" id="divsu10" value="{!QD1.SPSA__c}">
+                        <apex:actionSupport event="onchange" action="{!SettlementSpreadPage}" reRender="idNotePane,Panel1Id"/>
+                    </apex:inputCheckbox>
+                    <apex:outputLabel for="divsu10" styleClass="slds-checkbox__label">
+                        <span class="slds-checkbox--faux"></span>
+                        <span class="slds-form-element__label">SPSA</span>
+                    </apex:outputLabel>
+                </span>   
+            </div>
+        </div>
+        </div>
+    </div>
+    
+    <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+        <div class="slds-p-horizontal_small slds-size_1-of-8 " >
+            <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Offer</b></label>
+        </div>
+  
+        <div class="slds-form-element__control slds-p-horizontal_small ">
+        <div class="slds-form-element slds-grid">
+            <div class="slds-form-element__control slds-col">
+                <span class="slds-checkbox slds-m-right--xx-large">
+                    <apex:inputField styleClass="slds-input slds-combobox__input" value="{!QD1.Offer__c}">
+                        <apex:actionSupport event="onchange" action="{!SettlementSpreadPage}" reRender="Panel1Id"/>    
+                    </apex:inputField>
+                </span>
+                  
+            </div>
+        </div>
+        </div>  
+          
+    </div>
+    
+    </div>
+ 
+    </div>
+    
+    <div class="slds-grid" id="subpanel1">
+    <div class="slds-col" >
+        <!--
+        <apex:outputPanel id="idMsgPanel" rendered="{!msgPanel}">
+        <div class="demo-only" style="height: 4rem;">
+            <div class="slds-notify_container slds-is-relative">
+                <div class="slds-notify slds-notify_toast slds-theme--warning" role="alert" style="background-color: #f4ce42;">
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <span class="slds-icon_container slds-icon-utility-info" title="Info">
+                        <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.slds, '/assets/icons/utility-sprite/svg/symbols.svg#info')}" />
+                        </svg>
+                      </span>&nbsp;&nbsp;
+                      <div class="slds-notify__content">
+                          <b> Fields Marked in Yellow are required. </b>
+                      </div>
+          
+                </div>
+          </div>
+        </div>
+        </apex:outputPanel> -->
+
+       <apex:outputPanel id="idPanel2">
+        <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+            
+            <div class="slds-p-horizontal_small slds-size_1-of-8 " >
+                <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Law Firm/3rd Party</b></label>  
+            </div>
+            <div class="slds-form-element__control slds-p-horizontal_small ">
+                <div class="slds-form-element slds-grid">
+                    <div class="slds-form-element__control slds-col">
+                        <span class="slds-checkbox">
+                            <apex:inputField styleClass="slds-input" onchange="textload()" value="{!QD1.Law_Firm_3rd_Party__c}" style="{!IF((QD1.Applicant_Values__c != null),"background-color: #f4ce42;","")}"/>
+                        </span>   
+                    </div>
+                   
+                </div>
+            </div>
+            <div class="slds-p-horizontal_small slds-size_1-of-8 " >
+                <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Original Creditor</b></label>  
+            </div>
+            <div class="slds-form-element__control slds-p-horizontal_small ">
+                <div class="slds-form-element slds-grid">
+                    <div class="slds-form-element__control slds-col">
+                        <span class="slds-checkbox slds-m-right--xx-large">
+                            <apex:inputField styleClass="slds-input" onchange="textload()" value="{!QD1.Original_Creditor__c}" style="{!IF((QD1.Applicant_Values__c != null),"background-color: #f4ce42;","")}"/>
+                        </span>   
+                    </div>
+                   
+                </div>
+            </div>
+            <div class="slds-p-horizontal_small slds-size_1-of-8 " >
+                <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Current Balance</b></label>  
+            </div>
+            <div class="slds-form-element__control slds-p-horizontal_small ">
+                <div class="slds-form-element slds-grid">
+                    <div class="slds-form-element__control slds-col">
+                        <span>
+                            <apex:inputField styleClass="slds-input" onchange="textload()" value="{!QD1.Current_Balance__c}" style="{!IF((QD1.Applicant_Values__c != null),"background-color: #f4ce42;","")}"/>
+                        </span>   
+                    </div>
+                   
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+            
+            <div class="slds-p-horizontal_small slds-size_1-of-8 " >
+                <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Phone #</b></label>  
+            </div>
+            <div class="slds-form-element__control slds-p-horizontal_small ">
+                <div class="slds-form-element slds-grid">
+                    <div class="slds-form-element__control slds-col">
+                        <span class="slds-checkbox">
+                            <apex:inputField styleClass="slds-input" value="{!QD1.Phone__c}" onchange="textload()"/>
+                        </span>   
+                    </div>
+                   
+                </div>
+            </div>
+            <div class="slds-p-horizontal_small slds-size_1-of-8 " >
+                <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Account Ending</b></label>  
+            </div>
+            <div class="slds-form-element__control slds-p-horizontal_small ">
+                <div class="slds-form-element slds-grid">
+                    <div class="slds-form-element__control slds-col">
+                        <span class="slds-checkbox slds-m-right--xx-large">
+                            <apex:inputField styleClass="slds-input" onchange="textload()" value="{!QD1.Account_Ending__c}" style="{!IF((QD1.Applicant_Values__c != null),"background-color: #f4ce42;","")}"/>
+                        </span>   
+                    </div>
+                   
+                </div>
+            </div>
+            <div class="slds-p-horizontal_small slds-size_1-of-8 " >
+                <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Offer Amount</b></label>  
+            </div>
+            <div class="slds-form-element__control slds-p-horizontal_small ">
+                <div class="slds-form-element slds-grid">
+                    <div class="slds-form-element__control slds-col">
+                        <span>
+                            <apex:inputField styleClass="slds-input" onchange="textload()" value="{!QD1.Offer_Amount__c}" style="{!IF((QD1.Creditor_Values__c != null || QD1.Applicant_Values__c != null),"background-color: #f4ce42;","")}"/>
+                                         
+                        </span>   
+                    </div>
+                   
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+            
+            <div class="slds-p-horizontal_small slds-size_1-of-8 " >
+                <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Payments/Terms</b></label>  
+            </div>
+            <div class="slds-form-element__control slds-p-horizontal_small ">
+                <div class="slds-form-element slds-grid">
+                    <div class="slds-form-element__control slds-col">
+                        <span class="slds-checkbox">
+                            <apex:inputField id="Pay" onchange="textload()" styleClass="slds-input" value="{!QD1.Payments_Terms__c}" style="{!IF((QD1.Creditor_Values__c != null || QD1.Applicant_Values__c != null),"background-color: #f4ce42;","")}"/>
+                        </span>   
+                    </div>
+                   
+                </div>
+            </div>
+            <div class="slds-p-horizontal_small slds-size_1-of-8 " >
+                <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Settlement Type</b></label>  
+            </div>
+            <div class="slds-form-element__control slds-p-horizontal_small ">
+                <div class="slds-form-element slds-grid">
+                    <div class="slds-form-element__control slds-col">
+                        <span class="slds-checkbox slds-m-right--xx-large">
+                     <!--    <apex:inputField onchange="textload1();" styleClass="slds-input" value="{!QD1.Settlement_Type__c}" style="{!IF((QD1.Creditor_Values__c != null || QD1.Applicant_Values__c != null),"background-color: #f4ce42;","")}"/> -->
+                             <apex:inputField styleClass="slds-input" onchange="textload()" value="{!QD1.Settlement_Type__c}" style="{!IF((QD1.Creditor_Values__c != null || QD1.Applicant_Values__c != null),"background-color: #f4ce42;","")}"/>
+                                                   
+                        </span>   
+                    </div>
+                   
+                </div>
+            </div>
+            
+        </div>
+        <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+            <div class="slds-p-horizontal_small  slds-size_1-of-8 " >
+                <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b></b></label>
+            </div>
+            <div class="slds-form-element__control slds-p-horizontal_small ">
+                    <div class="slds-form-element slds-grid">
+                        <div class="slds-form-element__control slds-col">
+                            <span class="slds-checkbox slds-m-right--xx-large">
+                       <!--         <apex:outputLabel value="You must enter a value" rendered="{!IF(((QD1.Creditor_Values__c != null || QD1.Applicant_Values__c != null) && QD1.Offer_Amount__c == null),true,false)}" style="color:red"></apex:outputLabel>  -->  
+                            </span>   
+                        </div>
+                       
+                    </div>
+            </div>
+        </div>
+   </apex:outputPanel>
+            
+     </div>
+   </div>
+ 
+   <br/>
+   <div class="slds-grid" id="subpanel2">
+    <div class="slds-col" >
+    
+       
+        <div class="slds-grid slds-wrap  slds-p-around_xx-small slds-border_top " style="border-color:#f3f3ec;">
+            <div class="slds-p-horizontal_small slds-size_1-of-8 " >
+                <label class="slds-form-element__label slds-float_right" for="text-input-id-1" ><b>Additional Information</b></label>
+            </div>
+        <div class="slds-form-element__control slds-p-horizontal_small slds-size_2-of-5 slds-combobox-picklist">                        
+            <apex:inputField value="{!QD1.Additional_Information__c}" styleClass="slds-input">
+                <apex:actionSupport event="onchange" action="{!SettlementSpreadPage}" reRender="Panel1Id"/>
+            </apex:inputField> 
+        </div>
+         </div>
+     </div>
+  </div>           
+   
+    <br/>
+     <apex:outputPanel id="idMsgPanel">
+    <apex:outputPanel rendered="{!msgPanel}">
+        <div class="demo-only" style="height: 4rem;">
+            <div class="slds-notify_container slds-is-relative">
+                <div class="slds-notify slds-notify_toast slds-theme--warning" role="alert" style="background-color: #f4ce42;">
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <span class="slds-icon_container slds-icon-utility-info" title="Info">
+                        <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.slds, '/assets/icons/utility-sprite/svg/symbols.svg#info')}" />
+                        </svg>
+                      </span>&nbsp;&nbsp;
+                      <div class="slds-notify__content">
+                          <b> Fields Marked in Yellow are required. </b>
+                      </div>
+          
+                </div>
+          </div>
+        </div>
+        </apex:outputPanel>
+   </apex:outputPanel>
+    <center>
+        <apex:commandButton value="Clear All Values" action="{!clearAll}" onclick="loadtable();" html-name="options" styleClass="btn slds-button slds-button--brand slds-not-selected"   style="text-decoration:black;padding:1px;;width:9pc;background:#0070d2;" id="btn3" />
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <apex:commandButton value="Save" rerender="idShowMsgError" action="{!saveQDSettlement}" html-name="options" styleClass="btn slds-button slds-button--brand slds-not-selected"   style="text-decoration:black;padding:1px;;width:9pc;background:#0070d2;" id="btn8" />
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <apex:commandButton value="Cancel" immediate="true" action="{!CancelQD}" onclick="loadtable();" html-name="options" styleClass="btn slds-button slds-button--brand slds-not-selected"   style="text-decoration:black;padding:1px;;width:9pc;background:#0070d2;" id="btn5" />
+    
+    </center>
+    <br/>
+    <div class="demo-only" id="spinner"  style="display:none;">
+      <div role="status" class="slds-spinner slds-spinner_brand slds-spinner_large">
+        <span class="slds-assistive-text">Loading</span>
+        <div class="slds-spinner__dot-a"></div>
+        <div class="slds-spinner__dot-b"></div>
+      </div>
+    </div>
+    <apex:outputPanel id="Panel1Id">
+    <apex:outputPanel rendered="{!showPanel}">
+    <!--<table  class="slds-table slds-table_bordered slds-table_cell-buffer">-->
+    <apex:pageBlock id="idNotePane">  
+
+        <apex:pageBlockTable value="{!quickDocScripts3}" var="n" style="border:2px solid black;" >
+   <!--     <apex:column value="{!n.Description__c}" width="50%" style="padding-left: 10px; padding-right:10px; border:2px solid black;" headerValue="Script Pane"/> -->
+        <apex:column value="{!n.Notes__c}" style="padding-left: 10px; padding-right:10px; border:2px solid black; " headerValue="Notes Pane"/>  
+        </apex:pageBlockTable>
+        
+    </apex:pageBlock>
+    </apex:outputPanel>
+    </apex:outputPanel>
+    <br/>
+    
+    </div>
+    
+    </apex:form>
+    <apex:includeScript value="{!$Resource.SLDSDynamicLookupScript}"/> 
+    </body>
+    
+</apex:page>

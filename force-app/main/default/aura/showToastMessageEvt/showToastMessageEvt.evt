@@ -1,0 +1,3 @@
+<aura:event type="APPLICATION" description="To render toast message" >
+    <aura:attribute name="toastParam" type="Map" access="public" />
+</aura:event>

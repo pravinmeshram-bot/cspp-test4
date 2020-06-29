@@ -1,0 +1,31 @@
+<apex:page controller="RunBatchesCtrl">
+    <apex:pageMessages id="msg"/>
+    <apex:form >
+       
+   <apex:pageBlock title="Communication Batches">
+      
+              <apex:pageBlockButtons location="top">
+                   <apex:commandButton action="{!executeSmsBatch}" value="RUN SMS Batch"/>
+                  <apex:commandButton action="{!executeEmailBatch}" value="Run Email Batch"/>
+                 <apex:commandButton action="{!executeVBBatch}" value="Run Voice Broad Cast Batch"/>
+             </apex:pageBlockButtons>
+
+    </apex:pageBlock>
+    
+          <apex:pageBlock title="GCS Batches">
+      
+              <apex:pageBlockButtons location="top">
+                  
+                   <apex:commandButton action="{!executeCreateDraftBatch}" value="Create Drafts"/>
+                  <apex:commandButton action="{!executeCreateSettlementBatch}" value="Create Settlements"/>
+                  <apex:commandButton action="{!executeCalfDrafts}" value="CALF DRAFTS"/>
+             </apex:pageBlockButtons>
+
+             <apex:pageblockSection >
+                   <apex:inputField id="processorId" value="{!program.nu_dse__Processor__c}" label="Select Processor"/>
+                   <apex:inputField id="batchDate" value="{!program.BatchDate__c}" label="Select Date"/>
+             </apex:pageblockSection>
+
+    </apex:pageBlock>
+</apex:form>
+</apex:page>

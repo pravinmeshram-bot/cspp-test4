@@ -1,0 +1,70 @@
+<aura:component access="public">
+    <aura:attribute name="dataList" type="List" access="public" default="[]" />
+    <aura:attribute name="dataToDisplay" type="List" access="public" default="[]" />
+    <aura:attribute name="columnHeaderList" type="List" access="public" default="[]"  />
+    <aura:attribute name="actionList" type="List" access="public" default="[]" />
+    
+    <aura:attribute name="recordsPerPage" type="Integer" access="public" default="10"/>
+    <aura:attribute name="totalCount" type="Integer" access="public" default="10"/>
+    
+    <aura:attribute name="hidePagination" type="Boolean" default="false" access="public" />
+    <aura:attribute name="isLazyLoad" type="Boolean" default="false" access="public" />
+    
+    <aura:attribute name="emptyRecordsText" type="String" access="public" default="No Record(s) Found." />
+    <aura:attribute name="actionType" type="String" access="public" />
+    <aura:attribute name="totalCountVariable" type="String" access="public" />
+    
+    <aura:registerEvent name="lazyLoadEvent" type="c:selectedRecordEvt"/>
+    
+    <div class="{!if(v.isLazyLoad, 'dynamic-row', '')}"  >
+        <div class="{!if(and(v.isLazyLoad, greaterthan(v.dataList.length, 0)), 'slds-table_header-fixed_container slds-scrollable_x', '')}"  style="height: 100%;">
+            <div class="{!if(and(v.isLazyLoad, greaterthan(v.dataList.length, 0)), 'slds-scrollable_y', 'slds-scrollable_x')}" aura:id="dynamicTable" >
+                <table class="{!if(and(v.isLazyLoad, greaterthan(v.dataList.length, 0)), 'slds-table slds-table_header-fixed slds-table_bordered slds-table_edit', 'slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal slds-table_fixed-layout')}" >
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <aura:iteration items="{!v.columnHeaderList}" var="column">
+                                <th class="slds-text-title_caps" scope="col" aria-label="{!column.fieldLabel}">
+                                    <div class="{!if(and(v.isLazyLoad, greaterthan(v.dataList.length, 0)), 'slds-cell-fixed slds-has-button-menu', '')}"  title="">
+                                        <span class="{!if(and(v.isLazyLoad, greaterthan(v.dataList.length, 0)), 'slds-th__action', '')}" >
+                                            <span title="{!column.fieldLabel}" class="slds-truncate">{!column.fieldLabel}</span>
+                                        </span>
+                                    </div>
+                                </th>
+                            </aura:iteration>
+                            <aura:if isTrue="{!not(empty(v.actionList))}"> 
+                                <th class="slds-text-title_caps" scope="col" aria-label="Action">
+                                    <div class="{!if(and(v.isLazyLoad, greaterthan(v.dataList.length, 0)), 'slds-cell-fixed slds-has-button-menu', '')}"  title="">
+                                        <span class="{!if(and(v.isLazyLoad, greaterthan(v.dataList.length, 0)), 'slds-th__action', '')}" >
+                                            <span title="Action" class="slds-truncate">Action</span>
+                                        </span>
+                                    </div>
+                                </th>
+                            </aura:if>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <aura:if isTrue="{!not(empty(v.dataList))}"> 
+                            <aura:iteration items="{!if (!v.hidePagination, v.dataToDisplay, v.dataList) }" var="row" indexVar="idx">
+                                <tr >
+                                    <c:dynamicRow dataRowMap="{!row}" columnHeaderList="{!v.columnHeaderList}"
+                                                  actionList="{!v.actionList}" actionType="{!v.actionType}" 
+                                                  indexPosition="{!idx}"/>
+                                </tr>
+                            </aura:iteration>
+                        </aura:if>
+                        <aura:if isTrue="{!!v.dataList.length}">
+                            <tr>
+                                <td colspan="{!add(v.columnHeaderList.length, 1)}" style="font-weight:bold;text-align:center;">
+                                    {!v.emptyRecordsText}
+                                </td>
+                            </tr>
+                        </aura:if>
+                    </tbody> 
+                </table>
+            </div>
+        </div>
+    </div>
+    <aura:if isTrue="{!and(not(empty(v.dataList)),!v.hidePagination)}"> 
+        <c:pagination allData="{!v.dataList}" data="{!v.dataToDisplay}" pageSize="{!v.recordsPerPage}"/>
+    </aura:if>
+</aura:component>

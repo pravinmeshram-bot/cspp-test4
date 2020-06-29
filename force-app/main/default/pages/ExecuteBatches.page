@@ -1,0 +1,74 @@
+<apex:page controller="ExecuteBatchesController" showHeader="false" sidebar="false">
+    <apex:slds />
+    
+    <apex:pageMessages id="errorMessage"/>
+    <apex:form id="changePrivacyForm">
+        <div class="slds-card">
+            <div class="slds-card__header slds-grid">
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                        All Batches Classes
+                    </h2>
+                </div>
+            </div>
+            <div class="slds-card__footer">
+                <apex:commandButton value="Start Exection" id="SelectAtTop" styleClass="slds-button slds-button_brand" onclick="batchExectionAction('startExecution');" reRender="none" />
+                <apex:commandButton value="Stop Execution" id="ExitAtTop" styleClass="slds-button slds-button_brand" onclick="batchExectionAction('stopExecution');" reRender="none" />
+                <apex:outputPanel id="batchTable"> 
+                    <div class="slds-table_edit_container slds-is-relative slds-p-top_small slds-p-bottom_small slds-align_absolute-center">
+                        <table aria-multiselectable="true" class="slds-table slds-no-cell-focus slds-table_bordered slds-table_edit slds-table_fixed-layout slds-table_resizable-cols" role="grid" style="width: 66.75rem;">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th scope="col" style="padding-left:0.5rem !important;padding-top: 0.5rem !important;padding-bottom: 0.5rem !important;width: 3rem !important;" >
+                                        <apex:inputCheckbox value="{!isChecked}" styleClass="slds-checkbox" onclick="globalSelection();" />
+                                    </th>
+                                    <th scope="col" style="padding-left:0.5rem !important;padding-top: 0.5rem !important;padding-bottom: 0.5rem !important;min-width: 114px;">
+                                        <div class="slds-truncate" title="Name">Batch Class Name</div>
+                                    </th>
+                                    <th scope="col" style="padding-left:0.5rem !important;padding-top: 0.5rem !important;padding-bottom: 0.5rem !important;min-width: 114px;">
+                                        <div class="slds-truncate" title="Size">Batch Execution Size</div>
+                                    </th>
+                                    <th scope="col" style="padding-left:0.5rem !important;padding-top: 0.5rem !important;padding-bottom: 0.5rem !important;min-width: 114px;">
+                                        <div class="slds-truncate" title="Size"> Parameter </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <apex:repeat value="{!batchClassList}" var="batchInstance">
+                                    <tr aria-selected="false" class="slds-hint-parent">
+                                        <td style="padding-left:0.5rem !important; width: 3rem !important;;">
+                                            <apex:inputCheckbox value="{!batchInstance.isChecked}" styleClass="slds-checkbox"/>
+                                        </td>
+                                        <th style="padding-left:0.5rem !important;width: 8em;">
+                                            <div class="slds-truncate">{!batchInstance.className}</div>
+                                        </th>
+                                        <th style="padding-left:0.5rem !important;width: 8em;">
+                                            <apex:inputText value="{!batchInstance.batchExecutionSize}" />
+                                        </th>
+                                        <th style="padding-left:0.5rem !important;width: 8em;">
+                                            <apex:outputPanel rendered="{!batchInstance.className == 'BatchDeleteAttorneyTasksAndRetrigger'}" >
+                                                <div class="slds-form-element__label">To Retrigger Process Builder</div>
+                                                <apex:inputCheckbox title="To Retrigger Process Builder" label="To Retrigger Process Builder"  value="{!batchInstance.isTriggerFlow}" styleClass="slds-checkbox"/>
+                                            </apex:outputPanel>
+                                        </th>
+                                    </tr>
+                                </apex:repeat>
+                                <tr class="{!if(batchClassList != null && batchClassList.size == 0,'slds-table-show','slds-hide')}">
+                                    <td colspan="4" data-label="NoRecordMsg">  
+                                        <div class="slds-truncate slds-text-align--center" >No record(s) found.</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </apex:outputPanel>
+                <apex:commandButton value="Start Execution" id="SelectAtBottom" styleClass="slds-button slds-button_brand" onclick="batchExectionAction('startExecution');" reRender="none"/>
+                <apex:commandButton value="Stop Execution" id="ExitAtBottom" styleClass="slds-button slds-button_brand" onclick="batchExectionAction('stopExecution');" reRender="none"/>
+                <apex:actionFunction action="{!batchExection}" name="batchExectionAction" reRender="batchTable, errorMessage" >
+                    <apex:param name="actionToExecute" value=""/>
+                </apex:actionFunction>
+            </div>
+            <apex:actionFunction name="globalSelection" action="{!gobalSelect}" reRender="batchTable"/>
+        </div>
+    </apex:form>
+</apex:page>

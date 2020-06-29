@@ -1,0 +1,176 @@
+.THIS .feedback-button{    
+  	background: transparent !important;
+    padding: 0 0.4rem;
+    border: 1px solid lightgrey;
+    border-radius:4px;
+    color: white !important;
+    line-height: 1.2rem;
+}
+
+.THIS a {
+    color: white !important;
+}
+
+.THIS .desktop-image {
+    height:5rem;
+    position: absolute;
+    top: 1.5rem;
+    left:3rem;
+}
+
+.THIS .mobile-image {
+    height: 5rem;
+    top: 0;
+    width: 100%;
+    max-width: 10rem;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+/*
+.THIS .company-logo {
+    height:5rem;
+    position: absolute;
+    top: 1.5rem;
+    left:3rem;
+} */
+
+.THIS .company-logo {
+    height:6rem;
+    position: absolute;
+    top: 0;
+}
+
+.THIS .min-div-height {
+    min-height : 3rem;
+}
+
+.THIS .support-phone a:hover {
+    text-decoration:none !important;
+}
+
+/* 
+##Device = Desktops
+##Screen = 1281px to higher resolution desktops
+*/
+
+@media (min-width: 1280px) {
+    .THIS .company-logo {
+        left:1.5rem;
+    }
+    .THIS .feedback-support-class {
+        display: block;
+    }
+}
+
+/* 
+##Device = Laptops, Desktops
+##Screen = B/w 1025px to 1280px
+*/
+
+@media (min-width: 1025px) and (max-width: 1279px) {
+    .THIS .company-logo {
+        height: 5rem;
+        top: 0;
+        width: 100%;
+        max-width: 10rem;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+    .THIS .feedback-support-class {
+        display: none !important;
+    }
+}
+
+/* 
+##Device = Tablets, Ipads (portrait)
+##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .THIS .company-logo {
+        height: 5rem;
+        top: 0;
+        width: 100%;
+        max-width: 10rem;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+    .THIS .feedback-support-class {
+        display: none !important;
+    }
+}
+
+/* 
+##Device = Tablets, Ipads (landscape)
+##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    .THIS .company-logo {
+        height: 5rem;
+        top: 0;
+        width: 100%;
+        max-width: 10rem;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+    .THIS .feedback-support-class {
+        display: none !important;
+    }
+}
+
+/* 
+##Device = Low Resolution Tablets, Mobiles (Landscape)
+##Screen = B/w 481px to 767px
+*/
+
+@media (min-width: 481px) and (max-width: 767px) {
+    .THIS .company-logo {
+        height: 5rem;
+        top: 0;
+        width: 100%;
+        max-width: 10rem;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+    .THIS .feedback-support-class {
+        display: none !important;
+    }
+}
+
+/* 
+##Device = Most of the Smartphones Mobiles (Portrait)
+##Screen = B/w 320px to 479px
+*/
+
+@media (min-width: 320px) and (max-width: 480px) {
+    .THIS .company-logo {
+        height: 5rem;
+        top: 0;
+        width: 100%;
+        max-width: 10rem;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+    .THIS .feedback-support-class {
+        display: none !important;
+    }
+}

@@ -1,0 +1,232 @@
+<apex:component controller="SFSPortal_AFSettlementCtrl" allowDML="true">
+    <apex:attribute name="recordId" assignTo="{!programId}" type="String" required="true" description="Record Id of the Parent Program." />
+    <apex:slds />
+    <style>
+        .slds-card {
+            background: #f4f6f9 !important;
+        }
+    </style>
+    
+    <apex:form id="afSettlementFormId">
+        <apex:pageMessages id="errMsg" />
+        <apex:actionFunction name="displayFA" reRender="afSettlementFormId, errMsg" />
+        <apex:actionFunction name="resetRequest" action="{!resetRequest}" reRender="afSettlementFormId, errMsg" />
+        <apex:actionFunction name="submitAdvFundSettlement" action="{!submitAdvFundSettlement}" reRender="afSettlementFormId, errMsg" />
+        <div class="slds-panel slds-p-around--small">
+            <div class="slds-card ">
+                
+                <div class="slds-card__header slds-grid">
+                    <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                        <h2><strong>Fee Advancement Activity</strong></h2>
+                    </div>
+                    <div class="slds-no-flex">
+                    </div>
+                </div>
+                
+                <div class="slds-card__body data-table">
+                    <div class="slds-panel" style="color: black;">
+                        <div class="slds-m-around--small">
+                            <div class="slds-grid slds-wrap slds-grid--pull-padded slds-m-bottom--x-small">
+                                <div class="slds-p-horizontal--small slds-size--1-of-6">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label" for="inputSample2">Fee Advancement</label>
+                                        <div class="slds-form-element__control">
+                                           <!-- <div class="slds-box slds-box--x-small slds-theme--shade">  -->
+                                                <div class="slds-form-element">
+                                                    <label class="slds-checkbox_toggle slds-grid">
+                                                        <apex:inputCheckbox value="{!isFeeAdvancement}" onchange="displayFA(); return false;" />
+                                                        <span class="slds-checkbox_faux_container" aria-live="assertive">
+                                                            <span class="slds-checkbox_faux"></span>
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            <!-- </div>  -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            <apex:outputPanel rendered="{!isFeeAdvancement==true}">
+                            <div class="slds-p-horizontal--small slds-size--12-of-12">
+                                <div class="slds-grid slds-gutters">
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label" >Total fund required <span style="color:red">*</span></label>
+                                            <div class="slds-form-element__control">
+                                                <apex:inputField value="{!tsk.Total_fund_required__c}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label" >Funds need to be available by date <span style="color:red">*</span></label>
+                                            <div class="slds-form-element__control">
+                                                <apex:inputField value="{!tsk.Funds_need_to_be_available_by_date__c}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="slds-p-horizontal--small slds-size--12-of-12">
+                                <div class="slds-grid slds-gutters">
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label" >Recoup timeframe <span style="color:red">*</span></label>
+                                            <div class="slds-form-element__control">
+                                                <apex:inputField value="{!tsk.Recoup_timeframe__c}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label" >Tradeline(s) to be advanced <span style="color:red">*</span></label>
+                                            <div class="slds-form-element__control">
+                                                <apex:selectList value="{!selectedTradelines}" multiselect="true" size="5">
+                                                    <apex:selectOptions value="{!tradelines}" />
+                                                </apex:selectList>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="slds-p-horizontal--small slds-size--12-of-12">
+                                <div class="slds-grid slds-gutters">
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label" >Type of Request <span style="color:red">*</span></label>
+                                            <div class="slds-form-element__control">
+                                                <apex:inputField value="{!tsk.Type_of_Request__c}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label" >Funds requested previously <span style="color:red">*</span></label>
+                                            <div class="slds-form-element__control">
+                                                <apex:inputField value="{!tsk.Were_additional_funds_requested__c}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="slds-p-horizontal--small slds-size--12-of-12">
+                                <div class="slds-grid slds-gutters">
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label" >Draft History <span style="color:red">*</span></label>
+                                            <div class="slds-form-element__control">
+                                                <apex:inputField value="{!tsk.Perfect_Draft_History__c}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label" >Settlement type <span style="color:red">*</span></label>
+                                            <div class="slds-form-element__control">
+                                                <apex:inputField value="{!tsk.Settlement_type__c}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="slds-p-horizontal--small slds-size--12-of-12">
+                                <div class="slds-grid slds-gutters">
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label" >BBB/Attorney General complaint <span style="color:red">*</span></label>
+                                            <div class="slds-form-element__control">
+                                                <apex:inputField value="{!tsk.BBB_Attorney_General_complaint__c}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label" >Total months client has been in program</label>
+                                            <div class="slds-form-element__control">
+                                                <apex:inputText value="{!tsk.Client_s_total_months_in_program__c}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!--<div class="slds-p-horizontal--small slds-size--12-of-12">
+                                <div class="slds-grid slds-gutters">
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label" >Does client have a perfect draft history <span style="color:red">*</span></label>
+                                            <div class="slds-form-element__control">
+                                                <apex:inputField value="{!tsk.Does_client_have_a_perfect_draft_history__c}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label" >Legal File</label>
+                                            <div class="slds-form-element__control">
+                                                <apex:inputField value="{!tsk.Legal_File__c}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>-->
+                            
+                            <div class="slds-p-horizontal--small slds-size--12-of-12">
+                                <div class="slds-grid slds-gutters">
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label" >Legal file number</label>
+                                            <div class="slds-form-element__control">
+                                                <apex:inputField value="{!tsk.Legal_file_number__c}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label" >Advancement Facilitates Lit Settlement <span style="color:red">*</span></label>
+                                            <div class="slds-form-element__control">
+                                                <apex:inputField value="{!tsk.Advancement_Facilitates_Lit_Settlement__c}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="slds-p-horizontal--small slds-size--12-of-12">
+                                <div class="slds-grid slds-gutters">
+                                    <div class="slds-col slds-size_12-of-12">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label" >How was the client serviced (Explanation of back service)</label>
+                                            <div class="slds-form-element__control">
+                                                <apex:inputField style="width:100%" value="{!tsk.How_was_the_client_serviced__c}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                
+                                <div style="padding-top:15px;" >
+                                    <button type="button" class="slds-button slds-button--neutral nudebt-button slds-float_right" onclick="resetRequest(); return false;">Reset</button>
+                                    <button type="button" class="slds-button slds-button--neutral nudebt-button slds-float_right" onclick="submitAdvFundSettlement(); return false;">Submit</button>
+                                </div>
+                                
+                            </apex:outputPanel>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </apex:form>
+</apex:component>

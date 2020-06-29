@@ -1,0 +1,209 @@
+.Effective_Date__c
+{
+	display:{!If(fieldRenderMap['effective_date__c'],'block','none')};"
+}
+.Expiration_Date__c
+{
+	display:{!If(fieldRenderMap['expiration_date__c'],'block','none')};"
+}
+.SAP_CLM_Contract_Reference__c
+{
+	display:{!If(fieldRenderMap['sap_clm_contract_reference__c'],'block','none')};"
+}
+.Master_Agreement_Request_Type__c
+{
+	display:{!If(fieldRenderMap['master_agreement_request_type__c'],'block','none')};"
+}
+.Provisional_Contract__c
+{
+	display:{!If(fieldRenderMap['provisional_contract__c'],'block','none')};"
+}
+.Contract_Name__c
+{
+	display:{!If(fieldRenderMap['contract_name__c'],'block','none')};"
+}
+.Contract_Description__c
+{
+	display:{!If(fieldRenderMap['contract_description__c'],'block','none')};"
+}
+.Contract_owner__c
+{
+	display:{!If(fieldRenderMap['contract_owner__c'],'block','none')};"
+}
+.Renewal_Reminder_Date__c
+{
+	display:{!If(fieldRenderMap['renewal_reminder_date__c'],'block','none')};"
+}
+.CTC_Type__c
+{
+	display:{!If(fieldRenderMap['ctc_type__c'],'block','none')};"
+}
+.Contracting_Currency__c
+{
+	display:{!If(fieldRenderMap['contracting_currency__c'],'block','none')};"
+}
+.Additional_Instructions_for_CPMO__c
+{
+	display:{!If(fieldRenderMap['additional_instructions_for_cpmo__c'],'block','none')};"
+}
+.Network__c
+{
+	display:{!If(fieldRenderMap['network__c'],'block','none')};"
+}
+.Portfolio__c
+{
+	display:{!If(fieldRenderMap['portfolio__c'],'block','none')};"
+}
+.Team_s_Name__c
+{
+	display:{!If(fieldRenderMap['team_s_name__c'],'block','none')};"
+}
+
+.Cluster__c
+{
+	display:{!If(fieldRenderMap['cluster__c'],'block','none')};"
+}
+.Country1__c
+{
+	display:{!If(fieldRenderMap['country1__c'],'block','none')};"
+}
+.Legal_Entity_Signing_the_Contract__c
+{
+	display:{!If(fieldRenderMap['legal_entity_signing_the_contract__c'],'block','none')};"
+}
+.Contract_Legal_Template__c
+{
+	display:{!If(fieldRenderMap['contract_legal_template__c'],'block','none')};"
+}
+.Language__c
+{
+	display:{!If(fieldRenderMap['language__c'],'block','none')};"
+}
+.Purchase_commodity_description__c
+{
+	display:{!If(fieldRenderMap['purchase_commodity_description__c'],'block','none')};"
+}
+.Contracting_Method__c
+{
+	display:{!If(fieldRenderMap['contracting_method__c'],'block','none')};"
+}
+.Hybrid_Material__c
+{
+	display:{!If(fieldRenderMap['hybrid_material__c'],'block','none')};"
+}
+.Contract_Board_Approved__c
+{
+	display:{!If(fieldRenderMap['contract_board_approved__c'],'block','none')};"
+}
+.Alert_Threshold_limit_Percentage__c
+{
+	display:{!If(fieldRenderMap['alert_threshold_limit_percentage__c'],'block','none')};"
+}
+.Supplier_Code__c
+{
+	display:{!If(fieldRenderMap['supplier_code__c'],'block','none')};"
+}
+.Supplier_Name__c
+{
+	display:{!If(fieldRenderMap['supplier_name__c'],'block','none')};"
+}
+.Contract_Supplier_Tier_Status__c
+{
+	display:{!If(fieldRenderMap['contract_supplier_tier_status__c'],'block','none')};"
+}
+.Supplier_Contact_Name__c
+{
+	display:{!If(fieldRenderMap['supplier_contact_name__c'],'block','none')};"
+}
+.Supplier_s_Contract_Number__c
+{
+	display:{!If(fieldRenderMap['supplier_s_contract_number__c'],'block','none')};"
+}
+.Street__c
+{
+	display:{!If(fieldRenderMap['street__c'],'block','none')};"
+}
+.City_Name__c
+{
+	display:{!If(fieldRenderMap['city_name__c'],'block','none')};"
+}
+.Post_Code_Zip__c
+{
+	display:{!If(fieldRenderMap['post_code_zip__c'],'block','none')};"
+}
+.Region_State__c
+{
+	display:{!If(fieldRenderMap['region_state__c'],'block','none')};"
+}
+.Supplier_Risk_Rating__c
+{
+	display:{!If(fieldRenderMap['supplier_risk_rating__c'],'block','none')};"
+}
+.SRM_Critical_Supplier__c
+{
+	display:{!If(fieldRenderMap['srm_critical_supplier__c'],'block','none')};"
+}
+.Supplier_USQS_Complaint__c
+{
+	display:{!If(fieldRenderMap['supplier_usqs_complaint__c'],'block','none')};"
+}
+.Penalty_Clause_Exist__c
+{
+	display:{!If(fieldRenderMap['penalty_clause_exist__c'],'block','none')};"
+}
+.Cost_Model_Check_Comparison_Done__c
+{
+	display:{!If(fieldRenderMap['cost_model_check_comparison_done__c'],'block','none')};"
+}
+.Valid_UPA_exist__c
+{	
+	display:{!If(fieldRenderMap['valid_upa_exist__c'],'block','none')};"
+}
+.UPA_Number__c
+{
+	display:{!If(fieldRenderMap['upa_number__c'],'block','none')};"
+}
+.Contracts_Requires_Signature__c
+{
+	display:{!If(fieldRenderMap['contracts_requires_signature__c'],'block','none')};"
+}
+.Supplier_Digital_Signature_Ready__c
+{
+	display:{!If(fieldRenderMap['supplier_digital_signature_ready__c'],'block','none')};"
+}
+.Collaborators__c
+{
+	display:{!If(fieldRenderMap['collaborators__c'],'block','none')};"
+}
+.Supplier_Contact_Name__c
+{
+	display:{!If(fieldRenderMap['supplier_contact_name__c'],'block','none')};"
+}
+.Signatory_Country__c
+{
+	display:{!If(fieldRenderMap['signatory_country__c'],'block','none')};"
+}
+.Supplier_Contact_Name__c
+{
+	display:{!If(fieldRenderMap['supplier_contact_name__c'],'block','none')};"
+}
+.Supplier_Contact_Email_To_list1__c
+{
+	display:{!If(fieldRenderMap['supplier_contact_email_to_list1__c'],'block','none')};"
+}
+.Supplier_Contact_Email_CC_list__c
+{
+	display:{!If(fieldRenderMap['supplier_contact_email_cc_list__c'],'block','none')};"
+}
+.Additional_Instructions_for_CPMO__c
+{
+	display:{!If(fieldRenderMap['additional_instructions_for_cpmo__c'],'block','none')};"
+}
+.Contact_Name__c
+{
+	display:{!If(fieldRenderMap['contact_name__c'],'block','none')};"
+}
+.E_mail_Address__c
+{
+	display:{!If(fieldRenderMap['e_mail_address__c'],'block','none')};"
+}

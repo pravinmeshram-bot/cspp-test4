@@ -1,0 +1,280 @@
+<aura:component controller="SFSPortal_DocumentCenterCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global" > 
+    <aura:attribute name="showLandingPage" type="Boolean" default="true" Description="Used to render Listing UI"/>
+    <aura:attribute name="selectedCategory" type="String" default="" Description="Used to store selected category name"/>
+    <aura:attribute name="openModal" type="Boolean" access="public" default="false" Description="This is used to show flag the OpenModel"/>
+    <aura:attribute name="filteredFolderMap" type="Map" Description="Used to store all filltered list based on different category"/>
+    <aura:attribute name="selectedCategoryToEntriesMap" type="Map" Description="Used to store filltered list for any specific selected category"/>
+    <aura:attribute name="FilesToPreviewURL" type="Map" default="{}" Description="Listing of files to preview event"/>
+    <aura:attribute name="categoryToFileCount" type="Map" default="{}" Description="Store mapping based on different category to its relatest count"/>
+    <aura:attribute name="welcomeMaterialDocs" type="List" Description="Listing of all related Welcome Materials"/>
+    <aura:attribute name="recentUploadsEntityList" type="List" Description="Listing of all files which belongs to recent upload category"/>
+    <aura:attribute name="CategoryWiseEntitiesList" type="List" Description="Listing of Documents based on selected category"/>
+    <aura:attribute name="allCategoryList" type="String[]" default="['Bank_Information', 'Legal_Actions', 'Settlements', 'Tax_Forms', 'Contracts']" Description="All stored mapping categories"/>
+    <aura:attribute name="spinner" type="Boolean" default="false" Description="Flag to allow spinner"/>
+	<aura:attribute name="FilePreviewpageReference" type="Object" Description="Store file's object info which going to preview"/>
+    <aura:attribute name="showDocumentPreviewModel" type="Boolean" default="false" Description="Flag for showing Document preview model for Welcome materials"/>
+    <aura:attribute name="WelcomeMaterialDocId" type="String" default="" Description="Contain selected welcome material document SF Id"/>
+    <aura:attribute name="SuccessMessageValue" type="String" default="All Box documents are loaded successfully!" Description="This used to show the success message value came from custom label"/>
+    <aura:attribute name="NoDocumentExcMessageValue" type="String" default="There are no documents in recent uploads!" Description="This used to show the no document exception message value came from custom label"/>
+    <aura:attribute name="RecentUploadHintMessageValue" type="String" default="This section shows documents added in the last 5 days." Description="This used to show the Recent-Upload hint message value came from custom label"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />   
+    <lightning:navigation aura:id="navService"/> 
+    <!--loading spinner start-->
+    <aura:if isTrue="{!v.spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading...</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div> 
+        </div>
+    </aura:if>
+    <!-- Loading spinner end--> 
+    <!--Main Landing Screen Start-->
+    <div>
+        <div class="docCenter">
+            <aura:if isTrue = "{!v.showLandingPage}">
+                <div class="slds-wrap slds-border_bottom custom-title_container" style="padding:7px;">
+                    <span class="custom-title_text">Document Center</span>
+                </div>
+                <div class="mobileElement">
+                    <div style="margin-left: -13vw; margin-right: 50vw; padding-left: 20px">
+                        <c:SFSPortal_DC_UploadDocument/>
+                    </div>
+                    <div style="margin-left: 4.5vw; padding-top:10px; padding-bottom:10px">
+                        <a onclick="{!c.handleModal}">Upload Tips</a>
+                    </div>
+                </div>            
+                <div class="slds-grid slds-wrap slds-grid_align-center">
+                    <div class="slds-col slds-small-size_1-of-1 slds-medium-size_7-of-12 slds-large-size_9-of-12">
+                        <div class="slds-grid slds-gutters slds-wrap slds-p-left_x-large">
+                            
+                            <div id="Welcome Materials" title="Welcome_Guides" class="logoItems slds-col slds-size_1-of-1 slds-small-size_1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3" 
+                                 onclick="{!c.iConClicked}">
+                                <img src="{!$Resource.svg_DocumentCenter+ '/SVG/Welcome-Guides.svg'}"/>
+                                <a class="Icon-title">Welcome Materials <span class="badge"><aura:if isTrue="{!v.welcomeMaterialDocs.length > 0}">({!v.welcomeMaterialDocs.length})</aura:if></span></a>
+                            </div>
+                            <div id="Bank Forms" title="Bank_Information" class="logoItems slds-col slds-size_1-of-1 slds-small-size_1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3"
+                                 onclick="{!c.iConClicked}">
+                                <img src="{!$Resource.svg_DocumentCenter+ '/SVG/Banking-Forms.svg'}" />
+                                <a class="Icon-title">Banking Forms <span class="badge">
+                                    <aura:if isTrue="{!v.categoryToFileCount.Bank_Information > 0}">({!v.categoryToFileCount.Bank_Information})</aura:if>
+                                    </span><!--&nbsp;<img class="starIcon" src="{!$Resource.svg_DocumentCenter+ '/SVG/Star.svg'}"/>--></a>
+                            </div>
+                            <div id="Settlements" title="Settlements"
+                                 class="logoItems slds-col slds-size_1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3"
+                                 onclick="{!c.iConClicked}">
+                                <img src="{!$Resource.svg_DocumentCenter+ '/SVG/Settlements.svg'}" />
+                                <a class="Icon-title">Settlements 
+                                    <span class="badge"><aura:if isTrue="{!v.categoryToFileCount.Settlements > 0}">({!v.categoryToFileCount.Settlements})</aura:if></span>
+                                </a>
+                            </div>
+                            <div id="Tax Forms" title="Tax_Forms"
+                                 class="logoItems slds-col slds-size_1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3"
+                                 onclick="{!c.iConClicked}">
+                                <img src="{!$Resource.svg_DocumentCenter+ '/SVG/Tax-Forms.svg'}" />
+                                <a class="Icon-title">Tax Forms
+                                    <span class="badge"><aura:if isTrue="{!v.categoryToFileCount.Tax_Forms > 0}">({!v.categoryToFileCount.Tax_Forms})</aura:if></span>
+                                </a>
+                            </div>
+                            <div id="Legal Forms" title="Legal_Actions" class="logoItems slds-col slds-size_1-of-1 slds-small-size_1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3" onclick="{!c.iConClicked}">
+                                <img src="{!$Resource.svg_DocumentCenter+ '/SVG/Legal.svg'}" />
+                                <a class="Icon-title" >Legal Forms
+                                    <span class="badge"><aura:if isTrue="{!v.categoryToFileCount.Legal_Actions > 0}">({!v.categoryToFileCount.Legal_Actions})</aura:if></span>
+                                </a>
+                            </div>
+                            <div id="Contracts" title="Contracts" class="logoItems slds-col slds-size_1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3" onclick="{!c.iConClicked}">
+                                <img src="{!$Resource.svg_DocumentCenter+ '/SVG/Contract.svg'}"/>
+                                <a class="Icon-title">Contracts <span class="badge">
+                                    <aura:if isTrue="{!v.categoryToFileCount.Contracts > 0}">({!v.categoryToFileCount.Contracts})</aura:if>
+                                    </span></a>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="slds-col slds-small-size_1-of-1 slds-medium-size_5-of-12 slds-large-size_3-of-12" style="margin-top: 20px" >
+                           <div class="notMobileElement">
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-1 slds-large-size_1-of-1">
+                                    <c:SFSPortal_DC_UploadDocument/>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-1 slds-large-size_1-of-1 tipList">
+                                    <div>
+                                        <p class="custom-title_text" style="font-size: 30px">Upload Tips</p>
+                                        <ul class="slds-list_dotted">
+                                            <li>All document pages should be contained in a single file.</li>
+                                            <li>Scanned documents are preferred to photos.</li>
+                                            <!--<li>If you don’t have access to a scanner, we recommend downloading 
+                                                <a href="#">Cam Scanner</a>, or a similar scanning app.</li>-->
+                                        </ul>                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                    <!-- Recent Uploads for Document Center-->
+                    <div class="slds-col slds-small-size_1-of-1 slds-medium-size_1-of-1 slds-large-size_1-of-1" style="width:100%">
+                        <c:SFSPortal_DC_RecentUploads recentUploadsList="{!v.recentUploadsEntityList}" FilesToPreviewURL="{!v.FilesToPreviewURL}" RecentUploadHintMessageValue="{!v.RecentUploadHintMessageValue}"/>
+                    </div>
+                    <!-- Recent Uploads for Document Center End-->
+                </div>
+                <!--Document Listing Screen Start-->
+                <aura:set attribute="else">
+                    <div class="slds-wrap slds-border_bottom custom-title_container " style="padding:7px;">
+                        <a class="custom-title_text" onclick="{!c.backDocument}">Document Center</a>
+                        <span class="custom-title_text"> > {!v.selectedCategory}</span>
+                    </div>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-small-size_1-of-1 slds-medium-size_1-of-1 slds-large-size_1-of-1 sidepadding"> 
+                            <!-- Documents on Box -->
+                            <div>
+                                <table class="slds-table slds-table_cell-buffer documentTable">
+                                    <aura:if isTrue="{!v.CategoryWiseEntitiesList.length > 0}">
+                                        <thead>
+                                            <tr class="slds-border_bottom">
+                                                <th class="col" style="width: 20%">Date</th>
+                                                <th class="col" style="width: 45%">Title</th>
+                                                <th class="col" style="width: 15%">Size</th>
+                                                <div class="notMobileElement">
+                                                    <th class="col" style="width: 20%; text-align: center">Download</th>
+                                                </div>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <aura:iteration items="{!v.CategoryWiseEntitiesList}" var="entityRow">
+                                                <!--Listing for Welcome guide category type-->
+												<aura:if isTrue="{!v.selectedCategory == 'Welcome Materials'}">
+													<tr scope="row" class="slds-border_bottom">
+														<td>
+															<ui:outputDate aura:id="modified_atID" value="{!entityRow.LastModifiedDate}" format="MM/dd/yyyy"/>
+                                                        </td>
+                                                        <td >
+                                                            <aura:if isTrue="{!or(entityRow.FileType == 'jpg' , entityRow.FileType == 'jpeg', entityRow.FileType == 'tiff')}">
+                                                               	<img class="fileIcon" src="{!$Resource.svg_DocumentCenter+ '/SVG/JPG.svg'}" />
+                                                            </aura:if>
+                                                            <aura:if isTrue="{!or(entityRow.extension == 'xlsx', entityRow.extension == 'docx', entityRow.extension == 'doc', entityRow.extension == 'csv')}">
+                                                                <img class="fileIcon" src="{!$Resource.svg_DocumentCenter+ '/SVG/DOC.svg'}" />
+                                                            </aura:if>
+                                                            <aura:if isTrue="{!entityRow.FileType == 'PDF'}">
+                                                                <img class="fileIcon" src="{!$Resource.svg_DocumentCenter+ '/SVG/PDF.svg'}" />
+                                                            </aura:if>
+                                                             <aura:if isTrue="{!entityRow.FileType == 'png'}">
+                                                                <img class="fileIcon" src="{!$Resource.svg_DocumentCenter+ '/SVG/PNG.svg'}" />
+                                                            </aura:if>
+                                                            
+                                                            <a target="_blank" href="" class="linktag" onclick="{!c.getPreviewFile}" id="{!entityRow.Id}">{!entityRow.Title}</a>
+                                                            
+                                                        </td>
+                                                        <td>
+                                                            <aura:if istrue="{!entityRow.ContentSize > 125000 ? 'true' : 'false'}">
+                                                                <lightning:formattedNumber value="{!entityRow.ContentSize / 125000}" maximumFractionDigits="0"/>MB
+                                                                <aura:set attribute="else">
+                                                                    <lightning:formattedNumber value="{!entityRow.ContentSize / 1000}" maximumFractionDigits="0"/>KB
+                                                                </aura:set>
+                                                            </aura:if>
+                                                        </td>
+                                                        <td class="download notMobileElement"><!--<a onclick="{}"><img src="{!$Resource.svg_DocumentCenter+ '/SVG/Download.svg'}"/></a>-->
+                                                            <img src="{!$Resource.svg_DocumentCenter+ '/SVG/Download.svg'}"  onclick="{!c.handleDownloadEntity}" style="height:30px;" title="{!entityRow.Id}" id="{!entityRow.Id}"/>
+                                                        </td>                                                                                                          
+													</tr>
+													<!--Listing for all Box category type-->
+													<aura:set attribute="else">
+														<tr scope="row" class="slds-border_bottom">
+                                                            <td>
+                                                                <ui:outputDate aura:id="modified_atID" value="{!entityRow.modified_at}" format="MM/dd/yyyy"/>
+                                                            </td>
+                                                            <td>
+                                                                <!--<img class="fileIcon" src="{!$Resource.svg_DocumentCenter+ '/SVG/PDF.svg'}" />-->
+                                                                <aura:if isTrue="{!or(entityRow.extension == 'jpg' , entityRow.extension == 'jpeg', entityRow.extension == 'tiff')}">
+                                                                    <img class="fileIcon" src="{!$Resource.svg_DocumentCenter+ '/SVG/JPG.svg'}" />
+                                                                </aura:if>
+                                                                <aura:if isTrue="{!or(entityRow.extension == 'xlsx' , entityRow.extension == 'docx' , entityRow.extension == 'doc' , entityRow.extension == 'csv')}">
+                                                                    <img class="fileIcon" src="{!$Resource.svg_DocumentCenter+ '/SVG/DOC.svg'}" />
+                                                                </aura:if>
+                                                                <aura:if isTrue="{!entityRow.extension == 'pdf'}">
+                                                                    <img class="fileIcon" src="{!$Resource.svg_DocumentCenter+ '/SVG/PDF.svg'}" />
+                                                                </aura:if>
+                                                                <aura:if isTrue="{!entityRow.extension == 'png'}">
+                                                                    <img class="fileIcon" src="{!$Resource.svg_DocumentCenter+ '/SVG/PNG.svg'}" />
+                                                                </aura:if>                                                           
+                                                                <a href="" class="linktag" onclick="{!c.getPreviewFile}" id="{!entityRow.id}">{!entityRow.name}</a>
+                                                            </td>
+                                                            <td>
+                                                                <aura:if istrue="{!entityRow.size > 125000 ? 'true' : 'false'}">
+                                                                    <lightning:formattedNumber value="{!entityRow.size / 125000}" maximumFractionDigits="0"/>MB
+                                                                    <aura:set attribute="else">
+                                                                        <lightning:formattedNumber value="{!entityRow.size / 1000}" maximumFractionDigits="0"/>KB
+                                                                    </aura:set>
+                                                                </aura:if>
+                                                            </td>                    
+                                                                <td class="download notMobileElement"><!--<a onclick="{}"><img src="{!$Resource.svg_DocumentCenter+ '/SVG/Download.svg'}"/></a>-->
+                                                                    <img src="{!$Resource.svg_DocumentCenter+ '/SVG/Download.svg'}"  onclick="{!c.handleDownloadEntity}" style="height:30px;" title="{!entityRow.id}" id="{!entityRow.id}"/>
+                                                                </td>                                                           
+														</tr>	
+													</aura:set>
+												</aura:if>
+                                                
+                                            </aura:iteration>
+                                        </tbody>
+                                        <aura:set attribute="else">
+                                            <!--<center>There are no documents in this folder !</center>-->
+                                            <center>{!v.NoDocumentExcMessageValue}</center>
+                                        </aura:set>
+                                    </aura:if>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--File Preview Section for Welcome guide-->
+                    <aura:if isTrue="{!v.showDocumentPreviewModel}">
+                        <lightning:layout class="slds-grid slds-wrap">
+                            <lightning:layoutItem size="12" class="slds-p-bottom_x-small" smallDeviceSize="12" mediumDeviceSize="2" largeDeviceSize="2" >
+                                <section onclick="{!c.closePreviewModel}" role="dialog" aria-modal="true" class="slds-modal slds-fade-in-open">
+                                    <div class="slds-modal__container">
+                                       <!-- <div class="slds-modal__content slds-p-around_medium slds-text-align_center" style="background: transparent;"> -->
+                                                <lightning:fileCard fileId="{!v.WelcomeMaterialDocId}" />
+                                       <!-- </div>-->
+                                    </div>
+                                </section>
+                                <div class="slds-backdrop slds-backdrop_open"></div>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </aura:if>
+                    <!--File Preview Section for Welcome guide End here-->
+                </aura:set>
+                <!--Document Listing Screen End-->
+            </aura:if>         
+            <!-- Tips Modal for Phone -->
+            <aura:if isTrue="{!v.openModal}">
+               <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                         aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open modal1">
+                    <div class="slds-modal__container">
+                        <div class="slds-modal__content slds-p-around_medium modal1" id="modal-content-id-1">
+                            <div class="slds-text-align_right">
+                                 <lightning:button class="b3" label="Close" title="Close" onclick="{!c.closeModal}">
+                                    <img src="{!$Resource.CloseIconSvg}" width="15" height="15" />
+                                </lightning:button>
+                            </div>
+                            <div class="slds-col slds-text-align_center slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_1-of-1 tipListModal">
+                                    <div class="custom-title_text">Upload Tips<br/></div>
+                                    <div class="slds-text-align_left">
+                                        <ul class="slds-list_dotted">
+                                            <li>All document pages should be contained in a single file.</li>
+                                            <li>Scanned documents are preferred to photos.</li>
+                                            <!--<li>If you don’t have access to a scanner, we recommend downloading
+                                                <a href="#">Cam Scanner</a>, or a similar scanning app.</li>-->
+                                    	</ul><br/>
+                                        
+                                    </div>
+                                <lightning:button class="b1" label="Close" title="Close &nbsp;&nbsp;"  onclick="{!c.closeModal}" >
+                                            Close<!--<img src="{!$Resource.CloseIconSvg}" width="15" height="15"/>-->
+                                        </lightning:button> 
+                            </div>
+                        </div>
+                    </div>
+            	</section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </aura:if>
+        </div>
+    </div>
+    <!--Main Landing Screen End-->
+</aura:component>

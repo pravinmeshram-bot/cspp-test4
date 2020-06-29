@@ -1,0 +1,28 @@
+<apex:page sidebar="false" showHeader="false" controller="SFSPortal_ClientDocumentsController" action="{!getAccessToken}">
+
+    <html lang="en-US">
+        <head>
+            <meta charset="utf-8" />
+            <title>Box Content Preview Demo</title>
+        
+            <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Promise"></script>
+        
+            <script src="https://cdn01.boxcdn.net/platform/preview/1.60.0/en-US/preview.js"></script>
+            <link rel="stylesheet" href="https://cdn01.boxcdn.net/platform/preview/1.60.0/en-US/preview.css" />
+        </head>
+        <body>
+            <div class="preview-container" style="height:36rem;"></div>
+            <script>
+                var ACCESS_TOKEN = '{!access_token}';
+                        
+                var FILE_ID = '{!$CurrentPage.parameters.folderId}';
+                var preview = new Box.Preview();
+                preview.show(FILE_ID, ACCESS_TOKEN, {
+                    container: '.preview-container',
+                    showDownload: true,
+                    logoUrl : '{!previewLogoURL}'    
+                });
+            </script>
+        </body>
+    </html>
+</apex:page>

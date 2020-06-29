@@ -1,0 +1,5 @@
+<apex:page standardController="nu_dse__Offer__c">
+ <apex:pageMessage severity="Error" summary="You dont have an access to delete this offer." strength="1"></apex:pageMessage>
+
+<apex:pageMessages ></apex:pageMessages>
+</apex:page>

@@ -1,0 +1,166 @@
+.THIS.form-layout .forceContentFileCard {
+    width:10rem !important;
+}
+
+.THIS .default-forms-col-span td[colspan="2"] {
+  display: none;
+}
+
+.THIS .default-forms-col-span td[colspan="4"] {
+  display: none;
+}
+
+.THIS .full-title {
+    white-space: normal;
+    word-break: break-all;
+}
+
+/* 
+##Device = Desktops
+##Screen = 1281px to higher resolution desktops
+*/
+
+@media (min-width: 1280px) {
+    .THIS .responsive-default-forms-size {
+        width: 10%;
+    }
+    
+    .THIS .default-forms-col-span td[colspan="4"] {
+        display: table-cell;
+    }
+    .THIS .default-forms-col-span td[colspan="2"] {
+        display: none;
+    }
+    .THIS .slds-image__crop, .THIS .slds-file__crop {
+    /*margin-right: 5px !important;
+        padding-left:60px !important;*/
+}
+     .THIS .slds-modal__content{
+        padding-right:190px !important;
+    }
+
+}
+
+/* 
+##Device = Laptops, Desktops
+##Screen = B/w 1025px to 1280px
+*/
+
+@media (min-width: 901px) and (max-width: 1279px) {
+    .THIS .responsive-default-forms-size {
+        width: 10%;
+    }
+    .THIS .default-forms-col-span td[colspan="4"] {
+        display: table-cell;
+    }
+    .THIS .default-forms-col-span td[colspan="2"] {
+        display: none;
+    }
+}
+
+/* 
+##Device = Tablets, Ipads (portrait)
+##Screen = B/w 768px to 900px
+*/
+
+@media (min-width: 768px) and (max-width: 900px) {
+    .THIS .responsive-default-forms {
+        display:none !important;
+    }
+    .THIS .responsive-default-forms-size {
+        width: 35%;
+    }
+    .THIS .default-forms-col-span td[colspan="2"] {
+        display: table-cell;
+    }
+    .THIS .default-forms-col-span td[colspan="4"] {
+        display: none;
+    }
+}
+
+
+/* 
+##Device = Low Resolution Tablets, Mobiles (Landscape)
+##Screen = B/w 481px to 767px
+*/
+
+@media (min-width: 481px) and (max-width: 767px) {
+    .THIS .responsive-default-forms {
+        display:none !important;
+    }
+    .THIS .responsive-default-forms-size {
+        width: 35%;
+    }
+    
+    .THIS .default-forms-col-span td[colspan="2"] {
+        display: table-cell;
+    }
+    .THIS .default-forms-col-span td[colspan="4"] {
+        display: none;
+    }
+}
+
+/* 
+##Device = Most of the Smartphones Mobiles (Portrait)
+##Screen = B/w 320px to 479px
+*/
+
+@media (min-width: 320px) and (max-width: 480px) {
+    .THIS .responsive-default-forms {
+        display:none !important;
+    }
+    .THIS .responsive-default-forms-size {
+        width: 35%;
+    }
+    .THIS .default-forms-col-span td[colspan="2"] {
+        display: table-cell;
+    }
+    .THIS .default-forms-col-span td[colspan="4"] {
+        display: none;
+    }
+   /* .THIS .slds-modal__content{
+        padding-right:15rem;
+    }
+    .THIS .slds-image__crop, .THIS .slds-file__crop {
+    margin-right: 80px !important;
+}*/
+}
+@media (min-width: 320px) and (max-width: 320px) {
+   .THIS .slds-image__crop, .THIS .slds-file__crop {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    padding-top: 56.25%;
+    padding-right: 50%;
+    margin-right: 80px !important;
+}
+    .THIS .slds-modal__content{
+        padding-right:15rem;
+    }
+}
+@media (min-width: 375px) and (max-width: 375px) {
+   .THIS .slds-image__crop, .THIS .slds-file__crop {
+    margin-right: 5px !important;
+}
+    .THIS .slds-modal__content{
+        padding-right: 294px;
+    }
+}
+@media (min-width: 414px) and (max-width: 414px) {
+    .THIS .slds-modal__content{
+        padding-right:340px !important;
+    }
+}
+@media (min-width: 768px) and (max-width: 768px) {
+    .THIS .slds-modal__content{
+        padding-right:330px !important;
+    }
+}
+@media (min-width: 1024px) and (max-width: 1024px) {
+    .THIS .slds-modal__content{
+        padding-right:260px !important;
+    }
+}
+/*.THIS .slds-modal__content{
+padding-right: 200px;
+}*/

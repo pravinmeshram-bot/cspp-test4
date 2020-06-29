@@ -1,0 +1,92 @@
+<aura:component controller="SFSPortal_ADHOCPaymentController" implements="forceCommunity:availableForAllPageTypes" 
+                extends="c:abstractServer" access="public">
+    <aura:attribute name="isModal" type="Boolean" default="false" access="public" />
+    <aura:attribute name="isInit" type="Boolean" default="false" access="public" />
+    <aura:attribute name="isAddFundsVisible" type="Boolean" default="false" access="public" />
+    <aura:attribute name="isAddNewBankAccountVisible" type="Boolean" default="false" access="public" />
+    
+    <aura:attribute name="actionString" type="String" default="Payments" access="public" />
+    <aura:attribute name="recordId" type="String" default="false" access="public" />
+    <aura:attribute name="objectInfo" type="String" access="public" default=""/>   
+    
+    <aura:attribute name="adhocPaymentWrapper" type="Map" access="public" />    
+    <aura:attribute name="toggleMap" type="Map" access="public" default="{'isPastPaymentsExpanded' : false, 'isFuturePaymentsExpanded' : true }" />
+    <aura:attribute name="filterMap" type="Map" access="public"  default = "{'offset' : '0', 'paymentStatus' : ''}"/>  
+    <aura:attribute name="newGroupTaskInstance" type="Map" default="{ 'sobjectType':'nu_dse__Group_Task__c'}"/>  
+    <aura:attribute name="newGroupPaymentInstance" type="Map" default="{ 'sobjectType':'nu_dse__Group_Task__c'}"/>  
+    <aura:attribute name="toRenderModal" type="Map" access="public"  default="{ 'Name':'', 'HeaderName':'', 'Message':''}"/>    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" access="public" />
+    <aura:handler name="lazyLoadEvent" event="c:selectedRecordEvt" action="{!c.handleLazyLoadEvent}" />
+    
+    <aura:if isTrue="{!equals(v.actionString,'Payments')}">
+        <div class="slds-align_absolute-center slds-p-bottom_medium">
+            <aura:if isTrue="{!v.isAddNewBankAccountVisible}">
+                <lightning:button aura:id="newbankAcctbtn_adhocPayment" name="New Bank" title="Bank" label="Change Bank Account" variant="brand" 
+                                  onclick="{!c.ShowModal}"  iconName="utility:money" iconPosition="left"/>
+            </aura:if>
+            <aura:if isTrue="{!v.isAddFundsVisible}">
+                <lightning:button aura:id="addfundsbtn_adhocPayment" name="New ADHOC" title="Payment" label="Add Funds" variant="brand" 
+                                  onclick="{!c.ShowModal}" iconName="utility:currency" iconPosition="left"/>
+            </aura:if>
+        </div>
+        <div style="padding-left: 120px;float-left;">
+            <lightning:recordViewForm recordId="{!v.adhocPaymentWrapper.activeBankAccount}" density="comfy" objectApiName="nu_dse__Bank_Account__c">
+                <lightning:layout class="slds-wrap custom-layout" >
+                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="2" largeDeviceSize="2" >
+                        <div style="text-decoration: underline;">
+                            Bank Name  :
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="3" largeDeviceSize="3">
+                        <lightning:outputField fieldName="nu_dse__Bank_Name__c" variant="label-hidden" style="float-left;"/> 
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="3" largeDeviceSize="4"> 
+                        <div style="text-decoration: underline;">
+                            Bank Account Last 4 Digits   :
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="3" largeDeviceSize="2">
+                        <lightning:outputField fieldName="Bank_Account_Number_4digits__c" variant="label-hidden"/>
+                    </lightning:layoutItem>  
+                </lightning:layout>
+            </lightning:recordViewForm>
+        </div>
+        <aura:if isTrue="{!v.isInit}">
+            <lightning:card class="setHeaderColor">
+                <aura:set attribute="title" >
+                    <a aura:id="futurePaymentsToggle_adhocPayment" data-sectionName="isFuturePaymentsExpanded" onclick="{!c.toggleSection}">
+                        <lightning:icon iconName="{!v.toggleMap.isFuturePaymentsExpanded ? 'utility:chevrondown' : 'utility:chevronright'}"  size="x-small"/>
+                        <span class="slds-p-left_small override-paymentsCss">Future Payments</span>
+                    </a>
+                </aura:set>
+                <div class="{!v.toggleMap.isFuturePaymentsExpanded ? '' : 'slds-hide'}">
+                    <c:dynamicList dataList="{!v.adhocPaymentWrapper.futurePaymentList}"
+                                   columnHeaderList="{!v.adhocPaymentWrapper.columnList}"
+                                   recordsPerPage="10" emptyRecordsText="No Payment Record(s) Found."/>                    
+                </div>
+            </lightning:card>
+            <lightning:card class="setHeaderColor">
+                <aura:set attribute="title" >
+                    <a aura:id="pastPaymentsToggle_adhocPayment" data-sectionName="isPastPaymentsExpanded" onclick="{!c.toggleSection}">
+                        <lightning:icon iconName="{!v.toggleMap.isPastPaymentsExpanded ? 'utility:chevrondown' : 'utility:chevronright'}"  size="x-small"/>
+                        <span class="slds-p-left_small override-paymentsCss">Past Payments</span>
+                    </a>
+                </aura:set>
+                <div class="{!v.toggleMap.isPastPaymentsExpanded ? '' : 'slds-hide'}">
+                    <c:dynamicList dataList="{!v.adhocPaymentWrapper.pastPaymentList}"
+                                   columnHeaderList="{!v.adhocPaymentWrapper.columnList}"
+                                   recordsPerPage="10" emptyRecordsText="No Payment Record(s) Found."/>
+                </div>
+            </lightning:card>            
+        </aura:if>
+        <c:paymentAndBankModal objectInfo="{!v.objectInfo}" adhocPaymentWrapper="{!v.adhocPaymentWrapper}" isModal="{!v.isModal}"/>
+        <aura:set attribute="else">
+            <lightning:card class="slds-theme_shade" title="Reschedule Payment">
+                <div style="background: rgb(255, 255, 255);border-radius: 0.25rem;" aria-hidden="false">
+                    <c:reschedulePayments paymentId="{!v.recordId}"/>
+                </div>
+            </lightning:card>
+        </aura:set>
+    </aura:if>
+</aura:component>

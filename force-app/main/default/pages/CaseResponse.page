@@ -1,0 +1,53 @@
+<apex:page showHeader="false" controller="CaseResponseCtrl" cache="false">
+    <apex:form >
+        <style>
+        
+        h1 {
+            
+            text-align: center;
+            <!--text-transform: uppercase;-->
+            color: #4CAF50;
+        }
+        
+        </style>
+        
+        <div class="slds" style="margin-left:20px;margin-right:20px;border:1px solid lightgrey;border-radius:4px">
+            <div style="background:#4E9CAF;">
+                <table>
+                    <tr>
+                       
+                        <td>
+                            <span style="color:white;">Response Required</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <apex:outputPanel id="feedbackOutputPanelId">
+                    <apex:outputPanel rendered="{!showFeedbackPanel}">
+                        <h1>Your response has been received.</h1>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!showAlreadyAcceptedPanel}">
+                        <h1>You have already accepted this case.</h1>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!showAlreadyRejectedPanel}">
+                        <h1>You have already rejected this case.</h1>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!showAlreadyPartiallyAcceptedPanel}">
+                        <h1>You have already partially accepted this case.</h1>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+            </div><br/>
+            <div style="background:#4E9CAF;">
+                
+            </div>
+        </div>
+        <apex:actionFunction action="{!storeResponse}" name="caseResponseAction" reRender="feedbackOutputPanelId" />
+    </apex:form>
+    
+    <script>
+        
+        caseResponseAction();
+        
+    </script>
+</apex:page>

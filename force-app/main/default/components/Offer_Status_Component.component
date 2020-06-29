@@ -1,0 +1,89 @@
+<apex:component controller="OfferStatusComponentController">
+    <apex:attribute name="recordId" type="String" required="true" description="Record Id of the Parnel Program." />
+    <apex:slds />
+    
+    <style>
+        .active-offer {
+            background-color: #11FF55;
+        }
+        
+        .inactive-offer {
+            background-color: #FFFF22;
+        }
+        
+        .offer-item {
+            color: #000;
+            width: 100%;
+            height: 50px;
+            padding-left: 10px;
+            line-height: 50px;
+            margin-bottom: 5px;
+        }
+        
+        .offer-button {
+            margin: 8px !important;
+            float: right;
+        }
+        
+    </style>
+    
+    <div id="offerPanel" class="offer-panel">
+        
+    </div>
+    
+    <script>
+        (function () {
+            
+            var activeOfferClass = 'offer-item active-offer';
+            var inactiveOfferClass = 'offer-item inactive-offer';
+            
+            OfferStatusComponentController.getOffer('{!recordId}', function(response, event) {
+                if(event.status) {
+                    console.log('OfferStatusComponentController', response);
+                    if(response != null)
+                    renderOfferList(response);
+                } else {
+                    console.log('OfferStatusComponentController', event)
+                }
+            });
+            
+            function renderOfferList(offerList) {
+                var markup = '';
+                var offerPanel = document.getElementById('offerPanel');
+                if(offerPanel) {
+                
+                    if(offerList.length > 0) {
+                    
+                        for(var i = 0; i < offerList.length; i++) {
+                            markup += createOffer(offerList[i]);
+                        }
+                    } else {
+                        
+                        markup = '<div class="offer-item">No Offer(s) Found</div>';
+                    }
+                }
+                offerPanel.innerHTML = markup;
+            }
+            
+            function createOffer(offer) {
+                var markup = '';
+                if(offer) {
+                    var className = inactiveOfferClass;
+                    if(offer.accepted) {
+                        className = activeOfferClass;
+                    }
+                    //<button class="slds-button slds-button--brand slds-m-right_xx-small offer-button" onclick="viewOffer(\'' + offer.recordId + '\')">View Offer</button>
+                    markup = '<div class="' + className + '">' + offer.name + '</div>';
+                }
+                return markup;
+            }
+        })()
+        
+        
+        window.viewOffer = function(offerId) {
+            window.location = '/' + offerId;
+        }
+    </script>
+    
+    
+</apex:component>

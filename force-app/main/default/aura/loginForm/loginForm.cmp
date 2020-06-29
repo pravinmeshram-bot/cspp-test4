@@ -1,0 +1,186 @@
+<!-- add implements="forceCommunity:availableForAllPageTypes" to surface the component in community builder -->
+<aura:component controller="SFSPortal_LightningLoginFormController" implements="forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute name="errorMessage" type="String" required="false" description="" access="private"/>	
+    <aura:attribute name="startUrl" type="String" required="false" description="The url you go to after a successful login" />	
+    <aura:attribute name="usernameLabel" type="String" required="false" default="Username"/>	
+    <aura:attribute name="passwordLabel" type="String" required="false" default="Password"/>	
+    <aura:attribute name="loginButtonLabel" type="String" required="false" default="Log in"/>	
+    <aura:attribute name="expid" type="String" required="false" description="The branding experience ID" />        	
+    <aura:attribute name="forgotPasswordLabel" type="String" required="false" default="Forgot your password?"/>	
+    <aura:attribute name="selfRegisterLabel" type="String" required="false" default="Register your account."/>	
+    <aura:attribute name="forgotPasswordUrl" type="String" required="false" default="/ForgotPassword"/>	
+    <aura:attribute name="selfRegisterUrl" type="String" required="false" default="/SelfRegister?src=4"/>	
+    <aura:attribute name="communityForgotPasswordUrl" type="String" access="private"/>	
+    <aura:attribute name="communitySelfRegisterUrl" type="String" access="private"/>	
+    <aura:attribute name="SearchKeyWord" type="String" access="public"/>
+    <aura:attribute name="userNameStored" type="String" access="public"/>
+    <aura:attribute name="PassKey" type="String" access="public"/>
+    <aura:attribute name="domainUrl" type="String" access="public"/>	
+    
+    <aura:attribute name="showError" type="Boolean" required="true" description="" default="false" access="private"/>	
+    <aura:attribute name="isUsernamePasswordEnabled" type="Boolean" access="private"/>	
+    <aura:attribute name="isSelfRegistrationEnabled" type="Boolean" access="private"/>	
+    <aura:attribute name="isLinkExpired" type="Boolean" default="false" access="public" />	
+	<aura:attribute name="isRememberme" type="Boolean" default="false" access="public" />	
+    	
+    <aura:attribute name="uiwrapperMap" type="Map" access="public" default="{}" />	
+    <aura:attribute name="selectedRecord" type="sObject" default="{}" access="public" />	
+    	
+    <aura:attribute name="userNameList" type="List" access="public" default="[]" />	
+    <aura:attribute name="listOfSearchRecords" type="List"  access="public" default="[]"/>	
+    <aura:handler name="init" value="{!this}" action="{!c.goNative}"/> 
+    
+    <aura:registerevent name="sitePropagatedStartUrl" type="c:setStartUrl"/>	
+    <aura:handler name="init" value="{!this}" action="{!c.initialize}"/>	
+    <aura:dependency resource="c:setStartUrl" type="EVENT"/>	
+    <!-- Please uncomment	
+    <aura:dependency resource="siteforce:registerQueryEventMap" type="EVENT"/>	
+    -->	
+    <aura:handler event="c:setStartUrl" action="{!c.setStartUrl}"/>	
+    <aura:handler event="c:setExpId" action="{!c.setExpId}"/>    	
+    <aura:dependency resource="c:setExpId" type="EVENT"/> 
+    <!--<ltng:require scripts="{!$Resource.TestJS}" />-->
+    <!--<ltng:require scripts="{!$Resource.OnesignalJavaScript}"/>-->
+    
+    <div>
+        <aura:renderIf isTrue="{!v.isUsernamePasswordEnabled}">
+            <aura:if isTrue="{!v.isLinkExpired}">
+                <span class="slds-p-around_small" style="text-align:center;">
+                    <h1 style="color:white;font-size:18px;">Your link has expired</h1>
+                </span>
+                <div class="slds-p-around_medium">
+                    <h1 style="color:white;text-align:center">
+                        <p>
+                            The link you are trying to reset your password has been expired. 
+                            Please login from below if you already changed your password. 
+                            If you still can't log in, contact your administrator.
+                        </p>
+                    </h1>
+                </div>
+                <lightning:layout class=" slds-wrap">
+                    <lightning:layoutItem size="12" >
+                        <div style="text-align:center; color:white; font-size:17px; ">
+                            <button type="button" aura:id="loginbtn_loginForm" onclick="{!c.redirectToLoginPage}" 
+                                    class="slds-button slds-button--neutral sfdc_button uiButton--default uiButton" 
+                                    style="{!'background-color:' + v.uiwrapperMap.uiInstance.Action_Button_Color__c + ' '}"> <!-- !important; -->
+                                Log in
+                            </button>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <aura:set attribute="else">
+                    <span class="slds-p-around_small" style="text-align:center;">
+                        <h1 style="color:white;font-size:18px;">Please log in to view your account</h1>
+                    </span>
+                    <span>
+                        <aura:renderIf isTrue="{!v.showError}">
+                            <div id="error">
+                                <ui:outputRichText value="{!v.errorMessage}"/>
+                            </div>
+                        </aura:renderIf>
+                    </span> 
+                    <aura:if isTrue="{!v.userNameList}">	
+                        <div id="sfdc_username_lookup_container" class="inputConta iner" 	
+                             style="border-radius: 2rem;padding-bottom: 0px;">	
+                            <div aura:id="searchRes" 	
+                                 class="slds-form-element slds-lookup slds-is-close" data-select="single">	
+                                <div class="slds-form-element__control ">	
+                                    <div class="slds-input-has-icon slds-input-has-icon--right">	
+                                        <div aura:id="lookupField" class="slds-show">	
+                                            <span class="slds-icon_container  slds-combobox__input-entity-icon" 	
+                                                  title="record">	
+                                                <lightning:icon iconName="utility:user" size="x-small" 	
+                                                                alternativeText="icon"/>	
+                                            </span>	
+                                           
+                                            <lightning:input type="email" name="input1" id="usernameInput"
+                                                             onclick="{!c.onfocus}" onchange="{!c.keyPressController}" 	
+                                                             aura:id="username_loginForm" placeholder="{!v.usernameLabel}"	
+                                                             class="sfdc_usernameinput sfdc username-input input" 	
+                                                             value="{!v.SearchKeyWord}"/>
+                                        </div>   	
+                                    </div>	
+                                </div>	
+                                <!--This part is for Display typehead lookup result List-->  	
+                                <aura:if isTrue="{!!empty(v.listOfSearchRecords)}">	
+                                    <div id="full-div" class="{!empty(v.listOfSearchRecords) ? 'slds-hide' : 'slds-show showFullPage'}" onclick="{!c.handleMenuClick}"></div>	
+                                    <ul style="min-height:40px !important;margin-top:0px !important; max-width: 93%;" role="listbox"	
+                                        class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid slds-lookup__menu slds">	
+                                        <lightning:spinner class="slds-hide" variant="brand" size="small" 	
+                                                           aura:id="mySpinner"/>	
+                                        <aura:iteration items="{!v.listOfSearchRecords}" var="singleRec" >	
+                                            <li role="presentation" class="slds-listbox__item" id="listbox-option-unique-id" 	
+                                                onclick="{!c.selectRecord}" data-value="{!singleRec}" >	
+                                                <span id="listbox-option-unique-id-01" role="option"	
+                                                      class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta">	
+                                                    <span class="slds-media__figure">	
+                                                        <span class="slds-icon_container" title="Description of icon when needed">	
+                                                            <lightning:icon iconName="utility:user" size="x-small" alternativeText="User"/>	
+                                                        </span>	
+                                                    </span>    	
+                                                    <span class="slds-media__body">  	
+                                                        <span style="padding-top: 0.5rem;padding-left: 0.5rem;"	
+                                                              class="slds-listbox__option-text slds-listbox__option-text_entity">	
+                                                            {!singleRec}	
+                                                        </span>	
+                                                    </span>	
+                                                </span>	
+                                            </li>	
+                                        </aura:iteration>	
+                                    </ul>	
+                                </aura:if>	
+                            </div> 	
+                            <!--<lightning:icon iconName="utility:user" alternativeText="User" size="x-small" /> 	
+                            <ui:inputText value="" aura:id="username_loginForm" placeholder="{!v.usernameLabel}" keyup="{!c.onKeyUp}" class="input sfdc_usernameinput sfdc" labelClass="assistiveText"/>-->	
+                        </div>	
+                        <aura:set attribute="else">	
+                            <div id="sfdc_username_container" class="inputContainer" style="border-radius: 2rem;padding-bottom: 0px;">	
+                                <span class="slds-icon_container  slds-combobox__input-entity-icon" 	
+                                                  title="record">	
+                                   <lightning:icon iconName="utility:lock" size="x-small" 	
+                                                                alternativeText="icon"/>	
+                               </span>	
+                                <lightning:input name="input1" Type="email" class="input1"
+                                                 aura:id="username_loginForm" placeholder="{!v.usernameLabel}" oncommit="{!c.onKeyUp}"/>
+                            </div>	
+                        </aura:set>	
+                    </aura:if>	
+                    <div style="margin-bottom:10px;"></div>
+                    <div id="sfdc_password_container" class="slds-input-has-icon slds-input-has-icon--right inputContainer" style="border-radius: 2rem;">
+                        <span class="slds-icon_container  slds-combobox__input-entity-icon" 	
+                                                  title="record">	
+                                                <lightning:icon iconName="utility:lock" size="x-small" 	
+                                                                alternativeText="icon"/>	
+                        </span>	
+                        <lightning:input type="password" class="input1 sfdc_passwordinput sfdc password-input" id="passwordInput"
+                                        value="{!v.PassKey}" aura:id="password_loginForm" placeholder="{!v.passwordLabel}" 	
+                                        oncommit="{!c.onKeyUp}">
+                        </lightning:input>
+                       
+                    </div>
+                    <lightning:input aura:id="RememberMe" type="checkbox" label="Remember Me" class="slds-p-around--x-small" 	
+                                     name="Remember Me" checked="{!v.isRememberme}"/>
+                    <div class="sfdc" style="opacity:1 !important;">
+                        <button type="button" aura:id="loginbtn_loginForm" onclick="{!c.handleLogin}" id="loginForm"
+                                class="slds-button slds-button--neutral sfdc_button uiButton--default uiButton" 
+                                style="{!'background-color:' + v.uiwrapperMap.uiInstance.Action_Button_Color__c}">
+                            {!v.loginButtonLabel}
+                        </button>
+                        <!-- <ui:button aura:id="submitButton" label="{!v.loginButtonLabel}" press="{!c.handleLogin}" class="sfdc_button"/> -->
+                    </div>
+                    <div id="sfdc_forgot" class="sfdc">
+                        <span><a onclick="{!c.forgotPasswordCtrl}"><u>{!v.forgotPasswordLabel}</u></a></span>
+                        <!--span><a href="{!if(v.communityForgotPasswordUrl == null, v.forgotPasswordUrl, v.communityForgotPasswordUrl)}"  onclick="{!c.forgotPasswordCtrl}"><u>{!v.forgotPasswordLabel}</u></a></span-->
+                        <!--aura:renderIf isTrue="{!v.isSelfRegistrationEnabled}">
+                            <span style="float:right" ><a href="{!if(v.communitySelfRegisterUrl == null, v.selfRegisterUrl, v.communitySelfRegisterUrl)}"><u>{!v.selfRegisterLabel}</u></a></span>
+                        </aura:renderIf--> 
+                        <!--aura:renderIf isTrue="{!v.domainUrl=='timberline'}"-->
+                            <span style="float:right" ><a href="{!if(v.communitySelfRegisterUrl == null, v.selfRegisterUrl, v.communitySelfRegisterUrl)}"><u>{!v.selfRegisterLabel}</u></a></span>
+                        <!--/aura:renderIf-->
+                    </div> 
+                    <div id="deviceInfo"></div>
+                </aura:set>
+            </aura:if>
+        </aura:renderIf>
+    </div>
+</aura:component>

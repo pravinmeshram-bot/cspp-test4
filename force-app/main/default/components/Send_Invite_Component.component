@@ -1,0 +1,36 @@
+<apex:component controller="SFSPortal_SendInviteComponentController" access="global">
+    <apex:attribute name="isClient" assignTo="{!isClientEmail}" type="Boolean" description="Boolean to identify client or co client" />
+    <apex:attribute name="programId" assignTo="{!recordId}" description="Program Id passes from the email template" type="String"/>
+    
+    <div>
+        Hi {!clientName}, 
+        <br />
+        <br />
+        Welcome! We’re happy to have you. Please click <a href="{!redirectionURL}"> here </a> to register.
+        
+        <br />
+        <div> If you need additional help or have questions about the registraion, please contact us toll-free at {!portfolioInstance_Email.Support_Phone_Number__c}.  </div>
+        <br />
+        <br />
+        
+        <div> Thank You,  </div>
+        <div> {!portfolioInstance_Email.Dispay_Name__c} Client Services  </div>
+        
+        <br />
+        <br />
+        <img src="{!documentURL}"  style="height:8rem;width:10rem;" alt="No Image Available" /> 
+        
+        <br />
+           
+        <br />
+        <div> {!portfolioInstance_Email.Dispay_Name__c}  </div>
+        <div> {!portfolioInstance_Email.Address__c}  </div>
+        <div> {!portfolioInstance_Email.City__c}, {!portfolioInstance_Email.State__c} {!portfolioInstance_Email.Zipcode__c}   </div>
+        <div> Toll Free Number: {!portfolioInstance_Email.Support_Phone_Number__c}  </div>
+        <div> Fax: {!portfolioInstance_Email.Support_Fax_Number__c}  </div>
+        <div> <a href="{!'mailto:' + portfolioInstance_Email.Support_Email__c}"> {!portfolioInstance_Email.Support_Email__c} </a> </div>
+        <div> <a href="{!portfolioInstance_Email.Website__c}"> {!portfolioInstance_Email.Website__c} </a> </div>
+            
+    </div>
+    
+</apex:component>

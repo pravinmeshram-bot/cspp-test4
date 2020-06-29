@@ -1,0 +1,13 @@
+<apex:page standardStylesheets="false" showHeader="false" sidebar="false">
+    <style>
+        canvas {
+        width:320px; 
+        height:240px;
+        }
+    </style>
+   
+    <script>
+
+        </script>
+    <a href="gonative://auth/status?callbackFunction=gonative_status_afterlogin;">Scan</a>
+</apex:page>

@@ -1,0 +1,702 @@
+<aura:component extends="c:abstractServer" controller="SFSPortal_TradelineListController" 
+                implements="forceCommunity:availableForAllPageTypes" access="public">
+    
+    <aura:attribute name="paymentList" type="List" access="public" default="[]" />
+    <aura:attribute name="paymentsToDisplay" type="List" access="public" default="[]" />
+    <aura:attribute name="tradelineHistoryListToDisplay" type="List" access="public" default="[]" />
+    
+    <aura:attribute name="columnHeaderMap" type="Map" access="public" default="{}" />
+    <aura:attribute name="currentTradeline" type="Map" access="public" default="{}" />
+    <aura:attribute name="currentTradelineInMobileView" type="Map" access="public" default="{}" />   
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Serif+KR:700" rel="stylesheet" />
+    
+    <div class="slds-hide_medium">  
+        <aura:if isTrue="{!and(not(empty(v.currentTradelineInMobileView)))}">
+            <div class="debt-card" style="position: sticky;top: 50px; background: white; z-index: 1;" >
+                <lightning:layout class=" slds-wrap custom-layout">
+                    <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard setDefaultFont" 
+                                          size="6" smallDeviceSize="6" 
+                                          mediumDeviceSize="6" largeDeviceSize="6" >
+                        <lightning:layout class=" slds-wrap custom-layout">
+                            <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard" 
+                                                  size="6" smallDeviceSize="6" 
+                                                  mediumDeviceSize="6" largeDeviceSize="6" >
+                                <img src="{!v.currentTradelineInMobileView.creditCardName}" style="height:4rem !important"/>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard slds-align_absolute-center 
+                                                 mobile-debt-status setDefaultFont" size="5" smallDeviceSize="5" 
+                                          mediumDeviceSize="5" largeDeviceSize="5" >
+                        <div>{!v.currentTradelineInMobileView.accountNumber }</div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard slds-align_absolute-center 
+                                                 mobile-debt-status " size="1" smallDeviceSize="1" 
+                                          mediumDeviceSize="1" largeDeviceSize="1" >
+                        <lightning:button class="mobile-closebutton" aura:id="nobtn_newTradeline" 
+                                          label="Close" 
+                                          title="Close"  onclick="{!c.cancelModal}" >
+                            <img src="{!$Resource.CloseIconSvg}" width="20" height="20" Style="align:right;"/>
+                        </lightning:button>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem class="slds-creditcard" size="12" smallDeviceSize="12" 
+                                          mediumDeviceSize="12" largeDeviceSize="12" >
+                        <div  class="{!v.currentTradelineInMobileView.expanded ? 'active-debt' : 'inactive-debt'}">
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout> 
+            </div>
+            <div class="debt-card" >
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-p-around_xx-small slds-creditcard 
+                                slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_12-of-12 
+                                slds-large-size_12-of-12"
+                         style="{!v.currentTradelineInMobileView.statusColor ? 
+                                'background-color:'+v.currentTradelineInMobileView.statusColor
+                                : 'background-color:#f1f1f1;'}">
+                        <label class="debt-status">
+                            <b>
+                                {!v.currentTradelineInMobileView.status}
+                            </b>
+                        </label>
+                    </div>
+                </div>
+                <aura:if isTrue="{!v.currentTradelineInMobileView.isStatusExpand}">
+                    <lightning:layout class=" slds-wrap custom-layout">
+                        <lightning:layoutItem class="slds-p-around_small slds-creditcard" size="12" smallDeviceSize="12" 
+                                              mediumDeviceSize="12" largeDeviceSize="12" >
+                            <div style="text-align: left;">
+                                <label style="font-family:NotoSansKR-Medium;font-size: 17px;color:#9b9c99;">
+                                    CREDIT CARD 
+                                </label>
+                            </div> 
+                            <div style="text-align: left;">
+                                <label style="font-family:NotoSansKR-Medium;font-size: 17px;color:#9b9c99;">
+                                    {!v.currentTradelineInMobileView.originalDebtOwner} 
+                                </label>
+                            </div>
+                            <div style="text-align: left;">
+                                <label class="slds-truncate" 
+                                       style="font-family:NotoSansKR-Medium;font-size: 17px;color:#000000;">
+                                    {!v.currentTradelineInMobileView.accountNumber}
+                                </label>
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem class="slds-p-around_small slds-creditcard" size="12" smallDeviceSize="12" 
+                                              mediumDeviceSize="12" largeDeviceSize="12" >
+                            <div style="text-align: left;">
+                                <label style="font-family:NotoSansKR-Medium;font-size: 17px;color:#9b9c99;">
+                                    Enrolled Debt 
+                                </label>
+                            </div>
+                            <div style="text-align: left;">
+                                <label class="slds-truncate" 
+                                       style="font-family:NotoSansKR-Medium;font-size: 17px;color:#000000;">
+                                    <ui:outputCurrency value="{!v.currentTradelineInMobileView.enrolledDebt }"/> 
+                                </label>
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem class="slds-p-around_small slds-creditcard" size="12" smallDeviceSize="12" 
+                                              mediumDeviceSize="12" largeDeviceSize="12" >
+                            <div style="text-align: left;">
+                                <label style="font-family:NotoSansKR-Medium;font-size: 17px;color:#9b9c99;">
+                                    Adjusted Debt*
+                                </label>
+                            </div>
+                            <div style="text-align: left;">
+                                <label class="slds-truncate" 
+                                       style="font-family:NotoSansKR-Medium;font-size: 17px;color:#000000;">
+                                    <ui:outputCurrency value="{!v.currentTradelineInMobileView.debtBalance}"/> 
+                                </label>
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem class="slds-p-around_small slds-creditcard" size="12" smallDeviceSize="12" 
+                                              mediumDeviceSize="12" largeDeviceSize="12" >
+                            <div style="text-align: left;">
+                                <label style="font-family:NotoSansKR-Medium;font-size: 17px;color:#9b9c99;">
+                                    Settlement Balance
+                                </label>
+                            </div>
+                            <div style="text-align: left;">
+                                <label class="slds-truncate" 
+                                       style="font-family:NotoSansKR-Medium;font-size: 17px;color:#000000;">
+                                    <aura:if isTrue="{!v.currentTradelineInMobileView.settlementBalance}">
+                                        <div class="slds-truncate">
+                                            <ui:outputCurrency value="{!v.currentTradelineInMobileView.settlementBalance}"/>
+                                        </div>
+                                        <aura:set attribute="else">
+                                            <ui:outputText value="--"/>
+                                        </aura:set>
+                                    </aura:if>
+                                </label>
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem class="slds-p-left_medium slds-p-right_medium slds-p-top_medium horizontalLine" 
+                                              size="12" smallDeviceSize="12" 
+                                              mediumDeviceSize="12" largeDeviceSize="12" >
+                        </lightning:layoutItem>
+                        <aura:if isTrue="{!!v.currentTradeline.debtSettled}">
+                            <lightning:layoutItem class="slds-p-around_small slds-creditcard" size="12" smallDeviceSize="12" 
+                                                  mediumDeviceSize="12" largeDeviceSize="12" >
+                                <div style="text-align : justify; font-family : NotoSansKR-Medium; font-size: 13px !important;">
+                                    *Your total debt amount is subject to variation prior to final settlement agreement. 
+                                    Adjusted debt is the most accurate debt amount on file at the time a settlement offer is made. Keep in mind, adjusted debt may be higher than enrolled debt due to potential late fees and interest charges from your creditor.
+                                </div>
+                            </lightning:layoutItem>
+                        </aura:if>
+                    </lightning:layout>
+                    <lightning:layoutItem class="slds-m-bottom_small slds-p-around_x-small slds-section-color " 
+                                          size="12" smallDeviceSize="12" 
+                                          mediumDeviceSize="12" largeDeviceSize="12" >
+                        <div>
+                            Current Debt Owner: 
+                            <div style="color:black">
+                                {!v.currentTradelineInMobileView.currentDebtOwner}
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    <lightning:layoutItem class="slds-m-bottom_small slds-p-around_x-small slds-section-color " 
+                                          size="12" smallDeviceSize="12"
+                                          mediumDeviceSize="12" largeDeviceSize="12" >
+                        <div >
+                            Original Debt Owner:
+                            <div style="color:black">
+                                {!v.currentTradelineInMobileView.originalDebtOwner}
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:buttonIcon iconName="utility:jump_to_top"  size="large"    
+                                          variant="bare" alternativeText="View More" onclick="{! c.handleClick }" 
+                                          iconClass="dark"/>
+                    <aura:set attribute="else">
+                        <lightning:buttonIcon iconName="utility:jump_to_bottom"  size="large"    
+                                              variant="bare" alternativeText="View More" onclick="{! c.handleClick }" 
+                                              iconClass="dark"/>
+                    </aura:set>
+                </aura:if>
+            </div>
+            <div class="accountHistory-card slds-text-longform">
+                <div >
+                    <span class="paymentHeader slds-p-left_small override-paymentsCss">Account History :</span>
+                    <div class="horizontalLine" style="border-bottom:1px solid rgb(0, 0, 0)!important; 
+                                                       margin-right: 10px!important; margin-left: 10px!important;"></div>
+                </div>
+                <lightning:card class="setHeaderColor">
+                    <aura:if isTrue="{!not(empty(v.currentTradelineInMobileView.tradeLineHistoryWrapList))}">
+                        <lightning:layout class=" slds-wrap custom-layout">
+                            <aura:iteration items="{!v.currentTradelineInMobileView.tradeLineHistoryWrapList}" var="payment" 
+                                            indexVar="index"> 
+                                <aura:if isTrue="{!and(v.currentTradelineInMobileView.tradeLineHistoryWrapList.length > 1, 
+                                                 index == 0)}">
+                                    <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard" 
+                                                          size="12" smallDeviceSize="12" 
+                                                          mediumDeviceSize="12" largeDeviceSize="12" >
+                                        <div style="text-align: left;">
+                                            <label style="font-family:NotoSansKR-Medium;font-size: 17px;color:#9b9c99;">
+                                                Date
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <ui:outputDate value="{!payment.accountHistoryDate}" />
+                                        </div>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard" 
+                                                          size="12" smallDeviceSize="12" 
+                                                          mediumDeviceSize="12" largeDeviceSize="12" >
+                                        <div style="text-align: left;">
+                                            <label style="font-family:NotoSansKR-Medium;font-size: 17px;color:#9b9c99;">
+                                                Action
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <ui:outputText value="{!payment.action}"/>
+                                        </div>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard" 
+                                                          size="12" smallDeviceSize="12" 
+                                                          mediumDeviceSize="12" largeDeviceSize="12" >
+                                        <div style="text-align: left;">
+                                            <label style="font-family:NotoSansKR-Medium;font-size: 17px;color:#9b9c99;">
+                                                Amount
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <ui:outputCurrency value="{!payment.amount}"/>
+                                        </div>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem class="slds-p-left_medium slds-p-right_medium 
+                                                                 slds-p-top_medium horizontalLine " 
+                                                          size="12" smallDeviceSize="12" 
+                                                          mediumDeviceSize="12" largeDeviceSize="12" >
+                                    </lightning:layoutItem>                                    
+                                </aura:if>
+                                <aura:if isTrue="{!and(v.currentTradelineInMobileView.isAcccountHistory, index > 0)}">
+                                    <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard" 
+                                                          size="12" smallDeviceSize="12" 
+                                                          mediumDeviceSize="12" largeDeviceSize="12" >
+                                        <div style="text-align: left;">
+                                            <label style="font-family:NotoSansKR-Medium;font-size: 17px;color:#9b9c99;">
+                                                Date
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <ui:outputDate value="{!payment.accountHistoryDate}" />
+                                        </div>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard" 
+                                                          size="12" smallDeviceSize="12" 
+                                                          mediumDeviceSize="12" largeDeviceSize="12" >
+                                        <div style="text-align: left;">
+                                            <label style="font-family:NotoSansKR-Medium;font-size: 17px;color:#9b9c99;">
+                                                Action
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <ui:outputText value="{!payment.action}"/>
+                                        </div>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard" 
+                                                          size="12" smallDeviceSize="12" 
+                                                          mediumDeviceSize="12" largeDeviceSize="12" >
+                                        <div style="text-align: left;">
+                                            <label style="font-family:NotoSansKR-Medium;font-size: 17px;color:#9b9c99;">
+                                                Amount
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <ui:outputCurrency value="{!payment.amount}"/>
+                                        </div>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem class="slds-p-left_medium slds-p-right_medium 
+                                                                 slds-p-top_medium horizontalLine " 
+                                                          size="12" smallDeviceSize="12" 
+                                                          mediumDeviceSize="12" largeDeviceSize="12" >
+                                    </lightning:layoutItem>     
+                                </aura:if>
+                                
+                            </aura:iteration>
+                            <aura:if isTrue="{!and(v.currentTradelineInMobileView.tradeLineHistoryWrapList.length > 1, 
+                                             !v.currentTradelineInMobileView.isAcccountHistory)}">
+                                <lightning:layoutItem class="slds-p-left_medium slds-p-right_medium 
+                                                             slds-p-top_medium horizontalLine slds-align_absolute-center" 
+                                                      size="12" smallDeviceSize="12" 
+                                                      mediumDeviceSize="12" largeDeviceSize="12" >
+                                    <lightning:buttonIcon iconName="utility:jump_to_bottom"  size="large"    
+                                                          variant="bare" alternativeText="View More" 
+                                                          onclick="{! c.handleAccountHistoryClick }" 
+                                                          iconClass="dark"/>
+                                </lightning:layoutItem>
+                                <aura:set attribute="else">
+                                    <lightning:layoutItem class="slds-p-left_medium slds-p-right_medium 
+                                                                 slds-p-top_medium horizontalLine slds-align_absolute-center" 
+                                                          size="12" smallDeviceSize="12" 
+                                                          mediumDeviceSize="12" largeDeviceSize="12" >
+                                        <lightning:buttonIcon iconName="utility:jump_to_top"  size="large"    
+                                                              variant="bare" alternativeText="View More" 
+                                                              onclick="{! c.handleAccountHistoryClick }" 
+                                                              iconClass="dark"/>
+                                    </lightning:layoutItem>                                    
+                                </aura:set>
+                            </aura:if>
+                        </lightning:layout>
+                        <aura:set attribute="else">
+                            <lightning:layout class=" slds-wrap custom-layout">
+                                <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard" 
+                                                      size="12" smallDeviceSize="12" 
+                                                      mediumDeviceSize="12" largeDeviceSize="12" >
+                                    No Record(s) Found.
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                        </aura:set>
+                    </aura:if>
+                </lightning:card>
+            </div>
+            <aura:set attribute="else">
+                <aura:iteration items="{!v.columnHeaderMap.tradeLineWrapList}" var="debtInstance" indexVar="index">
+                    <lightning:button name="{!index}" variant="base" onclick="{!c.closeModel}" class="mobile-View-Card_Class">
+                        <div class="debt-card" style="width: 100%;"  >
+                            <lightning:layout class=" slds-wrap custom-layout">
+                                <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard setDefaultFont" 
+                                                      size="6" smallDeviceSize="6" 
+                                                      mediumDeviceSize="6" largeDeviceSize="6" >
+                                    <lightning:layout class=" slds-wrap custom-layout">
+                                        <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard" 
+                                                              size="6" smallDeviceSize="6" 
+                                                              mediumDeviceSize="6" largeDeviceSize="6" >
+                                            <img src="{!debtInstance.creditCardName}" style="height:4rem !important"/>
+                                        </lightning:layoutItem>
+                                        <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard 
+                                                                     slds-align_absolute-center mobile-debt-status" 
+                                                              size="6" smallDeviceSize="6" 
+                                                              mediumDeviceSize="6" largeDeviceSize="6" >
+                                            <div >{!debtInstance.accountNumber }</div> 
+                                        </lightning:layoutItem>
+                                    </lightning:layout>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard 
+                                                             slds-align_absolute-center mobile-debt-status setDefaultFont" 
+                                                      size="5" smallDeviceSize="5" 
+                                                      mediumDeviceSize="5" largeDeviceSize="5" >
+                                    <div >
+                                        <div>{!v.currentTradelineInMobileView.accountNumber }</div>
+                                        <aura:if isTrue="{!debtInstance.settlementBalance}">
+                                            <div class="slds-truncate">
+                                                <ui:outputCurrency value="{!debtInstance.settlementBalance}"/>
+                                            </div>
+                                            <aura:set attribute="else">
+                                                <ui:outputText value="--"/>
+                                            </aura:set>
+                                        </aura:if>
+                                    </div>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem class="slds-creditcard" size="12" smallDeviceSize="12" 
+                                                      mediumDeviceSize="12" largeDeviceSize="12" >
+                                    <div  class="{!debtInstance.expandInMobile ? 'active-debt' : 'inactive-debt'}">
+                                    </div>
+                                </lightning:layoutItem>
+                            </lightning:layout> 
+                        </div>
+                    </lightning:button>
+                </aura:iteration>
+            </aura:set>
+        </aura:if>        
+    </div>
+    <div class="slds-vertical-tabs slds-show_medium">
+        <ul class="slds-vertical-tabs__nav" role="tablist" aria-orientation="vertical" style="width: 17rem;">
+            <aura:iteration items="{!v.columnHeaderMap.tradeLineWrapList}" var="debtInstance" indexVar="index">
+                <div class="debt-card" >
+                    <!--<li class="{!!debtInstance.hasOffer ? ' slds-vertical-tabs__nav-item li-disable' : 
+                               'slds-vertical-tabs__nav-item slds-has-focus'}" 
+                        role="presentation" >-->
+                    <lightning:button name="{!index}" variant="base" onclick="{!c.closeModel}" >
+                        <li class="slds-vertical-tabs__nav-item slds-has-focus" role="presentation" >
+                            <lightning:layout class=" slds-wrap custom-layout">
+                                
+                                <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard slds-show_medium slds-show_large" 
+                                                      size="6" smallDeviceSize="6" 
+                                                      mediumDeviceSize="12" largeDeviceSize="12" >
+                                    <!--label style="font-family:NotoSansKR-Medium;font-size: 17px;color:#000000;float: right;">
+                                        Credit Card 
+                                    </label--> 
+                                    
+                                    <label style="font-family:NotoSansKR-Medium;font-size: 17px;color:#9b9c99;">
+                                        {!debtInstance.originalDebtOwner}
+                                    </label>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard slds-align_absolute-center" 
+                                                      size="6" smallDeviceSize="6" 
+                                                      mediumDeviceSize="6" largeDeviceSize="6" >
+                                    <img src="{!debtInstance.creditCardName}" style="height:4rem !important"/>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem class="slds-p-around_x-small slds-show_large" 
+                                                      size="6" smallDeviceSize="6" 
+                                                      mediumDeviceSize="6" largeDeviceSize="6" >
+                                    <b>
+                                        <div class="slds-truncate" style="font-family:NotoSansKR-Medium;
+                                                                          font-size: 17px;color:#000000;float: left;">{!debtInstance.accountNumber }</div>
+                                    </b>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem class="slds-creditcard slds-align_absolute-center 
+                                                             slds-show_medium slds-hide_large" 
+                                                      size="12" smallDeviceSize="12" 
+                                                      mediumDeviceSize="12" largeDeviceSize="12" >
+                                    <div class="slds-truncate" style="font-family:NotoSansKR-Medium;
+                                                                      font-size: 14px;color:#000000;float: left;"> 
+                                        {!debtInstance.originalDebtOwner}
+                                    </div>
+                                    <br/>
+                                </lightning:layoutItem>   
+                                <lightning:layoutItem class="slds-creditcard slds-align_absolute-center 
+                                                             slds-show_medium slds-hide_large" 
+                                                      size="12" smallDeviceSize="12" 
+                                                      mediumDeviceSize="12" largeDeviceSize="12" >
+                                    <div>
+                                        <label class="slds-truncate" 
+                                               style="font-family:NotoSansKR-Medium;font-size: 17px;color:#000000;float: left;">
+                                            {!debtInstance.accountNumber}
+                                        </label>
+                                    </div>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem class="slds-creditcard" size="12" smallDeviceSize="12" 
+                                                      mediumDeviceSize="12" largeDeviceSize="12" >
+                                    <div  class="{!debtInstance.expanded ? 'active-debt' : 'inactive-debt'}">
+                                    </div>
+                                </lightning:layoutItem>                              
+                            </lightning:layout>
+                        </li>
+                    </lightning:button>
+                </div>
+            </aura:iteration>                
+        </ul>
+        <div class="slds-vertical-tabs__content slds-show" id="slds-vertical-tabs-0" role="tabpanel" 
+             aria-labelledby="slds-vertical-tabs-0__nav">
+            <aura:if isTrue="{!empty(v.currentTradeline)}">
+                <div style="text-align:center">
+                    No debt is selected to view the content
+                </div>
+                <aura:set attribute="else">
+                    <div class="debt-card" >
+                        <lightning:layout class=" slds-wrap custom-layout">
+                            <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard slds-align_absolute-center " 
+                                                  size="3" smallDeviceSize="3" mediumDeviceSize="3" largeDeviceSize="3" >
+                                <lightning:layout class=" slds-wrap custom-layout">
+                                    <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard 
+                                                                 slds-align_absolute-center" 
+                                                          size="12" smallDeviceSize="12" mediumDeviceSize="12" 
+                                                          largeDeviceSize="12" >
+                                        <div style="font-family:NotoSansKR-Medium;font-size: 17px;
+                                                    color:#000000;float: right;">
+                                            Credit Card 
+                                        </div>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard 
+                                                                 slds-align_absolute-center" 
+                                                          size="12" smallDeviceSize="12" mediumDeviceSize="12" 
+                                                          largeDeviceSize="12" >
+                                        <div style="font-family:NotoSansKR-Medium;font-size: 20px;color:#000000;">
+                                            <span>
+                                                <b>
+                                                    {!v.currentTradeline.accountNumber }
+                                                </b>
+                                            </span>
+                                        </div>
+                                    </lightning:layoutItem>
+                                </lightning:layout>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard 
+                                                         slds-align_absolute-center" 
+                                                  size="12" smallDeviceSize="12" mediumDeviceSize="3" largeDeviceSize="3" >
+                                <lightning:layout class=" slds-wrap custom-layout">
+                                    <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard 
+                                                                 slds-align_absolute-center" 
+                                                          size="12" smallDeviceSize="12" mediumDeviceSize="12" 
+                                                          largeDeviceSize="12" >
+                                        <div style="font-family:NotoSansKR-Medium;font-size: 17px;
+                                                    color:#000000;float: right;">
+                                            Enrolled Debt
+                                        </div>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard 
+                                                                 slds-align_absolute-center" 
+                                                          size="12" smallDeviceSize="12" mediumDeviceSize="12" 
+                                                          largeDeviceSize="12" >
+                                        <div style="font-family:NotoSansKR-Medium;font-size: 20px;color:#000000;">
+                                            <b>
+                                                <ui:outputCurrency value="{!v.currentTradeline.enrolledDebt }"/> 
+                                            </b>
+                                        </div>
+                                    </lightning:layoutItem>
+                                </lightning:layout>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard 
+                                                         slds-align_absolute-center" 
+                                                  size="12" smallDeviceSize="12" mediumDeviceSize="3" largeDeviceSize="3" >
+                                <lightning:layout class=" slds-wrap custom-layout">
+                                    <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard 
+                                                                 slds-align_absolute-center" 
+                                                          size="12" smallDeviceSize="12" mediumDeviceSize="12" 
+                                                          largeDeviceSize="12" >
+                                        <div style="font-family:NotoSansKR-Medium;font-size: 17px;color:#000000;
+                                                    float: right;">
+                                            Adjusted Debt*
+                                        </div>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard 
+                                                                 slds-align_absolute-center" 
+                                                          size="12" smallDeviceSize="12" mediumDeviceSize="12" 
+                                                          largeDeviceSize="12" >
+                                        <div style="font-family:NotoSansKR-Medium;font-size: 20px;color:#000000;">
+                                            <b>
+                                                <ui:outputCurrency value="{!v.currentTradeline.debtBalance}"/> 
+                                            </b>
+                                        </div>
+                                    </lightning:layoutItem>
+                                </lightning:layout>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard 
+                                                         slds-align_absolute-center" 
+                                                  size="12" smallDeviceSize="12" mediumDeviceSize="3" largeDeviceSize="3" >
+                                <lightning:layout class=" slds-wrap custom-layout">
+                                    <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard 
+                                                                 slds-align_absolute-center" 
+                                                          size="12" smallDeviceSize="12" mediumDeviceSize="12" 
+                                                          largeDeviceSize="12" >
+                                        <div style="font-family:NotoSansKR-Medium;font-size: 17px;
+                                                    color:#000000;float: right;">
+                                            Settlement Balance
+                                        </div>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard 
+                                                                 slds-align_absolute-center" 
+                                                          size="12" smallDeviceSize="12" mediumDeviceSize="12" 
+                                                          largeDeviceSize="12" >
+                                        <div style="font-family:NotoSansKR-Medium;font-size: 20px;color:#000000;">
+                                            <b>
+                                                <aura:if isTrue="{!v.currentTradeline.settlementBalance}">
+                                                    <div class="slds-truncate">
+                                                        <ui:outputCurrency value="{!v.currentTradeline.settlementBalance}"/>
+                                                    </div>
+                                                    <aura:set attribute="else">
+                                                        <ui:outputText value="--"/>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </b>
+                                        </div>
+                                    </lightning:layoutItem>
+                                </lightning:layout>
+                            </lightning:layoutItem>
+                            <!-- <lightning:layoutItem class="slds-p-around_xx-small slds-creditcard 
+                 slds-align_absolute-center " 
+                                          size="12" smallDeviceSize="12" mediumDeviceSize="1" largeDeviceSize="1" >
+                        <lightning:button class="closebutton" aura:id="nobtn_newTradeline" 
+                                          label="Close" 
+                                          title="Close"  onclick="{!c.cancelModal}" >
+                            <img src="{!$Resource.CloseIconSvg}" width="15" height="15" Style="align:right;"/>
+                        </lightning:button>
+                    </lightning:layoutItem>-->
+                            <lightning:layoutItem class="slds-p-around_medium slds-creditcard slds-align_absolute-center" 
+                                                  size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="12" >
+                                <div class="slds-grid slds-wrap max_min_height" 
+                                     style="{!(v.currentTradeline.statusColor)?'background-color:'
+                                            + v.currentTradeline.statusColor + ';width:100%;'
+                                            :'background-color: #f1f1f1; width:100%'}">
+                                    <div class="slds-size_12-of-12 slds-align_absolute-center">
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-size_12-of-12  slds-align_absolute-center">
+                                                <label class="debt-status">
+                                                    <b>
+                                                        {!v.currentTradeline.status}
+                                                    </b>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </lightning:layoutItem>
+                            <hr />
+                            <lightning:layoutItem class="slds-p-left_medium" size="12" smallDeviceSize="12" 
+                                                  mediumDeviceSize="12" largeDeviceSize="12" >
+                                <div style="text-align: left;font-family:NotoSansKR-Medium">
+                                    <div style="font-size: 16px !important;">
+                                        <p>
+                                            <ui:outputRichText class="slds-text-longform" 
+                                                               value="{!v.currentTradeline.statusDefinition}"/>
+                                        </p>
+                                    </div>
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem class="slds-p-left_medium slds-p-right_medium 
+                                                         slds-p-top_medium horizontalLine " 
+                                                  size="12" smallDeviceSize="12" 
+                                                  mediumDeviceSize="12" largeDeviceSize="12" >
+                            </lightning:layoutItem>
+                            <aura:if isTrue="{!!v.currentTradeline.debtSettled}">
+                                <lightning:layoutItem class="slds-p-left_medium slds-p-top_small" size="12" smallDeviceSize="12" 
+                                                      mediumDeviceSize="12" largeDeviceSize="12" >
+                                    <div style="text-align : justify; font-family : NotoSansKR-Medium; 
+                                                font-size: 13px !important;">
+                                        *Your total debt amount is subject to variation prior to final settlement agreement. 
+                                        Adjusted debt is the most accurate debt amount on file at the time a settlement offer is made. Keep in mind, adjusted debt may be higher than enrolled debt due to potential late fees and interest charges from your creditor.
+                                        
+                                    </div>
+                                </lightning:layoutItem>
+                                <br/>
+                                <br/>
+                            </aura:if>
+                            <lightning:layoutItem class="slds-m-bottom_small slds-p-around_x-small slds-section-color " 
+                                                  size="12" smallDeviceSize="12" 
+                                                  mediumDeviceSize="12" largeDeviceSize="12" >
+                                <div>
+                                    Current Debt Owner: 
+                                    <span style="color:black">
+                                        {!v.currentTradeline.currentDebtOwner}
+                                    </span>
+                                </div>
+                            </lightning:layoutItem>
+                            
+                            <lightning:layoutItem class="slds-m-bottom_small slds-p-around_x-small slds-section-color " 
+                                                  size="12" smallDeviceSize="12"
+                                                  mediumDeviceSize="12" largeDeviceSize="12" >
+                                <div >
+                                    Original Debt Owner:
+                                    <span style="color:black">
+                                        {!v.currentTradeline.originalDebtOwner}
+                                    </span>
+                                </div>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </div>
+                    <div >
+                        <span class="paymentHeader slds-p-left_small override-paymentsCss">Account History :</span>
+                        <div class="horizontalLine" style="border-bottom:1px solid rgb(0, 0, 0)!important; 
+                                                           margin-right: 10px!important; margin-left: 10px!important;"></div>
+                    </div>
+                    <div class="accountHistory-card slds-text-longform slds-scrollable_y" style="height:18.6rem;">
+                        <lightning:card class="setHeaderColor">
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered 
+                                          slds-table_fixed-layout slds-no-row-hover">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <div class="slds-truncate" title="Date" style="color: #ababab;">
+                                                Date
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="slds-truncate" title="Action" style="color: #ababab;">
+                                                Action
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="slds-truncate" title="Amount" style="color: #ababab;">
+                                                Amount
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <aura:if isTrue="{!not(empty(v.currentTradeline.tradeLineHistoryWrapList))}">
+                                        <aura:iteration items="{!v.tradelineHistoryListToDisplay}" var="payment" 
+                                                        indexVar="index">
+                                            <tr>
+                                                <td>
+                                                    <div class="slds-truncate" >
+                                                        <ui:outputDate value="{!payment.accountHistoryDate}" />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="slds-truncate" >
+                                                        <ui:outputText value="{!payment.action}"/>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="slds-truncate" >
+                                                        <ui:outputCurrency value="{!payment.amount}"/>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </aura:iteration>
+                                        <aura:set attribute="else">
+                                            <tr>
+                                                <td colspan="3" style="font-weight:bold;text-align:center;">
+                                                    No Record(s) Found.
+                                                </td>
+                                            </tr>
+                                        </aura:set>
+                                    </aura:if>
+                                </tbody>
+                            </table>        
+                            <aura:if isTrue="{!not(empty(v.currentTradeline.tradeLineHistoryWrapList))}"> 
+                                <c:pagination allData="{!v.currentTradeline.tradeLineHistoryWrapList}" 
+                                              data="{!v.tradelineHistoryListToDisplay}" pageSize ="20"/>
+                            </aura:if>
+                        </lightning:card>
+                    </div>
+                </aura:set>
+            </aura:if>
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,289 @@
+@font-face {
+    font-family: NotoSansKR-Bold;
+    src: url(/resource/NotoSansKRBold);
+}
+@font-face {
+    font-family: NotoSans-Regular;
+    src: url(/resource/NotoSansRegular);
+}
+@font-face {
+    font-family: NotoSansKR-Regular;
+    src: url(/resource/NotoSansKRRegular);
+}
+@media (max-width: 375px){
+.THIS .slds-table_fixed-layout .slds-table--fixed-layout .tbl {
+    table-layout: auto;
+    width: 100%;
+    white-space: nowrap;
+}
+}
+.THIS .headerText{
+    /*font-family: NotoSansKR-Bold;*/
+    font-family: 'Noto Serif KR', serif;
+    font-size: 32px !important;
+    color: #0A202D;
+    font-weight:500;
+}
+
+.THIS .slds-icon {
+    fill: white !important;
+}
+
+.THIS .slds-form-element__label {
+    font-weight : 800 !important;
+}
+
+.THIS .slds-file-selector__dropzone{
+    padding:4rem !important;
+}
+
+.THIS .removedLabel .slds-form-element__label {
+    display : none;
+}
+
+.THIS .adjustHelpText .slds-form-element__icon {
+    padding : 0px !important;
+}
+.THIS.setHeaderColor .slds-card__header{
+    background:whitesmoke !important;
+    border-color:whitesmoke !important;
+}
+
+.THIS .slds-icon-utility-success .slds-icon-text-default,
+.THIS .slds-icon-utility-close .slds-icon-text-default{
+    fill: White !important;
+}
+
+.THIS .slds-icon-utility-chevrondown .slds-icon-text-default 
+, .THIS .slds-icon-utility-chevronright.slds-icon-text-default{
+    fill: black !important;
+}
+.THIS .slds-modal__footer {
+    padding:0rem;
+    border-top:0px;
+    /*  text-align: center;
+    background: linear-gradient(#ffffff, #d7d7d7);
+    background: #000000;
+    opacity: 52%;*/
+}
+.THIS .slds-modal__header {
+    padding:0rem;
+    border-bottom:0px;
+    /*    background: linear-gradient(#ffffff, #d7d7d7);
+    background: #000000;
+    opacity: 52%;*/
+}
+.THIS .slds-modal__content {
+    background: linear-gradient(to top, #ffffff -50%, #d7d7d7 200%);
+    /*background: linear-gradient(to bottom, #ffffff 50%, #d7d7d7 100%);*/
+    text-align: right !important;
+    font-family: NotoSans-Regular;
+    font-size:16px;
+     margin-bottom: 150px;
+    /*   background: #000000;
+    opacity: 52%;
+    color:white;*/
+}
+
+.THIS .b1{
+    margin-top:1rem;
+    background-color:White !important;
+    color:black;
+    padding-left:4rem;
+    padding-right:1rem;
+    text-align: center !important;
+    font-size:23px;
+    border-radius: 5px;
+    border-color: black !important;
+    padding-top:0.1rem;
+    padding-bottom:0.2rem;
+    font-family: NotoSansKR-Regular !important;
+}
+.THIS .b1:hover{
+    cursor: pointer;
+    /* background-color:#006999 !important;*/
+    border-color:#282828 !important;
+    background-color:#ff9666 !important;
+    filter: invert(1);
+}
+.THIS .b2:hover{
+    cursor: pointer;
+    /* background-color:#006999 !important;*/
+    background-color:#ff9666 !important;
+    border-color:#282828 !important;
+    filter: invert(1);
+}
+.THIS .b3{
+    background-color:#ffffff !important;
+    border-radius: 5px;
+    border-color: black !important;
+    /* padding-bottom:3px; */
+    padding-bottom: 9px;
+    padding-top: 9px;
+    padding-left: 9px;
+    padding-right: 9px;
+}
+.THIS .b3:hover{
+    /*  background-color:#006999 !important;*/
+    border-color:#282828 !important;
+    background-color:#ff9666 !important;
+    filter: invert(1);
+}
+/*.THIS .b2 {
+font-family: NotoSansKR-Regular !important;
+margin-top:1rem;
+background-color:White;
+color:black;
+padding-left: 7.75 px !important;
+padding-right: 7.75 px !important;
+text-align: right !important;
+border-radius: 35%;
+
+}
+.THIS .b2:hover{
+cursor: pointer;
+background-color:#006999;
+}*/
+@font-face {
+    font-family: NotoSans-Regular;
+    src: url(/resource/NotoSansRegular);
+}
+.THIS .iconColor{
+    text-align:right !important;
+    background:#ffffff;
+    color:black !important;
+    border-radius: 5px;
+    border: 1px solid rgb(217, 219, 221);
+}
+.THIS .iconColor:hover{
+    /* background-color:#006999 !important;*/
+    border-color:#282828 !important;
+    background-color:#ff9666 !important;
+    filter: invert(1);
+}
+.THIS .slds-icon {
+    /* width: 2rem;
+    height: 2rem;
+    fill: rgb(53, 53, 13);*/
+    fill: black !important;
+}
+.THIS .slds-button_neutral{
+    padding-left: 0.7 rem;
+    padding-right: 0.7 rem;
+}
+
+@media (max-width: 900px) and (min-width: 768px){
+    .THIS .slds-modal__content {
+        margin-left: 120px;
+        text-align:center;
+        margin-bottom: 635px;
+    }
+    .THIS .iconColor{
+        text-align:right !important;
+        background:#ffffff;
+        color:black !important;
+        border-radius: 5px;
+        border: 1px solid rgb(217, 219, 221);
+    }
+    .THIS .iconColor:hover{
+        /* background-color:#006999 !important;*/
+        border-color:#282828 !important;
+        background-color:#ff9666 !important;
+        filter: invert(1);
+    }
+}
+
+/*@media (max-width: 320px){
+.THIS .slds-modal__content {
+margin-left: 30px;
+margin-right: 30px;
+text-align:center;
+}
+.THIS .iconColor{
+text-align:right !important;
+background:#ffffff;
+color:black;
+border-radius: 5px;
+border: 1px solid rgb(217, 219, 221);
+}
+.THIS .iconColor:hover{
+background-color:#006999;
+} 
+}*/
+@media (max-width: 375px){
+    .THIS .slds-modal__content {
+        margin-left: 30px;
+        margin-right: 30px;
+        text-align:center;
+    }
+}
+@media (max-width: 767px) and (min-width: 400px){
+    .THIS .slds-modal__content {
+        margin-left: 80px;
+        margin-right: 80px;
+        text-align:center;
+    }
+    .THIS .iconColor{
+        text-align:right !important;
+        background:#ffffff !important;
+        color:black;
+        border-radius: 5px;
+        border: 1px solid rgb(217, 219, 221);
+    }
+    .THIS .iconColor:hover{
+        /* background-color:#006999 !important;*/
+        border-color:#282828 !important;
+        background-color:#ff9666 !important;
+        filter: invert(1);
+    } 
+}
+.THIS .previewerAction {
+    display:none;
+}
+
+@media (min-width: 320px) and (max-width: 320px) {
+   .THIS .slds-image__crop, .THIS .slds-file__crop {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    padding-top: 56.25%;
+    padding-right: 50%;
+    margin-right: 0px !important;
+}
+    .THIS .slds-modal__content1{
+        padding-right:13rem;
+        margin-left: -73px !important;
+    }
+   /* .THIS .img {
+         width: 165px !important;
+         height: 77.544px !important;
+    }*/
+}
+@media (min-width: 375px) and (max-width: 375px) {
+   .THIS .slds-image__crop, .THIS .slds-file__crop {
+    margin-right: 5px !important;
+}
+    .THIS .slds-modal__content1{
+        padding-right: 294px;
+            margin-left: -25px;
+    }
+}
+@media (min-width: 414px) and (max-width: 414px) {
+    .THIS .slds-modal__content1{
+        padding-right:340px !important;
+    }
+}
+@media (min-width: 768px) and (max-width: 768px) {
+    .THIS .slds-modal__content1{
+        padding-right:330px !important;
+    }
+}
+@media (min-width: 1024px) and (max-width: 1024px) {
+    .THIS .slds-modal__content1{
+        padding-right:260px !important;
+       
+    }
+}
+/*.THIS .slds-modal__content{
+padding-right: 200px;
+}*/

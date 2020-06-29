@@ -1,0 +1,203 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xml:lang='en' lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+	<head>
+		<title>:: CCF ::</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+		<meta name="description" content=""/>
+		<meta name="keywords" content=""/>
+		<meta name="robots" content="all" />
+		<link rel="stylesheet" href="css/style.css" type="text/css" />
+		<link rel="stylesheet" href="css/jquery-ui.css" type="text/css">
+		<link rel="stylesheet" href="css/bootstrap.min.css">	
+		<link rel="stylesheet" href="css/bootstrap.css">
+		<link rel="stylesheet" href="js/Zebra_Datepicker-master/public/css/default.css" type="text/css">
+	</head>
+	<body ng-app="ccfApp">
+		<!-- header start--> 
+		<header class="preHeader">
+			<div class="header">
+				<div class="ccf_logo">
+					<a href="#" title=""><img alt="" width="89" height="44" src="images/logo.png" /></a>
+				</div>
+				<div class="ccf_user">
+					<div class="ccf_userArrow"><img alt="" width="15" height="10" src="images/arrow_down.png" /></div>
+					<div class="ccf_userName">Luke Cassidy</div>
+					<div class="ccf_userImage"><img alt="" width="28" height="25" src="images/icon_myaccount.png" /></div>
+				</div>
+			</div>
+		</header>
+		<!-- header end --> 
+		<!-- body start --> 
+		<div class="ccf_pageContent" ng-controller="pagingCtrl as vm">
+			<div class="mainWrapper">
+				<div class="tableMainContent">
+					<div class="tablePreHeader">
+						<h1>In Progress Forms</h1>
+						<div class="buttonContainer">
+							<span ng-controller="createNewCtrl">
+								<button ng-click="createnewOpen()" class="createNew_ccf">Create New CCF</button>														
+								<!-- create new ccf pop-up start --> 
+								<div modal="createnewModal" close="cancel()" class="tableCreateNew">
+									<div class="modal-header">
+										<h4>Create New CCF</h4>
+										<input type="button" ng-click="cancel()" class="close" value="Close"/>
+									</div>
+									<div class="tableCreateNew_section">
+										<div class="tableCreateNew_sectionText">
+											<label>Select Template</label>
+											<select type="text" class="tableCreateNew_searchOption">
+												<option selected="selected">Select</option>
+											</select>
+										</div>														
+									</div>
+									<div class="tableCreateNew_button">
+										<button ng-click="cancel()" class="cancelNewccf">Cancel</button>
+										<button class="createNewccf">Create</button>
+									</div>
+								</div>	
+								<!-- create new ccf pop-up end -->
+							</span>	
+							<span ng-controller="searchCtrl">
+								<button ng-click="searchOpen()" class="amend_ccf">Amend CCF</button>								
+								<!-- search pop-up start --> 
+								<div modal="searchModal" close="cancel()" class="tableSearch">
+									<div class="modal-header">
+										<h4>Search for existing CCF</h4>
+										<input type="button" ng-click="cancel()" class="close" value="Close"/>
+									</div>
+									<div class="tableSearch_section">
+										<div class="tableSearch_section_search">
+											<label>Supplier ID</label>
+											<input type="text" class="tableSearch_searchOption"/>
+										</div>
+										<div class="tableSearch_section_search">
+											<label>Supplier Name</label>
+											<input type="text" class="tableSearch_searchOption"/>
+										</div>
+										<div class="tableSearch_section_search">
+											<label>Material ID</label>
+											<input type="text" class="tableSearch_searchOption"/>
+										</div>
+										<div class="tableSearch_section_search">
+											<label>Material Name</label>
+											<input type="text" class="tableSearch_searchOption"/>
+										</div>
+										<div class="tableSearch_section_search">
+											<label>CTC/SAP Number</label>
+											<input type="text" class="tableSearch_searchOption"/>
+										</div>							
+									</div>
+									<div class="tableSearch_button">
+										<button ng-click="cancel()" class="cancelSearch">Cancel</button>
+										<button class="searchButton">Search</button>
+									</div>
+								</div>
+								<!-- search pop-up end -->
+							</span>
+							<span><button class="clone_ccf">Clone CCF</button></span>
+						</div>
+						<div class="filter_ccf"></div>
+					</div>
+					<!-- filter start --> 
+					<div class="tableFilter" style="display: none;">
+						<div class="tableFilter_section">
+							<div class="tableFilter_section_search">
+								<label>Supplier Name</label>
+								<select type="text" class="tableFilter_searchOption">
+									<option selected="selected">Select</option>
+								</select>
+							</div>
+							<div class="tableFilter_section_search">
+								<label>Portfolio</label>
+								<select type="text" class="tableFilter_searchOption">
+									<option selected="selected">Select</option>
+								</select>
+							</div>
+							<div class="tableFilter_section_date">
+								<label>Valid From</label>
+								<input type="text" class="tableFilter_dateOption" placeholder="DD-MM-YYYY"/>
+							</div>
+							<div class="tableFilter_section_date">
+								<label>Valid To</label>
+								<input type="text" class="tableFilter_dateOption" placeholder="DD-MM-YYYY"/>
+							</div>
+							<div class="tableFilter_section_search">
+								<label>Status</label>
+								<select type="text" class="tableFilter_searchOption">
+									<option selected="selected">Select</option>
+								</select>
+							</div>
+							<div class="tableFilter_section_search">
+								<label>Contract Owner</label>
+								<select type="text" class="tableFilter_searchOption">
+									<option selected="selected">Select</option>
+								</select>
+							</div>
+						</div>
+						<div class="tableFilter_button">
+							<button class="applyButton">Apply</button>
+						</div>
+					</div>
+					<!-- filter end --> 
+					<div class="tableHeader">
+						<div class="tableHeaderText">Contract Name</div>
+						<div class="tableHeaderText">Supplier</div>
+						<div class="tableHeaderText">Description</div>
+						<div class="tableHeaderText">Portfolio</div>
+						<div class="tableHeaderText">Validity</div>
+						<div class="tableHeaderText">Last Modified</div>
+						<div class="tableHeaderText">Contract Owner</div>
+						<div class="tableHeaderText">Status</div>
+					</div>
+					<div class="tableBodyContent" ng-repeat="item in vm.items">
+						<div class="tableBodyContentText"><a>Wheat Flour-Maize 2H 2016-SA</a></div>
+						<div class="tableBodyContentText">Pioneer Foods Ltd</div>
+						<div class="tableBodyContentText">New contract for 2017</div>
+						<div class="tableBodyContentText">Soft Commodities</div>
+						<div class="tableBodyContentText">01/01/17 - 31/12/17</div>
+						<div class="tableBodyContentText">14/12/16</div>
+						<div class="tableBodyContentText">Luke Cassidy</div>
+						<div class="tableBodyContentText draft_ccf">Draft {{item}}</div>
+					</div>
+					<!-- pager -->
+					<div class="formFooter">
+						<ul ng-if="vm.pager.pages.length" class="pagination">
+							<li ng-class="{disabled:vm.pager.currentPage === 1}">
+								<a ng-click="vm.setPage(1)">First</a>
+							</li>
+							<li ng-class="{disabled:vm.pager.currentPage === 1}">
+								<a ng-click="vm.setPage(vm.pager.currentPage - 1)" class="previous_button" title="Previous"></a>
+							</li>
+							<!-- <li ng-repeat="page in vm.pager.pages" ng-class="{active:vm.pager.currentPage === page}">
+								<a ng-click="vm.setPage(page)">{{page}}</a>
+							</li>  -->             
+							<li ng-class="{disabled:vm.pager.currentPage === vm.pager.totalPages}">
+								<a ng-click="vm.setPage(vm.pager.currentPage + 1)" class="next_button" title="Next"></a>
+							</li>
+							<li ng-class="{disabled:vm.pager.currentPage === vm.pager.totalPages}">
+								<a ng-click="vm.setPage(vm.pager.totalPages)">Last</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- body end --> 
+		<!-- footer start --> 
+		<footer class="footer">
+
+		</footer>
+		<!-- footer end --> 
+		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+		<script type="text/javascript" src="js/jquery-ui.js"></script>
+		<script type="text/javascript" src="js/Zebra_Datepicker-master/public/javascript/zebra_datepicker.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<script type="text/javascript" src="js/angular-route.min.js"></script>
+		<script type="text/javascript" src="js/ui-bootstrap-tpls-2.5.0.min.js"></script>
+		<script type="text/javascript" src="js/angular-ui-bootstrap-modal.js"></script>
+		<script type="text/javascript" src="js/underscore.js"></script>
+		<script type="text/javascript" src="js/script.js"></script>
+	</body>
+</html>

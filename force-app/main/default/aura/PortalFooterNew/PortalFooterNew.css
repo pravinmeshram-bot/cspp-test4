@@ -1,0 +1,211 @@
+.THIS {
+    background: #232526;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    opacity:0.9;
+    padding:1.2rem; 
+    color:white !important;
+    height:100%;
+}
+/*@media (min-width: 1080px) and (max-width: 1920px) {
+.THIS {
+    height: 550px;
+    margin-top: 150px
+}
+}*/
+/*@media screen and (min-width: 1920px) {
+.THIS .footer-bs {
+   overflow-x:hidden !important;
+        width:100%;
+}
+}*/
+.THIS .slds-m-top--medium{
+    font-size:15px !important;
+    margin-right: -140px;
+}
+.THIS .PL{
+    padding-left: 0px !important;
+}
+.THIS .links{
+    font-family: SourceSerifPro-Regular;
+    color:#FFFFFF !important;
+}
+.THIS .submitbutton{    
+    background: transparent !important;
+    padding:0.5rem;
+    border: 1px solid lightgrey;
+    border-radius:4px;
+    color:#36b2c1 !important;
+}
+.THIS .sourceFont {
+    font-family: SourceSerifPro-Regular;
+    color:#c6c6c8 !important;
+}
+@font-face {
+    font-family: SourceSerifPro-Regular;
+    src: url(/resource/SourceSerifProFont);
+}
+@font-face {
+    font-family: NotoSansKR-Medium;
+    src: url("/s/sfsites/c/resource/NewCustomFont_2/Noto_Sans_KR/NotoSansKR-Medium.otf");
+}
+.THIS a{
+    color:white !important;
+}
+.THIS slds-grid slds-wrap{
+    padding-left:0px;
+}
+.THIS .subheadingText{
+    color: #36b2c1;
+    font-size:17px;
+}
+.THIS .slds-m-top_medium{
+    margin-top: 22px;
+}
+.THIS .iconColor .slds-icon {
+    fill : whitesmoke !important;
+}
+.THIS .horizontal {
+    border-style: solid;
+    border-color: white;
+    border-width: 1px 0 0 0;
+    margin-left: 0px;
+    margin-top: 0px;
+}
+.THIS .vertical {
+    border-left:1px solid lightgrey;
+    padding-left:15px;
+}
+.THIS .textalign {
+    color: #36b2c1;
+    font-size:17px;
+    padding-left:0px;
+}
+.THIS .footerleft{
+    margin-right:10px!important;
+    padding-right:0px!important;   
+}
+.THIS .Padding-right {
+    padding-right:0px;
+}
+.THIS .Padding-left1 {
+    padding-left:50px;
+    padding-left:3rem !important;
+}
+@media only screen and (max-device-width : 1024px) {
+    .THIS .footer-bs {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+    .THIS .footerleft{
+        margin-right:-35px!important;
+        padding-right:0px!important; 
+        padding-top: 15px;
+    }
+    .THIS .slds-p-top_small {
+        padding-top: 2 rem;
+    }
+    .THIS .links{
+        margin-left: 20px;
+    }
+    .THIS .PL{
+        padding-left: 0px;
+    }
+    .THIS .Padding-left{
+        padding-left: 30px !important;
+        padding-right : 30px;
+    }
+    .THIS .siteforceContentArea .comm-layout-column:not(:empty) {
+        padding-top: 0.75rem !important;
+        padding-bottom: 13.75rem !important;
+    }
+}
+@media only screen and (max-device-width : 768px) {
+    .THIS .footer-bs {
+        width: 100%;
+        position: relative;
+    }
+    .THIS .footerleft{
+        margin-right:-69px!important;
+        padding-right:0px!important; 
+        padding-top: 10px;
+    }
+    .THIS .links{
+        margin-left: 20px;
+        
+    }
+    .THIS .PL{
+        padding-left: 60px !important;
+    }
+}
+@media only screen and (max-device-width : 400px) {
+    .THIS .small-device {
+        width:50%;
+    }
+    .THIS .PL{
+        padding-left: 0px !important;
+    }
+    .THIS .links{
+        margin-left: 0px;
+    }
+}
+@media only screen and (max-device-width : 414px) {
+    .THIS .small-device {
+        width:50%;
+    }
+    .THIS .PL{
+        padding-left: 0px !important;
+    }
+}
+
+@media only screen and (max-device-width : 360px) {
+    .THIS .small-device {
+        width:50%;
+    }
+    .THIS .PL{
+        padding-left: 0px;
+    }
+}
+
+@media only screen and (max-device-width : 375px) {
+    .THIS .small-device {
+        width:50%;
+    }
+    .THIS .PL{
+        padding-left: 0px;
+    }
+    .THIS .Padding-left{
+        padding-left: 0px !important;
+    }
+}
+
+@media only screen and (max-device-width : 640px) {
+    .THIS .small-device {
+        width:50%;
+    }
+    .THIS .PL{
+        padding-left: 0px;
+    }
+}
+
+@media only screen and (min-device-width : 1280px){
+    .THIS .margin-footer {
+        margin :0px 20px 0px 20px;
+    }
+    .THIS .refer-a-friend {
+        float:right;        
+    }
+}
+
+@media (min-width: 450px) and (max-width: 767px) {
+    .THIS .refer-a-friend {
+        float: left;
+    }
+}
+@media (min-width: 300px) and (max-width: 449px) {
+    .THIS .refer-a-friend {
+        float: left;
+        width:70%
+    }
+}

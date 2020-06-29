@@ -1,0 +1,57 @@
+<aura:component access="public">
+    <aura:attribute name="uiwrapperMap" type="Map" access="public" default="{}" />
+    <div class="newHeader" style="line-height:4rem;">
+        <div class="custom-background" 
+             style="{!(v.uiwrapperMap.uiInstance.Landing_Background_Color__c) ? ('background-color:' + v.uiwrapperMap.uiInstance.Landing_Background_Color__c)
+                    : ('background: url(' + v.uiwrapperMap.headerbackgroundImage + ') 0% 0%/cover no-repeat fixed #f4f4f4;background-color;height:6rem;')}">
+            <lightning:layout class=" slds-wrap custom-layout min-div-height">
+                <lightning:layoutItem class="slds-p-around_xx-small " size="12" smallDeviceSize="12" mediumDeviceSize="4" largeDeviceSize="4" >
+                    <a href="/" aura:id="logoclck_unAuthHeader">
+                        <img src="{!v.uiwrapperMap.companyLogoURL}" class="company-logo"/>
+                    </a>
+                </lightning:layoutItem>
+                <!-- <aura:if isTrue="{!and(not($Browser.isPhone), not($Browser.isTablet))}"> -->
+                    <lightning:layoutItem size="12" largeDeviceSize="8" mediumDeviceSize="8" smallDeviceSize="12" class="feedback-support-class">
+                        
+                        <div  style="color:black;">
+                            <span style="color:black; float:right">
+                                
+                                <span style="margin-right: 0.70rem;">
+                                    <!--<span style="border-right: 1px solid lightgrey;padding-right: 15px;">
+                                        <a aura:id="feedbackclck_unAuthHeader" href="{!'mailto:' + v.uiwrapperMap.uiInstance.Portfolio__r.Support_Email__c}" class=" slds-button feedback-button">SUBMIT FEEDBACK</a>
+                                    </span>-->
+                                   <!-- <aura:if isTrue="{!v.uiwrapperMap.uiInstance.Portfolio__r.Support_Phone_Number__c}" >
+                                        <span class="slds-p-left_medium support-phone">
+                                            <img aria-label="Phone icon" src="https://s3.amazonaws.com/timberlinefinancial/phone-symbol.png" />
+                                            <span class="slds-p-left_xx-small"><lightning:formattedPhone value="{!v.uiwrapperMap.uiInstance.Portfolio__r.Support_Phone_Number__c}"/></span>
+                                        </span>
+                                    </aura:if>-->
+                                    
+                                    <!--
+                                    <a class="slds-m-left_small" href="https://www.facebook.com/timberlinefinancial/" target="_blank"> 
+                                        <i style="color:white;" class="circle fa fa-facebook" title="Facebook"></i> 
+                                    </a> 
+                                    <a class="slds-m-left_small" href="https://twitter.com/TimberlineF" target="_blank"> 
+                                        <i style="color:white;" class="circle fa fa-twitter" title="Twitter"></i> 
+                                    </a> 
+                                    <a class="slds-m-left_small" href="https://www.linkedin.com/company/timberline-financial/" target="_blank"> 
+                                        <i style="color:white;" class="circle fa fa-linkedin" title="LinkedIn"></i> 
+                                    </a> 
+                                    <a class="slds-m-left_small" href="https://www.youtube.com/channel/UCkshfXn6H0N4LOBQUlwIgRA" target="_blank"> 
+                                        <i style="color:white;" class="circle fa fa-youtube" title="Youtube"></i> 
+                                    </a> -->
+                                </span>
+                            </span>
+                        </div>
+                    </lightning:layoutItem>
+                <!-- </aura:if> -->
+            </lightning:layout>
+        </div>
+    </div>
+    <div class="navigation" >
+        <div class="min-div-height" style="{!((v.uiwrapperMap.uiInstance.Menu_Background_Color__c) ? ('background-color:' + v.uiwrapperMap.uiInstance.Menu_Background_Color__c)
+                    : ('background: url(' + v.uiwrapperMap.menuBackgroundImage + ') center center /cover;'))}">
+            
+        </div>
+    </div>
+</aura:component>

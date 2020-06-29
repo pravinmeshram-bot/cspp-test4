@@ -1,0 +1,19 @@
+<apex:page standardStylesheets="false" showHeader="false" sidebar="false">
+    <style>
+        img {
+            max-width: 100%;
+            min-width: 300px;
+            height: auto;
+        }
+    </style>
+    <script>
+    function gonative_callback(data) {
+        alert('****',data);
+    }
+    window.gonative_callback = function(info) {
+        var oneSignal = JSON.stringify(info);
+        alert(oneSignal);
+    }
+    </script>
+        <a href="gonative://documentScanner/scanPage?callback=gonative_callback">Scan page</a>
+</apex:page>

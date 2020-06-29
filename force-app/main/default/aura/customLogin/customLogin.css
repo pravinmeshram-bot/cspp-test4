@@ -1,0 +1,147 @@
+.THIS.custom-background {
+    background-size: cover;
+    min-height: 100%;
+    width: 100%;
+    position: absolute;
+    margin-top: -1%;
+}
+.THIS .mobile-content {
+    margin-top: 50% !important;
+    margin-bottom: 4rem !important;
+}
+
+.THIS .desktop-content {
+    margin-top: 16% !important;
+    margin-bottom: 4rem !important;
+}
+.THIS .body-content {
+    padding:1em;
+	text-align: left;
+    min-width: 280px;
+    max-width: 390px;
+    margin: auto;
+    display: inline-block;
+    position: relative;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.8);
+    text-decoration: none;
+    vertical-align: middle;
+    z-index: 0;
+    background: #232526;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #414345E0, #232526E0); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #414345E0, #232526E0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    /* Commented on 05-22-2019 for removing button background */
+    /* background: -webkit-linear-gradient(to right, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+    /* background: linear-gradient(to right, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    /* opacity:0.9; */
+    border-radius:6px;
+
+}
+
+.THIS .pagefooter {
+    bottom: 0;
+    width: 100%;
+}
+
+
+.THIS .topWidget{
+    background: #232526;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    opacity:0.9;
+    border-radius:4rem;
+}
+
+.THIS iframe.profile-link {
+    color:white !important;
+}
+
+.THIS .fixed-header {
+    width: 100%;
+    position: fixed;
+    z-index: 5;
+    top: 0;
+}
+/* 
+##Device = Desktops
+##Screen = 1281px to higher resolution desktops
+*/
+@media (min-width: 1280px) { 
+    .THIS .device-content {
+        margin-top: 20% !important;
+        margin-bottom: 4rem !important;
+        
+    }
+}
+
+/* 
+##Device = Laptops, Desktops
+##Screen = B/w 1025px to 1280px
+*/
+
+@media (min-width: 1025px) and (max-width: 1279px) { 
+    .THIS .device-content {
+        margin-top: 20% !important;
+        margin-bottom: 4rem !important;
+    }
+}
+
+/* 
+##Device = Tablets, Ipads (portrait)
+##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    
+    .THIS .device-content {
+        margin-top: 20% !important;
+        margin-bottom: 4rem !important;
+    }
+}
+
+/* 
+##Device = Tablets, Ipads (landscape)
+##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    
+    .THIS .device-content {
+        margin-top: 22% !important;
+        margin-bottom: 4rem !important;
+    }
+}
+
+/* 
+##Device = Low Resolution Tablets, Mobiles (Landscape)
+##Screen = B/w 481px to 767px
+*/
+
+@media (min-width: 551px) and (max-width: 767px) {
+   
+    .THIS .device-content {
+        margin-top: 32% !important; 
+        margin-bottom: 4rem !important;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 550px) {
+   
+    .THIS .device-content {
+        margin-top: 38% !important;
+        margin-bottom: 4rem !important;
+    } 
+}
+
+/* 
+##Device = Most of the Smartphones Mobiles (Portrait)
+##Screen = B/w 320px to 479px
+*/
+
+@media (min-width: 320px) and (max-width: 480px) {
+    
+    .THIS .device-content {
+        margin-top: 46% !important;
+       /* margin-bottom: 4rem !important;*/
+    }
+}

@@ -1,0 +1,146 @@
+<aura:component access="global" extends="c:abstractServer" controller="SFSPortal_DashboardMetricsController"  implements="forceCommunity:availableForAllPageTypes">
+    
+    <aura:attribute name="footerValueMap" type="Map" access="public" default="{}" />
+    <aura:attribute name="currentYear" type="String" access="public" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <div class="slds footer-styles" style="{!'background-color:' + (v.footerValueMap.portfolioInstance.Footer_Background_Color__c || '#414345') + ' !important;color:' + (v.footerValueMap.portfolioInstance.Footer_Text_Color__c || 'white ') +' !important' }">
+        <footer class="footer-bs">
+            <lightning:layout class=" slds-wrap"> 
+                <lightning:layoutItem size="12" class="slds-p-bottom_x-small" smallDeviceSize="12" mediumDeviceSize="2" largeDeviceSize="2">
+                    <div class="footerleft">
+                        <lightning:layout class=" slds-wrap">
+                            <lightning:layoutItem size="12" >
+                                <h2><img src="{!''+ v.footerValueMap.companyLogoURL}" style="width:150px"/></h2>
+                                <p style="/*text-align: justify;*/font-size:14px;">{!v.footerValueMap.portfolioInstance.Portfolio__r.Footer_Portfolio_Content__c}</p>
+                            </lightning:layoutItem>
+                            
+                            <lightning:layoutItem size="12" >
+                                <br/>
+                                <aura:if isTrue="{!equals(v.footerValueMap.currentUserType, 'Guest')}">
+                                    <a aura:id="feedbackclck_gt_portalFooter" href="{!'mailto:' + v.footerValueMap.portfolioInstance.Portfolio__r.Support_Email__c}" class=" slds-button submitbutton">SUBMIT FEEDBACK</a>
+                                    <aura:set attribute="else">
+                                        <lightning:button aura:id="feedbackbtn_portalFooter" variant="base" class="submitbutton" label="SUBMIT FEEDBACK" onclick="{!c.redirectToFeedbackUrl}" title="SUBMIT FEEDBACK" />
+                                    </aura:set>
+                                </aura:if>
+                                
+                                <!-- <div class="submitbutton" >
+                                    <a style="font-size:16px;" href="{!v.footerValueMap.portfolioInstance.Portfolio__r.Submit_Feedback__c}" target="__blank">
+                                        <lightning:button variant="base" label="SUBMIT FEEDBACK" title="SUBMIT FEEDBACK" />
+                                    </a>
+                                </div> -->
+                            </lightning:layoutItem>
+                            <!--
+                            <lightning:layoutItem size="12" >
+                                <br/>
+                                <p style="font-size:14px;">{!v.footerValueMap.portfolioInstance.Portfolio__r.Footer_Name__c}. All rights reserved</p>
+                            </lightning:layoutItem> -->
+                        </lightning:layout>
+                    </div>
+                </lightning:layoutItem>
+                
+                <lightning:layoutItem size="12" class="col2div" smallDeviceSize="12" mediumDeviceSize="10" largeDeviceSize="10" >
+                    <div class=""> 
+                        <!-- <h2 style="font-size:34px;color: #36b2c1;">Contact</h2> -->
+                        
+                        <lightning:layout class=" slds-wrap custom-portal">
+                            <!--
+                            <aura:if isTrue="{!not(empty(v.footerValueMap.latestNewsPortalSettingsList))}">
+                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="4" largeDeviceSize="4">
+                                    <h3 class="{!$Browser.isPhone ? 'textalign': 'subheadingText'}" style="font-size:22px;">Latest News</h3>
+                                    <ul class="pages" >
+                                        <aura:iteration items="{!v.footerValueMap.latestNewsPortalSettingsList }" var="latestNews" >
+                                            <li class="slds-m-top_medium"><a href="{!latestNews.Article_URL__c}" >{!latestNews.Article_Label__c}</a></li>
+                                        </aura:iteration>
+                                    </ul>
+                                </lightning:layoutItem>
+                            </aura:if> -->
+                            <aura:if isTrue="{!not(empty(v.footerValueMap.footerLinkList))}">
+                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" >
+                                    <h3 class="responsive-text-footer" style="font-size:22px;">{!v.footerValueMap.portfolioInstance.Portfolio__r.Name}</h3>
+                                    <lightning:layout class=" slds-wrap">
+                                        
+                                        <aura:iteration items="{!v.footerValueMap.footerLinkList}" var="footerLink" >
+                                            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="4" class="slds-m-top_medium">
+                                                <aura:if isTrue="{!equals(footerLink.Article_Label__c, 'Contact Us')}">
+                                                    <aura:if isTrue="{!equals(v.footerValueMap.currentUserType, 'Guest')}">
+                                                        <a aura:id="contactUsclck_gt_portalFooter" href="{!'mailto:' + v.footerValueMap.portfolioInstance.Portfolio__r.Support_Email__c}" >Contact Us</a>
+                                                        <aura:set attribute="else">
+                                                            <a aura:id="contactUsclck_portalFooter" href="/s/contactsupport" target="_self">Contact Us</a>
+                                                        </aura:set>
+                                                    </aura:if>
+                                                    <aura:set attribute="else">
+                                                        <a aura:id="articleURL_portalFooter" href="{!footerLink.Article_URL__c}" target="_blank">{!footerLink.Article_Label__c}</a>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </lightning:layoutItem>
+                                        </aura:iteration>
+                                    </lightning:layout>
+                                </lightning:layoutItem>
+                            </aura:if>
+                            <lightning:layoutItem size="12" smallDeviceSize="12" class="horizontal-line"  mediumDeviceSize="{!not(empty(v.footerValueMap.footerLinkList)) ? '6' : '12'}" largeDeviceSize="{!not(empty(v.footerValueMap.footerLinkList)) ? '6' : '12'}" >
+                                <h3 class="responsive-text-footer" style="font-size:22px;">Business Hours</h3>
+                                <lightning:layout class=" slds-wrap ">
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="{!not(empty(v.footerValueMap.footerLinkList)) ? '6' : '3'}" largeDeviceSize="{!not(empty(v.footerValueMap.footerLinkList)) ? '6' : '3'}">
+                                        <div class="slds-form-element slds-m-top_medium">
+                                            <p><b>Monday-Friday</b></p>
+                                            <div class="slds-form-element__control">
+                                                <p>{!v.footerValueMap.portfolioInstance.Portfolio__r.Business_Hours__c}</p>
+                                            </div>
+                                        </div>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="{!not(empty(v.footerValueMap.footerLinkList)) ? '6' : '3'}" largeDeviceSize="{!not(empty(v.footerValueMap.footerLinkList)) ? '6' : '3'}" >
+                                        <div class="slds-form-element slds-m-top_medium">
+                                            <p>Call</p>
+                                            <div class="slds-form-element__control support-phone">
+                                                <lightning:icon class="iconColor" iconName="utility:call" alternativeText="phone" size="x-small"/>
+                                                <span class="slds-p-left_xx-small"><lightning:formattedPhone value="{!v.footerValueMap.portfolioInstance.Portfolio__r.Support_Phone_Number__c}"/></span>
+                                            </div>
+                                        </div>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem size="12" class="slds-p-right_medium" mediumDeviceSize="{!not(empty(v.footerValueMap.footerLinkList)) ? '6' : '3'}" largeDeviceSize="{!not(empty(v.footerValueMap.footerLinkList)) ? '6' : '3'}" >
+                                        <div class="slds-form-element slds-m-top_medium">
+                                            <div class="slds-form-element__control">
+                                                <span class="{!v.footerValueMap.portfolioInstance.Portfolio__r.Address__c ? '' : 'slds-hide'}">
+                                                    {!v.footerValueMap.portfolioInstance.Portfolio__r.Address__c},
+                                                </span>
+                                                
+                                                <span class="{!v.footerValueMap.portfolioInstance.Portfolio__r.City__c ? 'slds-p-left_xx-small' : 'slds-hide'}">
+                                                    {!v.footerValueMap.portfolioInstance.Portfolio__r.City__c},
+                                                </span>
+                                                <span class="{!v.footerValueMap.portfolioInstance.Portfolio__r.State__c ? 'slds-p-left_xx-small' : 'slds-hide'}">
+                                                    {!v.footerValueMap.portfolioInstance.Portfolio__r.State__c},
+                                                </span>
+                                                
+                                                <span class="{!v.footerValueMap.portfolioInstance.Portfolio__r.Zipcode__c ? 'slds-p-left_xx-small' : 'slds-hide'}">
+                                                    {!v.footerValueMap.portfolioInstance.Portfolio__r.Zipcode__c}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="{!not(empty(v.footerValueMap.footerLinkList)) ? '6' : '3'}" largeDeviceSize="{!not(empty(v.footerValueMap.footerLinkList)) ? '6' : '3'}" >
+                                        <div class="slds-form-element slds-m-top_medium">
+                                            <p>Fax</p>
+                                            <div class="slds-form-element__control support-phone">
+                                                <lightning:icon class="iconColor" iconName="utility:print" alternativeText="phone" size="x-small"/>
+                                                <span class="slds-p-left_xx-small"><lightning:formattedPhone value="{!v.footerValueMap.portfolioInstance.Portfolio__r.Support_Fax_Number__c}"/></span>
+                                            </div>
+                                        </div>
+                                    </lightning:layoutItem>
+                                </lightning:layout>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                        <p class="horizontal slds-p-bottom_small"/>
+                        <p style="text-align: justify;font-size:14px;">
+                            {!v.footerValueMap.portfolioInstance.Portfolio__r.Footer_Contact_Content__c} 
+                        </p>
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+            
+        </footer>
+        <div class="slds-p-top_medium" style="text-align:center;">
+            <p >{!v.footerValueMap.portfolioInstance.Portfolio__r.Footer_Name__c} &nbsp;{!v.currentYear}. All rights reserved</p>
+        </div>
+    </div>
+</aura:component>

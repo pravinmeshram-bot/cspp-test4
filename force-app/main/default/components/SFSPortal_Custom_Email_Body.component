@@ -1,0 +1,124 @@
+<apex:component controller="SFSPortal_SendInviteComponentController" access="global"> 
+    
+    <apex:attribute name="emailType" assignTo="{!emailType_Email}" description="Type of Email Sending" type="String" />    
+    <apex:attribute name="userId" assignTo="{!receiving_UserId}" description="Community User Id" type="String"/>
+    
+    
+    <apex:outputPanel rendered="{!emailType_Email == 'Welcome'}">
+        <div>
+            Hi {!userInstance_Email.FirstName},
+            <br />
+            <br />
+            <div> Thanks for registering for the {!portfolioInstance_Email.Dispay_Name__c} Client Portal. Welcome! We’re happy to have you. </div>
+            <div> You can now log-in anytime, and from anywhere, to conveniently access your program information. </div>
+            <br />
+            <div> Log in <a href="{!portfolioInstance_Email.Domain_URL__c}"> here </a> and take advantage of all the convenient services we have available for you.  </div>
+            <br/>
+            <div> <b> Your username is: </b> {!userInstance_Email.Username}  </div>
+            <br />
+            <div> If you need additional help or have questions about the portal, please contact us toll-free at {!portfolioInstance_Email.Support_Phone_Number__c}.  </div>
+            
+        </div>
+    </apex:outputPanel>
+    
+    
+    <apex:outputPanel rendered="{!emailType_Email == 'Email Update Notification'}">
+        <div>
+            Hi {!userInstance_Email.FirstName},
+            <br />
+            <br />
+            <div>
+            Due to the change in your email address your portal Username is as follows:  {!userInstance_Email.Username}<br /> <br /> 
+            If you are unaware of an update to your email address, please contact our customer service team at {!portfolioInstance_Email.Support_Email__c}
+            or {!portfolioInstance_Email.Support_Phone_Number__c}
+            </div>
+ 
+        </div>
+    </apex:outputPanel>
+    
+    <apex:outputPanel rendered="{!emailType_Email == 'Forgot Password'}"> 
+        <div>
+            Hello {!userInstance_Email.FirstName},
+            <br />
+            <br />
+            We received a request to reset the password associated with this email address. 
+            If you made this request, please click 
+            
+            <!-- For Sandbox -->
+            
+            
+        <!--    <a href="{!$Network.NetworkUrlForUserEmails}">here</a> -->
+            
+            
+            <!-- For Production -->
+            
+           <a href="{!SUBSTITUTE($Network.NetworkUrlForUserEmails, 'https://my.timberlinefinancial.com', portfolioInstance_Email.Domain_URL__c)}"> here </a>
+            
+            to choose a new password. Please note that this link will expire in an hour. 
+            
+        </div>
+   </apex:outputPanel>
+    
+    <apex:outputPanel rendered="{!emailType_Email == 'Changed Password'}">
+        <div>
+            Hello {!userInstance_Email.FirstName},
+            <br />
+            <br />
+            We received a request to reset the password associated with this email address. 
+            If you made this request, please click 
+            
+            <!-- For Sandbox -->
+            
+            
+           <!-- <a href="{!$Network.NetworkUrlForUserEmails}">here</a> -->
+           
+            
+            <!-- For Production -->
+            
+            <a class="resetLink" href="{!SUBSTITUTE($Network.NetworkUrlForUserEmails, 'https://my.timberlinefinancial.com', portfolioInstance_Email.Domain_URL__c)}"> here </a>
+            
+            to choose a new password. Please note that this link will expire in an hour.
+            
+            <br />
+            
+        </div>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!emailType_Email == 'Lockout Email'}">
+        
+        <div>
+            Hello {!userInstance_Email.FirstName},
+            <br />
+            <br />
+            We received a request to reset the password associated with this email address. We can&#39;t reset your password right now. Your account is locked after too many login attempts.
+            
+            {!CASE(1,
+            IF(VALUE($Network.passwordLockTime) > 0, 1, 0), "Try again in " + $Network.passwordLockTime + " minutes.",
+            IF(VALUE($Network.passwordLockTime) < 0, 1, 0), "Contact your " + portfolioInstance_Email.Dispay_Name__c + " administrator to unlock your account.",
+            "")}
+            
+            <br />
+            
+            If you didn&#39;t request a password reset or haven&#39;t tried to log in to your account recently, contact your {!portfolioInstance_Email.Dispay_Name__c} administrator or reply to this email.
+            
+            <br />
+            
+        </div>
+    </apex:outputPanel>
+    <br/>
+    <br />
+    <div> Thank You,  </div>
+    <div> {!portfolioInstance_Email.Dispay_Name__c} Client Services  </div>
+    <br />
+    <br />
+    <img src="{!documentURL}" style="width:11rem !important;height:6rem !important;" alt="No Image Available" /> 
+    <br />
+    <br />
+    <div> {!portfolioInstance_Email.Dispay_Name__c}  </div>
+    <div> {!portfolioInstance_Email.Address__c}  </div>
+    <div> {!portfolioInstance_Email.City__c}, {!portfolioInstance_Email.State__c} {!portfolioInstance_Email.Zipcode__c}   </div>
+    <div> Toll Free Number: {!portfolioInstance_Email.Support_Phone_Number__c}  </div>
+    <div> Fax: {!portfolioInstance_Email.Support_Fax_Number__c}  </div>
+    <div> <a class="" href="{!'mailto:' + portfolioInstance_Email.Support_Email__c}"> {!portfolioInstance_Email.Support_Email__c} </a> </div>
+    <div> <a class="" href="{!portfolioInstance_Email.Website__c}"> {!portfolioInstance_Email.Website__c} </a> </div>
+    
+</apex:component>

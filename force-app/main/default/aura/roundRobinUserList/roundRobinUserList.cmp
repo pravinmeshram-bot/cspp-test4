@@ -1,0 +1,27 @@
+<aura:component controller="ManageRecordAllocationController" implements="flexipage:availableForAllPageTypes">
+    
+    <aura:attribute name="profileName" type="String" required="true" description="Name of the user profile"/>
+    
+    <aura:attribute access="private" name="users" type="User[]"/>
+    <aura:attribute access="private" name="isDisplayList" type="Boolean"/>
+    <aura:attribute access="private" name="listTitle" type="String"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.loadUserList}" />
+    
+    <aura:if isTrue="{!v.isDisplayList}">
+        <div class="slds-m-bottom_small">
+            <lightning:card title="{!v.listTitle}" class="slds-card_boundary" iconName="standard:groups">
+                <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-max-medium-table_stacked-horizontal">
+                    <tbody>
+                        <tr>
+                            <aura:iteration items="{!v.users}" var="usr">
+                                <c:roundRobinUserInfo user="{!usr}"/>
+                            </aura:iteration>
+                        </tr>
+                    </tbody>
+                </table>
+            </lightning:card>
+        </div>
+    </aura:if>
+    
+</aura:component>

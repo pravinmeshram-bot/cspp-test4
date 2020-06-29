@@ -1,0 +1,580 @@
+<aura:component implements="forceCommunity:themeLayout" extends="c:abstractServer" access="global" 
+                description="Sample Custom Theme Layout" controller="SFSPortal_DashboardMetricsController" >
+    
+    <ltng:require styles="{!$Resource.fontawsome + '/css/font-awesome.css'}" />
+    <ltng:require scripts="{!$Resource.companyLogoShrink}" />
+    
+    <aura:attribute name="isSectionExpanded" type="Boolean" default="false" /> 
+    <aura:attribute name="isExpandedProfile" type="Boolean" default="false" /> 
+    <aura:attribute name="isSectionExpanded1" type="Boolean" default="true" />
+    <aura:attribute name="displayAlert" type="Boolean" default="false" />
+    <aura:attribute name="isProfileMenu" type="Boolean" default="false"/>
+    <aura:attribute name="isHideProfileMenu" type="Boolean" default="true"/>
+    <aura:attribute name="isModalOpen2" type="Boolean" access="public" default="false"/>
+
+    <aura:attribute name="ReferralURL" type="String" default=""/>
+    <aura:attribute name="currentTabName" type="String" default=""/> 
+    <aura:attribute name="ReferralcurrentUserType" type="String"/>
+    
+    <aura:attribute name="uiwrapperMap" type="Map" access="public" default="{'backgroundImageURL' : ''}" />
+    <aura:attribute name="ProgramUserInstanceWrapper" type="Object" />
+    
+    <aura:attribute name="profileMenu" type="Aura.Component[]" required="false"/>
+    <aura:attribute name="footer" type="Aura.Component[]" required="false"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="c:SetHeaderValue" action="{!c.handleApplicationEvent}"/>
+    <aura:handler event="c:displayTaskAlert" action="{!c.setDisplayAlert}"/>
+    
+    <aura:attribute name="showProfileFlag" type="Boolean" default="true"/> 
+    
+    <div style="overscroll-behavior-y: none;"> 
+        <div id="full-div" class="{!v.isHideProfileMenu ? 'slds-hide' : 'slds-show showFullPage'}" 
+             onclick="{!c.handleMenuClick}"></div>
+        <div class="newHeader" style="line-height:3rem;">
+            <div class="custom-background " 
+                 style="{!(v.uiwrapperMap.uiInstance.Landing_Background_Color__c) ? 
+                        ('background-color:' + v.uiwrapperMap.uiInstance.Landing_Background_Color__c)
+                        : ('background: url(' + v.uiwrapperMap.headerbackgroundImage + ') 
+                        0% 0%/cover no-repeat fixed #f4f4f4;background-color;height:6rem;')}">
+                <span style="margin-right:4.7rem;right:2.5rem;" class="slds-float_right referTabLink">                    
+                    <aura:if isTrue="{!not(empty(v.uiwrapperMap.uiInstance.Portfolio__r.ReferralBaseURL__c))}">
+                        <a aura:id="Earn $50" class="slds-m-left_medium font-NotoSansKR_Medium" 
+                           style="color:#B4CCE6;font-size:16px" href="{!v.ReferralURL}" target="_blank"> 
+                            {!$Label.c.ReferralTabName}
+                        </a> 
+                    </aura:if>
+                </span>
+                <lightning:layout class=" slds-wrap custom-layout min-div-height">
+                    <lightning:layoutItem class="slds-p-around_xx-small newHeaderLogo slds-show_x-large" size="8" 
+                                          smallDeviceSize="8" mediumDeviceSize="8" largeDeviceSize="8" >
+                        <a href="/" aura:id="logoclck_loggedinCT">
+                            <img src="{!v.uiwrapperMap.HeaderLogoURL}" class="company-logo" 
+                                 style="height:40px !important"/>
+                        </a>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem class="slds-p-around_xx-small newHeaderLogo slds-hide_x-large" size="8" 
+                                          smallDeviceSize="8" mediumDeviceSize="8" largeDeviceSize="9" >
+                        <a href="/" aura:id="logoclck_loggedinCT">
+                            <img src="{!v.uiwrapperMap.HeaderSmallLogoURL}" class="company-logo" 
+                                 style="height:40px !important;width:auto !important"/>
+                        </a>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="2" largeDeviceSize="2" mediumDeviceSize="3" smallDeviceSize="2" >
+                       <aura:if isTrue="{!v.showProfileFlag}">
+                        <div class="slds-hide_medium" style="color:black; float:right;">
+                            <div aura:id="menu-item-div2_id" class="slds-dropdown-trigger slds-dropdown-trigger_click 
+                                                                    slds-show" onclick="{!c.handleMenuClick}" >                                
+                                <aura:if isTrue="{!v.isHideProfileMenu}">
+                                    <lightning:button class="menu-item-inactive_class"  variant="base" label="Demo User" 
+                                                      title="Demo User" >
+                                        <a aura:id="accountOverviewclck_loggedinCT" 
+                                           style=" padding-left: 11px!important;padding-right: 0px!important;" >
+                                            <img src="{!v.uiwrapperMap.profileIconURL}"/>
+                                        </a>
+                                    </lightning:button>
+                                    <aura:set attribute="else">
+                                        <lightning:button class="menu-item-div_id_class" variant="base" label="Demo User" 
+                                                          title="Demo User" >
+                                            <a aura:id="accountOverviewclck_loggedinCT" 
+                                               style=" padding-left: 0px!important;padding-right: 0px!important;" >
+                                                <img src="{!v.uiwrapperMap.profileIconURL_Show}"/>
+                                            </a>
+                                        </lightning:button>
+                                    </aura:set>
+                                </aura:if> 
+                                <div class="slds-dropdown slds-dropdown_right"  style="margin-top: 0rem;">
+                                    <ul class="dropdown__list" role="menu" data-aura-rendered-by="399:0">
+                                        <li class="slds-dropdown__item" role="presentation" >
+                                            <a aura:id="accountOverviewclck_loggedinCT" class="menu-item active"  
+                                               data-tabName="myprofile" onclick="{!c.setCurrentMenu}" 
+                                               href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" 
+                                               aria-controls="tab-default-1" id="tab-default-1__item">
+                                                My Profile
+                                            </a>
+                                        </li>
+                                        <li class="slds-dropdown__item" role="presentation" >
+                                            <a aura:id="faqclck_loggedinCT" class="menu-item active" data-tabName="FAQ" 
+                                               onclick="{!c.setCurrentMenu}" href="javascript:void(0);" role="tab" 
+                                               tabindex="0" aria-selected="true" aria-controls="tab-default-1" 
+                                               id="tab-default-1__item">
+                                                Help
+                                            </a>
+                                        </li>
+                                        <li class="slds-dropdown__item" role="presentation" >
+                                            <a aura:id="contactSupportclck_loggedinCT" class="menu-item active" 
+                                               data-tabName="contactsupport" onclick="{!c.setCurrentMenu}" 
+                                               href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" 
+                                               aria-controls="tab-default-1" id="tab-default-1__item">
+                                                Contact Us
+                                            </a>
+                                        </li>
+                                        <aura:if  isTrue="{!not(empty(
+                                                          v.uiwrapperMap.uiInstance.Portfolio__r.ReferralBaseURL__c))}">
+                                            <li class="slds-dropdown__item" role="presentation" >
+                                                <a aura:id="Earn $50" class="menu-item active" data-tabName="Earn $50" 
+                                                   href="{!v.ReferralURL}" tabindex="0" aria-selected="true" 
+                                                   aria-controls="tab-default-1" id="tab-default-1__item" target="_blank">
+                                                    {!$Label.c.ReferralTabName}
+                                                </a>
+                                            </li>
+                                        </aura:if>
+                                        <li class="slds-dropdown__item" role="presentation" >
+                                            <a aura:id="accountOverviewclck_loggedinCT" class="menu-item active" 
+                                               data-tabName="" onclick="{!c.setCurrentMenu}" 
+                                               href="{!$Site.Prefix + '/secur/logout.jsp'}" role="tab" tabindex="0" 
+                                               aria-selected="true" aria-controls="tab-default-1" id="tab-default-1__item">
+                                                Log Out
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        </aura:if>
+                        <div class="menu-item slds-show_medium slds-hide_x-large">
+                            <div aura:id="menu-item-div_id" class="slds-dropdown-trigger slds-dropdown-trigger_click 
+                                                                   slds-show" Style="float:right;">                                
+                                <aura:if isTrue="{!v.isHideProfileMenu}">
+                                    <lightning:button class="menu-item-inactive_class"  variant="base" 
+                                                      label="{!v.uiwrapperMap.userInstance.Name}" 
+                                                      title="{!v.uiwrapperMap.userInstance.Name}" 
+                                                      onclick="{!c.handleMenuClick}">
+                                        <a aura:id="accountOverviewclck_loggedinCT" 
+                                           style="padding-left: 20px!important;padding-right: 10px!important;" >
+                                            <img src="{!v.uiwrapperMap.profileIconURL}"/>
+                                        </a>
+                                        <div style="color: white;">
+                                            <div class="user-name">{!v.uiwrapperMap.userInstance.Name}</div>
+                                            <lightning:icon iconName="utility:chevrondown" size="small"/>
+                                        </div>
+                                    </lightning:button>
+                                    <aura:set attribute="else">
+                                        <lightning:button class="menu-item-div_id_class" variant="base" 
+                                                          label="{!v.uiwrapperMap.userInstance.Name}" 
+                                                          title="{!v.uiwrapperMap.userInstance.Name}" 
+                                                          onclick="{!c.handleMenuClick}">
+                                            <a aura:id="accountOverviewclck_loggedinCT" 
+                                               style="padding-left: 20px!important;padding-right: 10px!important;" >
+                                                <img src="{!v.uiwrapperMap.profileIconURL_Show}"/>
+                                            </a>
+                                            <div style="color: black;">
+                                                <div class="user-name">{!v.uiwrapperMap.userInstance.Name}</div>
+                                                <lightning:icon iconName="utility:chevronup" size="small"/>
+                                            </div>
+                                        </lightning:button>
+                                    </aura:set>
+                                </aura:if> 
+                                <div class="slds-dropdown slds-dropdown_right"  style="margin-top: 0rem;">
+                                    <ul class="dropdown__list" role="menu" data-aura-rendered-by="399:0">
+                                        <li class="slds-dropdown__item" role="presentation" >
+                                            <a aura:id="accountOverviewclck_loggedinCT" class="menu-item active"  
+                                               data-tabName="myprofile" onclick="{!c.setCurrentMenu}" 
+                                               href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" 
+                                               aria-controls="tab-default-1" id="tab-default-1__item">
+                                                My Profile
+                                            </a>
+                                        </li>
+                                        <li class="slds-dropdown__item" role="presentation" >
+                                            <a aura:id="faqclck_loggedinCT" class="menu-item active" data-tabName="FAQ" 
+                                               onclick="{!c.setCurrentMenu}" href="javascript:void(0);" role="tab" 
+                                               tabindex="0" aria-selected="true" aria-controls="tab-default-1" 
+                                               id="tab-default-1__item">
+                                                Help
+                                            </a>
+                                        </li>
+                                        <li class="slds-dropdown__item" role="presentation" >
+                                            <a aura:id="contactSupportclck_loggedinCT" class="menu-item active" 
+                                               data-tabName="contactsupport" onclick="{!c.setCurrentMenu}" 
+                                               href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" 
+                                               aria-controls="tab-default-1" id="tab-default-1__item">
+                                                Contact Us
+                                            </a>
+                                        </li>
+                                        <aura:if isTrue="{!not(empty(
+                                                         v.uiwrapperMap.uiInstance.Portfolio__r.ReferralBaseURL__c))}">
+                                            <li class="slds-dropdown__item" role="presentation" >
+                                                <a aura:id="Earn $50" class="menu-item active" data-tabName="Earn $50" 
+                                                   href="{!v.ReferralURL}" tabindex="0" aria-selected="true" 
+                                                   aria-controls="tab-default-1" id="tab-default-1__item" target="_blank">
+                                                    {!$Label.c.ReferralTabName}
+                                                </a>
+                                            </li>
+                                        </aura:if>
+                                        <li class="slds-dropdown__item" role="presentation" >
+                                            <a aura:id="accountOverviewclck_loggedinCT" class="menu-item active"  
+                                               data-tabName="" onclick="{!c.setCurrentMenu}" 
+                                               href="{!$Site.Prefix + '/secur/logout.jsp'}" role="tab" tabindex="0" 
+                                               aria-selected="true" aria-controls="tab-default-1" id="tab-default-1__item">
+                                                Log Out
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="2" largeDeviceSize="1" mediumDeviceSize="1" smallDeviceSize="2" >
+                        <div class="{!v.isSectionExpanded ? 'topnav responsive slds-hide_x-large' : 
+                                    'topnav slds-hide_x-large'}">  
+                            <!-- style="padding-left:60px;">style="padding-left:60px" menu -->
+                            <div class="header-right" activeTabClass="activeTab" inactiveTabClass="inactiveTab">
+                                <a aura:id="hamburgerclck_loggedinCT" href="javascript:void(0);" 
+                                   style="font-size: 1.5rem;color: white;padding-top: 0.5rem;" class="icon" 
+                                   onclick="{!c.expandSection}">
+                                    <i class="fa fa-bars" ></i>
+                                </a>
+                                <a aura:id="closeclck_loggedinCT" href="javascript:void(0);" 
+                                   style="font-size: 1.5rem;color: white;padding-top: 0.5rem;" class="close-icon" 
+                                   onclick="{!c.expandSection1}">
+                                    <i class="fa fa-close" ></i>
+                                </a>
+                                <br />
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <div class="slds-hide_x-large"> 
+                    <lightning:layout class=" slds-wrap ">
+                        <lightning:layoutItem size="12" largeDeviceSize="12" mediumDeviceSize="12" smallDeviceSize="12" >
+                            <div class="{!v.isSectionExpanded ? 'topnav responsive slds-hide_x-large' : 
+                                        'topnav slds-hide_x-large'}">  
+                                <!-- style="padding-left:60px;">style="padding-left:60px" menu -->
+                                <div class="header-right" activeTabClass="activeTab" inactiveTabClass="inactiveTab">
+                                    <lightning:layout class=" slds-wrap custom-button">
+                                        <lightning:layoutItem size="12"  smallDeviceSize="12"  mediumDeviceSize="12"  
+                                                              largeDeviceSize="12">
+                                            <a aura:id="accountOverviewclck_loggedinCT" class="menu-item active"  
+                                               data-tabName="" onclick="{!c.setCurrentMenu}" href="javascript:void(0);" 
+                                               role="tab" tabindex="0" aria-selected="true" aria-controls="tab-default-1" 
+                                               id="tab-default-1__item">
+                                                Account Overview
+                                            </a>
+                                        </lightning:layoutItem>
+                                        <lightning:layoutItem size="12"  smallDeviceSize="12"  mediumDeviceSize="12"  
+                                                              largeDeviceSize="12">
+                                            <a aura:id="accountOverviewclck_loggedinCT" class="menu-item active"  
+                                               data-tabName="enrolled-debt" onclick="{!c.setCurrentMenu}" 
+                                               href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" 
+                                               aria-controls="tab-default-1" id="tab-default-1__item">
+                                                Debt Status
+                                            </a>
+                                        </lightning:layoutItem>
+                                        <aura:if isTrue="{!v.uiwrapperMap.isAddNewDebt}">
+                                            <lightning:layoutItem size="12" smallDeviceSize="12"  mediumDeviceSize="12"  
+                                                                  largeDeviceSize="12">
+                                                <a aura:id="addnewDebtclck_loggedinCT" class="menu-item active"  
+                                                   data-tabName="add-new-debt" onclick="{!c.setCurrentMenu}" 
+                                                   href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" 
+                                                   aria-controls="tab-default-1" id="tab-default-1__item">
+                                                    + Add New Debt
+                                                </a>  
+                                            </lightning:layoutItem>
+                                        </aura:if>
+                                        <aura:if isTrue="{!v.uiwrapperMap.isDocuments}">
+                                            <lightning:layoutItem size="12" smallDeviceSize="12"  mediumDeviceSize="12"  
+                                                                  largeDeviceSize="12">
+                                                <a aura:id="documentsclck_loggedinCT" class="menu-item active" 
+                                                   data-tabName="documents" onclick="{!c.setCurrentMenu}" 
+                                                   href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" 
+                                                   aria-controls="tab-default-1" id="tab-default-1__item">
+                                                    Documents
+                                                </a>
+                                            </lightning:layoutItem>
+                                        </aura:if>
+                                        <lightning:layoutItem size="12" smallDeviceSize="12"  largeDeviceSize="12" 
+                                                              mediumDeviceSize="12">
+                                            <a aura:id="paymentsclck_loggedinCT" class="menu-item active" 
+                                               data-tabName="payments" onclick="{!c.setCurrentMenu}" 
+                                               href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" 
+                                               aria-controls="tab-default-1" id="tab-default-1__item">
+                                                Banking
+                                            </a>
+                                        </lightning:layoutItem>
+                                    </lightning:layout>
+                                </div>
+                            </div> 
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                </div>
+            </div>
+        </div>
+        <div id="navDiv" class="navigation slds-show_x-large" style="line-height: 2rem;position: sticky;top: 0;z-index:99;">
+            <div class="slds-show_x-large" style="{!(v.uiwrapperMap.uiInstance.Menu_Background_Color__c) ? 
+                                                  ('background-color:' + v.uiwrapperMap.uiInstance.Menu_Background_Color__c)
+                                                  : ('background: url(' + v.uiwrapperMap.menuBackgroundImage + ') 
+                                                  center center /cover;')}">
+                <lightning:layout class=" slds-wrap custom-layout custom-nav">
+                    <lightning:layoutItem class="slds-p-around_xx-small" size="12" smallDeviceSize="12" 
+                                          mediumDeviceSize="12" largeDeviceSize="12">
+                        <div class="{!v.isSectionExpanded ? 'topnav responsive' : 'topnav'}" 
+                             style="width:63rem;"> <!-- style="padding-left:60px" menu -->
+                            <a aura:id="logoclck_loggedinCT" class="logoclck_loggedinCT" href="/">
+                                <img id="thelogo" src="{!v.uiwrapperMap.HeaderLogoURL}" class="company-logo" 
+                                     style="position: absolute;"/>
+                                <img id="smalllogo" src="{!v.uiwrapperMap.HeaderSmallLogoURL}" class="company-logo" 
+                                     style="position: absolute;display:none"/>
+                            </a> 
+                            <div class="header-right" activeTabClass="activeTab" inactiveTabClass="inactiveTab">
+                                <a aura:id="accountOverviewclck_loggedinCT" class="menu-item current-tab-select active"  
+                                   data-tabName="" onclick="{!c.setCurrentMenu}" href="javascript:void(0);" role="tab" 
+                                   tabindex="0" aria-selected="true" 
+                                   aria-controls="tab-default-1" id="tab-default-1__item">
+                                    Account Overview
+                                </a>
+                                <a aura:id="accountOverviewclck_loggedinCT" class="menu-item current-tab-select active"  
+                                   data-tabName="enrolled-debt" onclick="{!c.setCurrentMenu}" href="javascript:void(0);" 
+                                   role="tab" tabindex="0" aria-selected="true" 
+                                   aria-controls="tab-default-1" id="tab-default-1__item">
+                                    Debt Status
+                                </a>
+                                <aura:if isTrue="{!v.uiwrapperMap.isAddNewDebt}">
+                                    <a aura:id="addnewDebtclck_loggedinCT" class="menu-item current-tab-select active"  
+                                       data-tabName="add-new-debt" onclick="{!c.setCurrentMenu}" href="javascript:void(0);" 
+                                       role="tab" tabindex="0" aria-selected="true" 
+                                       aria-controls="tab-default-1" id="tab-default-1__item">
+                                        +Add New Debt
+                                    </a> 
+                                </aura:if>
+                                <aura:if isTrue="{!v.uiwrapperMap.isDocuments}">
+                                    <a aura:id="documentsclck_loggedinCT" class="menu-item current-tab-select active" 
+                                       data-tabName="documents" onclick="{!c.setCurrentMenu}" href="javascript:void(0);" 
+                                       role="tab" tabindex="0" aria-selected="true" 
+                                       aria-controls="tab-default-1" id="tab-default-1__item">
+                                        Documents
+                                    </a>
+                                </aura:if>
+                                <a aura:id="paymentsclck_loggedinCT" class="menu-item current-tab-select active" 
+                                   data-tabName="payments" onclick="{!c.setCurrentMenu}" href="javascript:void(0);" 
+                                   role="tab" tabindex="0" aria-selected="true" 
+                                   aria-controls="tab-default-1" id="tab-default-1__item">
+                                    Banking
+                                </a>
+                                <div class="menu-item slds-show_x-large" style="position: absolute;right: 2rem;height: 40px;">
+                                    <div aura:id="menu-item-div1_id" class="slds-dropdown-trigger slds-dropdown-trigger_click 
+                                                                            slds-show">                                
+                                        <aura:if isTrue="{!v.isHideProfileMenu}">
+                                            <lightning:button class="menu-item-inactive_class btn-height-37"  variant="base" 
+                                                              label="{!v.uiwrapperMap.userInstance.Name}" title="Demo User" 
+                                                              onclick="{!c.handleMenuClick}">
+                                                <a aura:id="accountOverviewclck_loggedinCT" 
+                                                   style="padding-left: 23px!important;padding-right:10px!important;" >
+                                                    <img src="{!v.uiwrapperMap.profileIconURL}" 
+                                                         style="margin-top:-5px;height:22px"/>
+                                                </a>
+                                                <div style="color: white;margin-top:-5px">
+                                                    <div class="user-name">{!v.uiwrapperMap.userInstance.Name}</div>
+                                                    <lightning:icon class="slds-icon-chevronup" 
+                                                                    iconName="utility:chevrondown" size="small"/>
+                                                </div>
+                                            </lightning:button>
+                                            <aura:set attribute="else">
+                                                <lightning:button class="menu-item-div_id_class btn-height-37" variant="base" 
+                                                                  label="{!v.uiwrapperMap.userInstance.Name}" 
+                                                                  title="{!v.uiwrapperMap.userInstance.Name}" 
+                                                                  onclick="{!c.handleMenuClick}">
+                                                    <a aura:id="accountOverviewclck_loggedinCT" 
+                                                       style="padding-left: 23px!important;padding-right:10px!important;" >
+                                                        <img src="{!v.uiwrapperMap.profileIconURL_Show}" 
+                                                             style="margin-top:-5px;height:22px"/>
+                                                    </a>
+                                                    <div style="color: black;margin-top:-5px;">
+                                                        <div class="user-name">{!v.uiwrapperMap.userInstance.Name}</div>
+                                                        <lightning:icon class="slds-icon-chevronup" 
+                                                                        iconName="utility:chevronup" size="small"/>
+                                                    </div>
+                                                </lightning:button>
+                                            </aura:set>
+                                        </aura:if> 
+                                        <div class="slds-dropdown slds-dropdown_right"  
+                                             style="margin-top: 0rem; z-index: 100000;border-radius: 0px;">
+                                            <ul class="dropdown__list" role="menu" data-aura-rendered-by="399:0">
+                                                <li class="slds-dropdown__item" role="presentation" >
+                                                    <a aura:id="accountOverviewclck_loggedinCT" 
+                                                       style="padding-right: 10rem;" class=" active"  
+                                                       data-tabName="myprofile" onclick="{!c.setCurrentMenu}" 
+                                                       href="javascript:void(0);" role="tab" tabindex="0" 
+                                                       aria-selected="true" aria-controls="tab-default-1" 
+                                                       id="tab-default-1__item">
+                                                        My Profile
+                                                    </a>
+                                                </li>
+                                                <li class="slds-dropdown__item" role="presentation" >
+                                                    <a aura:id="faqclck_loggedinCT" style="padding-right: 10rem;"  
+                                                       class=" active" data-tabName="FAQ" onclick="{!c.setCurrentMenu}" 
+                                                       href="javascript:void(0);" role="tab" tabindex="0" 
+                                                       aria-selected="true" aria-controls="tab-default-1" 
+                                                       id="tab-default-1__item">
+                                                        Help
+                                                    </a>
+                                                </li>
+                                                <li class="slds-dropdown__item" role="presentation" >
+                                                    <a aura:id="contactSupportclck_loggedinCT" style="padding-right: 10rem;"  
+                                                       class="active" data-tabName="contactsupport" 
+                                                       onclick="{!c.setCurrentMenu}" href="javascript:void(0);" role="tab"
+                                                       tabindex="0" aria-selected="true" aria-controls="tab-default-1" 
+                                                       id="tab-default-1__item">
+                                                        Contact Us
+                                                    </a>
+                                                </li>
+                                                <aura:if isTrue="{!not(empty(
+                                                               v.uiwrapperMap.uiInstance.Portfolio__r.ReferralBaseURL__c))}">
+                                                    <li class="slds-dropdown__item" role="presentation" >
+                                                        <a aura:id="Earn $50" style="padding-right: 10rem;"  
+                                                           class=" active" data-tabName="Earn $50" href="{!v.ReferralURL}" 
+                                                           tabindex="0" aria-selected="true" aria-controls="tab-default-1" 
+                                                           id="tab-default-1__item" target="_blank">
+                                                            {!$Label.c.ReferralTabName}
+                                                        </a>
+                                                    </li>
+                                                </aura:if>
+                                                <li class="slds-dropdown__item" role="presentation" >
+                                                    <a aura:id="accountOverviewclck_loggedinCT" style="padding-right: 10rem;" 
+                                                       class="active"  data-tabName="" onclick="{!c.setCurrentMenu}" 
+                                                       href="{!$Site.Prefix + '/secur/logout.jsp'}" role="tab" tabindex="0" 
+                                                       aria-selected="true" aria-controls="tab-default-1" 
+                                                       id="tab-default-1__item">
+                                                        Log Out
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div> 
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </div>
+        </div>
+        <!-- mobile navigation -->
+        <div id="navDiv" class="navigation slds-hide_x-large" 
+             style="line-height: 2rem; position: sticky; top: 56px; z-index:99; width: 100%">
+            <aura:if isTrue="{!v.currentTabName==''}">
+                <div class="slds-hide_x-large" 
+                     style="{!(v.uiwrapperMap.uiInstance.Menu_Background_Color__c) ? 
+                            ('background-color:' + v.uiwrapperMap.uiInstance.Menu_Background_Color__c)
+                            : ('background: url(' + v.uiwrapperMap.menuBackgroundImage + ') 
+                            center center /cover;')}">
+                    <lightning:layout class=" slds-wrap custom-button">
+                        <lightning:layoutItem size="4" smallDeviceSize="4" mediumDeviceSize="4" largeDeviceSize="4" 
+                                              class="custom-button custom-border-nav cb1">
+                            <a href="javascript:void(0)" onclick="{!c.top}" class="slds-button slds-p-around_xx-small sub-nav-link">
+                                OVERVIEW
+                            </a>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="4" smallDeviceSize="4" mediumDeviceSize="4" largeDeviceSize="4" 
+                                              class="custom-button custom-border-nav cb2 slds-hide_large">
+                            <a href="javascript:void(0)" onclick="{!c.SetAlertsPosition}" class="slds-button slds-p-around_xx-small sub-nav-link" >
+                                ALERTS
+                            </a>
+                        </lightning:layoutItem> 
+                        <lightning:layoutItem size="4" smallDeviceSize="4" mediumDeviceSize="4" largeDeviceSize="4" 
+                                              class="custom-button custom-border-nav cb3">
+                            <a href="javascript:void(0)" onclick="{!c.SetStatusPosition}" class="slds-button slds-p-around_xx-small sub-nav-link">
+                                STATUS
+                            </a>
+                        </lightning:layoutItem> 
+                    </lightning:layout>
+                </div>
+            </aura:if>
+        </div>
+        <!-- mobile navigation ends -->
+        <div class="body-class mainContentArea" id="mainContentArea">
+            <aura:if isTrue="{!v.currentTabName == ''}">
+                <aura:if isTrue="{!v.uiwrapperMap.isInCriticalStage }">
+                    <c:customModal header="Alert" headerStyle="slds-theme_alert-texture slds-theme_warning" 
+                                   modalSize="slds-modal_small">
+                        <aura:set attribute="body">
+                            <div class="slds-text-align_center slds-m-top_large">
+                                This account is in risk of cancellation.
+                            </div>
+                            <aura:if isTrue="{!v.uiwrapperMap.taskList}">
+                                <aura:iteration items="{!v.uiwrapperMap.taskList}" var="taskInstance" indexVar="index">
+                                    <div  class="slds-text-align_center slds-m-top_xx-small">
+                                        <a style="color:red" data-paymentId="{!taskInstance.NSF_payment_18_Digit__c}" 
+                                           onclick="{! c.rescheduleNow }"><u>Click Here</u></a> to reschedule the payment
+                                    </div>
+                                </aura:iteration>
+                            </aura:if>
+                        </aura:set>
+                        <aura:set attribute="footer">
+                            <lightning:button aura:id="nobtn_newTradeline" variant="brand"
+                                              label="Close" title="Close" onclick="{!c.closeModel}" />
+                        </aura:set>
+                    </c:customModal>
+                </aura:if>  
+                <br/>
+                <aura:if isTrue="{!v.displayAlert}">
+                    <div id="alertId" class="cb2 alertDivClass slds-show">
+                        <span class="alertSpanClass">
+                        </span>
+                        <span style="color:#F40E0E !important;"> 
+                            ALERT :</span> A task requires your immediate attention. 
+                        <span class="slds-hide_large">
+                            <a style="color:#046899 !important" href="#offerListTop">
+                                <u>Get Details</u>
+                            </a>
+                        </span>
+                        <span class="slds-hide_x-large slds-show_large">
+                            <a style="color:#046899 !important" href="#offerListTop1">
+                                <u>Get Details</u>
+                            </a>
+                        </span>
+                        <span class="slds-show_x-large">
+                            <a style="color:#046899 !important" href="#offerListCmp">
+                                <u>Get Details</u>
+                            </a>
+                        </span>
+                    </div>
+                </aura:if>
+            </aura:if>
+            <br/>
+             <div class="container"> 
+            <div class="box" style="font-size:17px;font-family :NotoSansKR-Medium !important;"> 
+                <div class="box-row"> 
+                    <div class="box-cell box1"> 
+                        <p>ALERT</p> 
+                    </div> 
+                    <div class="box-cell box2"> 
+                        <p>{!$Label.c.AlertInfo} </p> <!--style="margin-bottom: 10px;"-->
+                        <!--<a aura:id="documentsclck_loggedinCT" class="menu-item active"  
+                                                   data-tabName="documents" onclick="{!c.setCurrentMenu}" 
+                                                   href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" 
+                                                   aria-controls="tab-default-1" id="tab-default-1__item"><Strong style="color:#046899!important;">CLICK HERE TO LEARN MORE.</Strong></a> -->
+                    </div> 
+                </div> 
+            </div> 
+        </div> 
+<!--<aura:if isTrue="{!v.isModalOpen2}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open modal1">
+            <div class="slds-modal__container" aura:id="MainDiv">
+                <div class="slds-modal__content slds-p-around_medium modal1" id="modal-content-id-1">
+                    <lightning:button class="b3Logged" label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"  onclick="{!c.closeModal1}" >
+                        <img class="" src="{!$Resource.CloseIconSvg}" width="15" height="15"/>
+                    </lightning:button>
+                    <div class="slds-text-align_center slds-m-top_xx-small headerText" Style="font-size:20px;font-family: NotoSansKR-Regular !important;margin-top: 2.5rem;"> NOTICE FOR OUR CLIENTS<br/></div>
+                    <div class="slds-text-align_center slds-m-top_xx-small modalText" Style="font-size:16px;font-family: NotoSansKR-Regular !important;">{!$Label.c.ModalInfo} 
+                        <br/><br/>
+                        <lightning:button class="b1NewLogged" label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"  onclick="{!c.closeModal1}" >
+                            Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="{!$Resource.CloseIconSvg}" width="15" height="15"/>  
+                        </lightning:button> 
+                        
+                    </div> 
+                </div>
+            </div>
+        </section>
+         <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if> -->
+            
+            <!-- new changes for alert -->
+   
+           
+               {!v.body}
+        </div>
+        <div class="footerArea" Style="height:100%;position: relative;bottom:0px;">
+            {!v.footer}
+    </div>
+    </div>
+    
+</aura:component>

@@ -1,0 +1,17 @@
+<aura:component access="public" abstract="true" extensible="true">
+    
+    <lightning:notificationsLibrary aura:id="abstractNotifyLib"/>
+    <aura:attribute name="showSpinner" type="Boolean" default="false" />
+    <aura:attribute name="supportedFileTypes" type="List" default="['.pdf', '.jpg', '.jpeg', '.tiff', '.png']" />
+    
+    <aura:registerEvent name="toastMessageEvent" type="c:showToastMessageEvt"/>
+    
+    <aura:if isTrue="{!v.showSpinner}">
+        <div class="custom-spinner" >
+            <lightning:spinner aura:id="customSpinner" variant="brand" />
+        </div>
+    </aura:if>
+    
+    {!v.body}
+    
+</aura:component>

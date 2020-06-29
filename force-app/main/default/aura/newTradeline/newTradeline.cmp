@@ -1,0 +1,132 @@
+<aura:component  extends="c:abstractServer" controller="SFSPortal_TradelineListController" implements="forceCommunity:availableForAllPageTypes" access="public">
+        
+    <aura:attribute name="newReceipt" type="Map" default="{ 'sobjectType':'nu_dse__Group_Task__c'}"/>
+    <aura:attribute name="selectionObject" type="Map" default="{}" access="public"/>
+    
+    <aura:attribute name="contentDocumentList" type="List" access="public"/>
+    <aura:attribute name="fieldSetList" type="List" access="public"/>
+    <aura:attribute name="selection" type="List" default="" access="public"/>
+    
+    <aura:attribute name="errorMessage" type="String" access="public"/>
+    <aura:attribute name="recordId" type="String" access="public"/>
+    <aura:attribute name="successMessageString" type="String" access="public" default="" /> 
+    <aura:attribute name="errorMessageString" type="String" access="public" default="" />
+    
+    <aura:attribute name="isModalOpen1" type="Boolean" access="public"/>
+    <aura:attribute name="isModalOpen2" type="Boolean" access="public"/>
+
+    <aura:attribute name="isURLHavingId" type="Boolean" access="public" default="false" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="aura:locationChange" action="{!c.changedHashURL}"/>    
+    
+    <aura:if isTrue="{!!v.successMessageString}">
+        <lightning:card class="slds-theme_shade" title="Add New Debt" aura:id="cardview"> 
+            
+            <div style="background: rgb(255, 255, 255);border-radius: 0.25rem;" aria-hidden="false">
+                <div class="slds-panel__body" >
+                    <lightning:recordEditForm objectApiName="nu_dse__Group_Task__c" density="comfy">
+                        
+                        <lightning:layout class="slds-wrap tradeline-layout">
+                            <lightning:layoutItem size="12" class="slds-p-around_x-small adjustHelpText" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6"> 
+                                <c:customLookup aura:id="creditorStandardizationLookup" objectAPIName="Creditor_Standardization__c" label="Creditor Name" IconName="utility:company" selectedRecord="{!v.selectionObject}"/>
+                                <aura:iteration items="{!v.fieldSetList}" var="field" >
+                                    <lightning:inputField aura:id="validation_newTradeline" class="{!(field.isRequired)?'requiredField':''}" style="z-index:1" fieldName="{!field.fieldAPIName}" onchange="{!c.handleEvent}"  />
+                                </aura:iteration>
+                                <div style="background:lightgoldenrodyellow;text-align: justify;" align="left">For credit cards, send in your most recent statement. Any statement older than 30 days will not be accepted.<br/> For non-secured loans, three (3) statements are required: <Strong Style="font-weight: bold;">loan statement, original loan document,</Strong> and<Strong Style="font-weight: bold;"> payment history</Strong> on the loan. Statements older than 60 days will not be accepted.
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem class="slds-p-around_x-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6">
+                                <div class="slds-align_absolute-center custom-upload">
+                                    <lightning:fileUpload aura:id="fileupload_newTradeline" name="fileUploader"
+                                                          label= "Upload Statement"
+                                                          recordId="{!v.recordId}"
+                                                          onuploadfinished="{!c.handleUpload}"
+                                                          accept="{!v.supportedFileTypes}"
+                                                          title="{!'Only ' + v.supportedFileTypes  + ' type files can be uploaded'}"/>
+                                </div>
+                                <div align="center" style="color:lightgray;padding-left:2.9rem;padding-right:2.9rem;">{!'Only ' + v.supportedFileTypes  + ' type files can be uploaded'}</div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem class="slds-p-around_x-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="12">
+                                <aura:if isTrue="{!not(empty(v.contentDocumentList))}">
+                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout slds-no-row-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    <div class="slds-truncate" title="File Name">
+                                                        File Name
+                                                    </div>
+                                                </th>
+                                                <th style="width:30%">
+                                                    <div class="slds-truncate" title="Action">
+                                                        Action
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <aura:iteration items="{!v.contentDocumentList}" var="contentPath" indexVar="idx">
+                                                <tr>
+                                                    <td>
+                                                        <div class="slds-truncate" title="{!contentPath.name}">
+                                                            {!contentPath.name}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="slds-truncate" title="Delete">
+                                                            <a data-index="{!idx}" onclick="{!c.onDelete}">
+                                                                <lightning:icon iconName="action:delete" size="x-small" alternativeText="delete" title="delete"/>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </aura:iteration>
+                                        </tbody>
+                                    </table>
+                                </aura:if>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </lightning:recordEditForm>
+                </div>
+            </div>
+            <div class="slds-align_absolute-center slds-p-top_medium slds-p-bottom_medium" >
+                <lightning:button aura:id="submitbtn_newTradeline" variant="brand" 
+                                  label="Submit"
+                                  type ="submit"
+                                  onclick="{!c.onSave}"/>
+            </div>
+        </lightning:card>
+    </aura:if> 
+    <aura:if isTrue="{!v.isModalOpen1}">
+        <c:customModal>
+            <aura:set attribute="body">
+                <lightning:button class="b3 " aura:id="nobtn_newTradeline" label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"  onclick="{!c.doInit}" >
+                    <img src="{!$Resource.CloseIconSvg}" width="15" height="15" Style="align:right;"/>
+                </lightning:button>
+                <div class="slds-text-align_center headerText" Style="font-size:32px;">Your request has been received.<br/></div>
+                <div class="slds-text-align_center slds-m-top_xx-small" Style="font-size:16px !important;">{!v.successMessageString}<br/>
+                    <lightning:button class="b1" aura:id="nobtn_newTradeline" label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X" title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X"  onclick="{!c.doInit}" >
+                        Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="{!$Resource.CloseIconSvg}" width="15" height="15"/>
+                    </lightning:button>
+                </div>
+            </aura:set>
+        </c:customModal>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>  
+    <aura:if isTrue="{!v.isModalOpen2}">
+        <c:customModal>
+            <aura:set attribute="body">
+                <lightning:button class="b3 " aura:id="nobtn_newTradeline" label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"  onclick="{!c.cancelModel}" >
+                    <img src="{!$Resource.CloseIconSvg}" width="15" height="15" Style="align:right;"/>
+                 </lightning:button>
+                <div class="slds-text-align_center slds-m-top_xx-small headerText" Style="font-size:32px;">Alert<br/></div>
+                <div class="slds-text-align_center slds-m-top_x-small" Style="font-size:16px !important;">{!v.errorMessageString}<br/>
+                    <lightning:button class="b1" aura:id="nobtn_newTradeline" label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"  onclick="{!c.cancelModel}" >
+                    Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="{!$Resource.CloseIconSvg}" width="15" height="15"/>
+                    </lightning:button>
+                </div>
+            </aura:set>
+        </c:customModal>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if> 
+</aura:component>

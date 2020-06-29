@@ -1,0 +1,92 @@
+<apex:page docType="HTML-5.0" applyBodyTag="false" showHeader="false" controller="SFSPortal_DashboardMetricsController">
+  <apex:slds />
+  <style>
+      img{
+          /* width: 96px !important; */
+          height: 3rem;
+          width: 8rem !important;
+      }
+      .container{
+        margin-top:21px !important;
+       }
+  </style>
+  <!-- Place this code snippet anywhere you want the button to appear in your page. If no button has been configured in the chat script, it will not show up nor take any space. -->
+
+<div id="__8x8-chat-button-container-script_13685593155b61fe5b773ba6.83689219" align="right" style="margin-right:1.4rem;margin-top:4px;float:right;" onclick="initiateBus()"></div>
+
+<!-- This script will not interfere with the button layout, you just need to include it in the same page. It must also be within the <body> section of the page, preferably just before the ending tag. -->
+
+<script type="text/javascript">
+ 
+    var __8x8Chat = {
+
+        uuid: "script_13685593155b61fe5b773ba6.83689219",
+
+        tenant: "c3RyYXRlZ2ljZmluYW5jaWExMDE",
+
+        channel: "Chat Test Channel",
+
+        domain: "https://vcc-na10.8x8.com",
+
+        path: "/.",
+
+        buttonContainerId: "__8x8-chat-button-container-script_13685593155b61fe5b773ba6.83689219",
+
+        align: "right",
+        
+       onInit: function(bus) {
+
+          // Message bus created and ready to be used
+            window.bus = bus;
+            var program = '{!programInstance}';
+            var ProgramId = '{!programInstance.Id}';
+            var AccountId = '{!programInstance.nu_dse__Account__c}';
+            var ProgramName = '{!programInstance.Name}';
+            //Set the customer info
+            bus.publish("customer:set-info", {
+               "First Name": '{!userInstance.FirstName}',
+                "Last Name": '{!userInstance.LastName}',
+                "Program_Number":ProgramName,
+                "Program_Id":ProgramId ,
+                "Account_Id":AccountId 
+            });
+        }
+        
+
+    };
+
+    (function() {
+
+        var se = document.createElement("script");
+
+        se.type = "text/javascript";
+
+        se.async = true;
+
+        se.src = __8x8Chat.domain + __8x8Chat.path + "/CHAT/common/js/chat.js";
+
+        var os = document.getElementsByTagName("script")[0];
+
+        os.parentNode.insertBefore(se, os);
+
+    })();
+    
+    function initiateBus() {
+        console.log('called');
+        window.bus = bus;
+        var program = '{!programInstance}';
+        var ProgramId = '{!programInstance.Id}';
+        var AccountId = '{!programInstance.nu_dse__Account__c}';
+        var ProgramName = '{!programInstance.Name}';
+        //Set the customer info
+        bus.publish("customer:set-info", {
+           "First Name": '{!userInstance.FirstName}',
+            "Last Name": '{!userInstance.LastName}',
+            "Program_Number":ProgramName,
+            "Program_Id":ProgramId ,
+            "Account_Id":AccountId 
+        });
+    }
+
+</script>
+</apex:page>

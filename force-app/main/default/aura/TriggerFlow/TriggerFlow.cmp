@@ -1,0 +1,9 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+	<!--<aura:handler name="init" value="{!this}" action="{!c.init}" />-->
+    <aura:attribute name="userId" type="String" default="" access="public"/>
+    <aura:method name="initiateFlow" action="{!c.flowInitiate}" access="public" >
+        <aura:attribute name="userPhone" type="String" access="public"/>
+    </aura:method>
+    <aura:registerEvent name="handleFlow" type="c:statusUpdateEvt"/>
+    <lightning:flow aura:id="flowData" onstatuschange="{!c.handleStatusChange}" />
+</aura:component>

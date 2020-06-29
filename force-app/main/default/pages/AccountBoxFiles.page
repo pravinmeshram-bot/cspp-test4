@@ -1,0 +1,22 @@
+<apex:page standardcontroller="nu_dse__Program__c" extensions="BoxFiles_Controller" showHeader="false" sidebar="false" action="{!FilesharingLink}"> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script>
+    <!-- $( document ).ready(function() {
+           alert('------'+window.location.href);
+            alert(document.referrer);
+            var url = document.referrer;
+            var id = url.substring(url.lastIndexOf('?') + 1);
+           var extract = id.match(/\=(.*)\&/).pop();
+            alert(extract);
+      });
+      -->
+  </script>
+   <apex:form > 
+ 
+      <div class="container-fluid" style="padding:0px;"> 
+       <iframe src="{!sharedlink}" width="100%" height="600px" frameborder="0" /> 
+     </div> 
+    </apex:form>
+</apex:page>

@@ -1,0 +1,205 @@
+<aura:component extends="c:abstractServer" controller="SFSPortal_ContactUsController" implements="force:appHostable,forceCommunity:availableForAllPageTypes" access="public">
+    
+    <aura:attribute name="emailInstance" type="Map" default="{ 'sobjectType': 'EmailMessage'}" access="public"/>
+    <aura:attribute name="defaultValueMap" type="Map" access="public"/>
+    <aura:attribute name="contentDocumentList" type="List" access="public"/>
+    <aura:attribute name="errorMessage" type="String" access="public"/>
+    <aura:attribute name="recordId" type="String" access="public"/>
+    <aura:attribute name="successMessageString" type="String" access="public" default="" /> 
+    <aura:attribute name="errorMessageString" type="String" access="public" default="" />
+    <aura:attribute name="isModalOpen1" type="Boolean" access="public"/>
+    <aura:attribute name="isModalOpen2" type="Boolean" access="public"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:attribute name="isDoInitFired" type="Boolean" default="false" access="public" />
+    
+    <aura:if isTrue="{!v.isDoInitFired}">
+        <lightning:card class="contactusform" >
+            <aura:set attribute="title">
+                <lightning:icon iconName="utility:email" size="small"/>
+                <span style="padding-left:0.6rem;">Contact Us</span> 
+            </aura:set>
+            
+            <lightning:layout class="slds-wrap custom-layout ">
+                
+                <lightning:layoutItem  class="slds-p-around_xx-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6">
+                    <lightning:layout class="slds-wrap custom-layout ">
+                        <lightning:layoutItem size="12" >
+                            <label>Subject</label>
+                            <aura:if isTrue="{!!empty(v.defaultValueMap.helpTextMap.Request_Subject__c)}">
+                                <lightning:helptext class="slds-p-left_x-small adjustHelpText" content="{!v.defaultValueMap.helpTextMap.Request_Subject__c}"/>
+                            </aura:if> 
+                            <lightning:select aura:id="validation_contactUs" name="" disabled="{!v.defaultValueMap.disableSubject}" class="removedLabel" label="Subject" value="{!v.emailInstance.Request_Subject__c}" required="true">
+                                <option text="--None--" value=""/>
+                                <aura:iteration items="{!v.defaultValueMap.CSP97List}" var="option">
+                                    <option text="{!option}" value="{!option}"/>
+                                </aura:iteration>
+                            </lightning:select>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem class="slds-m-top_small" size="12">
+                            <label>Message</label>
+                            <aura:if isTrue="{!!empty(v.defaultValueMap.helpTextMap.TextBody)}">
+                                <lightning:helptext class="slds-p-left_x-small adjustHelpText" content="{!v.defaultValueMap.helpTextMap.TextBody}"/>
+                            </aura:if>
+                            <lightning:textarea aura:id="validation_contactUs" class="removedLabel" placeholder="Type in your message here ..." name="msg" label="Message" value="{!v.emailInstance.TextBody}" required="true"/>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6">
+                    <div class="slds-align_absolute-center custom-upload">
+                        <lightning:fileUpload name="fileUploader" aura:id="fileUpload_contactUs"
+                                              label= "Upload supporting documents if you have any."
+                                              multiple = "true"
+                                              accept="{!v.supportedFileTypes}"
+                                              recordId="{!v.defaultValueMap.accountId}"
+                                              onuploadfinished="{!c.handleUpload}"
+                                              title="{!'Only ' + v.supportedFileTypes  + ' type files can be uploaded'}"/>
+                    </div>
+                    <div align="center" style="color:grey;padding-left:2.9rem;padding-right:2.9rem;">{!'Only ' + v.supportedFileTypes  + ' type files can be uploaded'}</div>
+                </lightning:layoutItem>
+                <lightning:layoutItem class="slds-p-around_x-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="12">
+                    <aura:if isTrue="{!not(empty(v.contentDocumentList))}">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout slds-no-row-hover">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <div class="slds-truncate" title="File Name">
+                                            File Name
+                                        </div>
+                                    </th>
+                                    <th style="width:30%">
+                                        <div class="slds-truncate" title="Action">
+                                            Action
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.contentDocumentList}" var="contentPath" indexVar="idx">
+                                    <tr>
+                                        <td>
+                                            <div class="slds-truncate" title="{!contentPath.name}">
+                                                {!contentPath.name}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="slds-truncate" title="Delete">
+                                                <a onclick="{!c.onDelete}" data-index="{!idx}">
+                                                    <lightning:icon iconName="action:delete" size="x-small" alternativeText="delete" title="delete"/>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </aura:iteration>
+                            </tbody>
+                        </table>
+                    </aura:if>
+                </lightning:layoutItem>
+            </lightning:layout>   
+            <div style="text-align:center">
+                <lightning:button aura:id="sendbtn_contactUs" name="send" label="Send" variant="brand" onclick="{!c.onSendMail}"/>
+            </div>
+        </lightning:card>
+    </aura:if>
+    <aura:if isTrue="{!or(or(v.defaultValueMap.portfolioInstance.Support_Email__c != null,v.defaultValueMap.portfolioInstance.Support_Fax_Number__c != null),or(v.defaultValueMap.portfolioInstance.Support_Phone_Number__c != null,v.defaultValueMap.portfolioInstance.Address__c != null))}">
+        <div class="slds-page-header_Custom" role="banner">
+            <lightning:layout class="slds-wrap custom-layout">
+                <aura:if isTrue="{!(v.defaultValueMap.portfolioInstance.Support_Email__c != null)}">
+                    <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="4">
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label">Support Email</label>
+                            <div>
+                                <span><lightning:formattedEmail value="{!v.defaultValueMap.portfolioInstance.Support_Email__c}"/></span>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </aura:if>
+                <aura:if isTrue="{!(v.defaultValueMap.portfolioInstance.Support_Fax_Number__c != null)}">
+                    <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="4">
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label">Support Fax Number</label>
+                            <div>
+                                <lightning:icon iconName="utility:print" alternativeText="Fax" size="x-small" />
+                                <span class="slds-p-left_xx-small"><lightning:formattedPhone value="{!v.defaultValueMap.portfolioInstance.Support_Fax_Number__c}"/></span>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </aura:if>
+                <aura:if isTrue="{!(v.defaultValueMap.portfolioInstance.Support_Phone_Number__c != null)}">
+                    <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="4">
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label">Support Phone Number</label>
+                            <div>
+                                <lightning:icon iconName="utility:call" alternativeText="phone" size="x-small"/>
+                                <span class="slds-p-left_xx-small"><lightning:formattedPhone value="{!v.defaultValueMap.portfolioInstance.Support_Phone_Number__c}"/></span>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </aura:if>
+                <aura:if isTrue="{!(v.defaultValueMap.portfolioInstance.Address__c != null)}">
+                    <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="12">
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label">Address</label>
+                            <div>
+                                
+                                <span class="{!v.defaultValueMap.portfolioInstance.Address__c ? 'slds-p-left_xx-small' : 'slds-hide'}">
+                                    {!v.defaultValueMap.portfolioInstance.Address__c},
+                                </span>
+                                
+                                <span class="{!v.defaultValueMap.portfolioInstance.City__c ? 'slds-p-left_xx-small' : 'slds-hide'}">
+                                    {!v.defaultValueMap.portfolioInstance.City__c},
+                                </span>
+                                
+                                <span class="{!v.defaultValueMap.portfolioInstance.State__c ? 'slds-p-left_xx-small' : 'slds-hide'}">
+                                    {!v.defaultValueMap.portfolioInstance.State__c},
+                                </span>
+                                
+                                <span class="{!v.defaultValueMap.portfolioInstance.Zipcode__c ? 'slds-p-left_xx-small' : 'slds-hide'}">
+                                    {!v.defaultValueMap.portfolioInstance.Zipcode__c}
+                                </span>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </aura:if>
+            </lightning:layout>
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.isModalOpen1}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open modal1">
+            <div class="slds-modal__container">
+                <div class="slds-modal__content slds-p-around_medium modal1" id="modal-content-id-1">
+                    <lightning:button class="b3" aura:id="nobtn_newTradeline" label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"  onclick="{!c.closeModal1}">
+                        <img src="{!$Resource.CloseIconSvg}" width="15" height="15" />
+                    </lightning:button>
+                    <div class="slds-text-align_center slds-m-top_xx-small headerText">Your request has been received.<br/></div>
+                    <div class="slds-text-align_center slds-m-top_xx-small">{!v.successMessageString}<br/><br/>
+                        <lightning:button class="b1" aura:id="nobtn_newTradeline" label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"  onclick="{!c.closeModal1}" >
+                            Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="{!$Resource.CloseIconSvg}" width="15" height="15" />
+                        </lightning:button>     
+                    </div> 
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+     <aura:if isTrue="{!v.isModalOpen2}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open modal1">
+            <div class="slds-modal__container">
+                <div class="slds-modal__content slds-p-around_medium modal1" id="modal-content-id-1">
+                    <lightning:button class="b3" aura:id="nobtn_newTradeline" label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"  onclick="{!c.closeModal1}" >
+                        <img class="" src="{!$Resource.CloseIconSvg}" width="15" height="15"/>
+                    </lightning:button>
+                    <div class="slds-text-align_center slds-m-top_xx-small headerText" Style="font-size:32px;">Alert<br/></div>
+                    <div class="slds-text-align_center slds-m-top_xx-small">{!v.errorMessageString}<br/><br/>
+                        <lightning:button class="b1New" aura:id="nobtn_newTradeline" label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"  onclick="{!c.closeModal1}" >
+                            Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="{!$Resource.CloseIconSvg}" width="15" height="15"/>  
+                        </lightning:button> 
+                        
+                    </div> 
+                </div>
+            </div>
+        </section>
+         <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>

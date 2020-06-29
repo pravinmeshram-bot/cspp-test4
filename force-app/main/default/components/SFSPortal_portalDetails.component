@@ -1,0 +1,246 @@
+<apex:component controller="SFSPortal_PortalDetailsController" allowDML="true">
+    <apex:attribute name="recordId" assignTo="{!programId}" type="String" required="true" description="Record Id of the Parent Program." />
+    
+    <apex:slds />
+    <style>
+        .slds-card {
+            background: #f4f6f9 !important;
+        }
+    </style>
+    <apex:form id="portalFormId">
+    
+        <div class="slds-panel slds-p-around--small">
+            <div class="slds-card ">
+                <div class="slds-card__header slds-grid">
+                    <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                        <h2><strong>Client&#39;s Portal Activity</strong></h2>
+                    </div>
+                    <div class="slds-no-flex">
+                        <apex:outputPanel rendered="{!programInstance.Client_Portal_User_Id__c != null && $Permission.Log_in_to_Community_as_User}">
+                            <button type="button" class="slds-button slds-button--neutral nudebt-button" onclick="redirectURL();">Log in to Community as User</button>
+                        </apex:outputPanel>
+                        <button type="button" class="slds-button slds-button--neutral nudebt-button" onclick="showHideVerificationModal();">Send Verification Code</button>
+                        <apex:outputPanel rendered="{!programInstance.Invite_Client__c && programInstance.Client_Portal_User_Id__c == null}">
+                            <button type="button" class="slds-button slds-button--neutral nudebt-button" onclick="resendInvite();">Resend Invite</button>
+                        </apex:outputPanel>
+                        
+                    </div>
+                </div>
+                <div class="slds-card__body data-table">
+                    <div class="slds-panel" style="color: black;">
+                        <div class="slds-m-around--small">
+                            <div class="slds-grid slds-wrap slds-grid--pull-padded slds-m-bottom--x-small">
+                                <div class="slds-p-horizontal--small slds-size--1-of-6">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label" for="inputSample2">Invitation Sent</label>
+                                        <div class="slds-form-element__control">
+                                           <!-- <div class="slds-box slds-box--x-small slds-theme--shade">  -->
+                                                <div class="slds-form-element">
+                                                    <label class="slds-checkbox_toggle slds-grid">
+                                                        <apex:inputField value="{!programInstance.Invite_Client__c}" html-disabled="true"/>
+                                                        <span  class="slds-checkbox_faux_container" aria-live="assertive">
+                                                            <span class="slds-checkbox_faux"></span>
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            <!-- </div>  -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-p-horizontal--small slds-size--1-of-6">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label" for="inputSample2">Invited Date</label>
+                                        <div class="slds-form-element__control">
+                                            <!--<div class="slds-box slds-box--x-small slds-theme--shade">  -->
+                                                <span >
+                                                    <apex:outputField value="{!programInstance.Invite_Sent_Date__c}"/>
+                                                </span>
+                                           <!-- </div>  -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-p-horizontal--small slds-size--1-of-6">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label" for="inputSample2">Last Login Date</label>
+                                        <div class="slds-form-element__control">
+                                           <!-- <div class="slds-box slds-box--x-small slds-theme--shade">  -->
+                                                <span >
+                                                    <apex:outputField value="{!userInstance.LastLoginDate}"/>
+                                                </span>
+                                          <!--  </div>  -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-p-horizontal--small slds-size--1-of-6">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label" for="inputSample2">Registered Date</label>
+                                        <div class="slds-form-element__control">
+                                          <!--  <div class="slds-box slds-box--x-small slds-theme--shade">  -->
+                                                <span > 
+                                                    <apex:outputField value="{!userInstance.CreatedDate}"/>
+                                                </span>
+                                          <!--  </div>  -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-p-horizontal--small slds-size--1-of-6">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label" for="inputSample2">Source Type</label>
+                                        <div class="slds-form-element__control">
+                                        <!--    <div class="slds-box slds-box--x-small slds-theme--shade">  -->
+                                                <span > 
+                                                    <apex:outputField value="{!userInstance.Source_Type__c}"/>
+                                                </span>
+                                        <!--    </div>  -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-p-horizontal--small slds-size--1-of-6">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label" for="inputSample2">Last Password Change or Reset</label>
+                                        <div class="slds-form-element__control">
+                                        <!--    <div class="slds-box slds-box--x-small slds-theme--shade">  -->
+                                                <span > 
+                                                    <apex:outputText value="{0, date, MM/dd/yyyy h:mm a }"> 
+                                                        <apex:param value="{!userInstance.LastPasswordChangeDate}" /> 
+                                                    </apex:outputText> 
+                                                    <!-- 
+                                                    <apex:outputField value="{!userInstance.LastPasswordChangeDate}"/>
+                                                    -->
+                                                </span>
+                                        <!--    </div>  -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slds-panel slds-p-around--small">
+            <div class="slds-card ">
+                <div class="slds-card__header slds-grid">
+                    <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                        <div class="slds-media__body">
+                            <h1>
+                                Logs
+                            </h1>
+                        </div>
+                    </header>
+                </div>
+                <div class="slds-card__body">
+                    <div class="slds-panel">
+                        <apex:outputPanel rendered="{!portalDetailSectionWrapperList != null &&  portalDetailSectionWrapperList.size > 0}">
+                            <table class="slds-table slds-table_bordered slds-table_fixed-layout slds-no-row-hover">
+                                <thead>
+                                    <tr>
+                                        <th style="width:10rem;"> Name </th>
+                                        <th>Action Performed</th>
+                                        <th style="width:15rem;">Date</th>
+                                        <!-- <th>View</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <apex:repeat value="{!portalDetailSectionWrapperList}" var="section">
+                                        <tr class="slds-is-selected">
+                                            <td colspan="3">{!section.sectionName}</td>
+                                        </tr>
+                                        <apex:repeat value="{!section.portalDetailWrapperList}" var="log">
+                                            <tr>
+                                                <th>
+                                                    <div class="slds-truncate">
+                                                        {!log.name}
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    <div class="slds-truncate">
+                                                        {!log.actionMessage}
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    <!-- {0,date, MMMM d','  yyy 'at' HH:mm:ss } -->
+                                                    <apex:outputText value="{0,date, MM/dd/yyyy h:mm a  }"> 
+                                                        <apex:param value="{!log.createdDate}" /> 
+                                                    </apex:outputText> 
+                                                </th>
+                                                <!-- <th><a href="{! '/' + log.recordUrl}" target="_blank" style="{!if(section.sectionName == 'Emails' , 'display:none', '')}">View</a></th> -->
+                                            </tr>
+                                        </apex:repeat>
+                                    </apex:repeat>
+                                </tbody>
+                            </table>
+                            
+                            
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!portalDetailSectionWrapperList.size == 0}">
+                            <div style="text-align: center;">
+                                <strong>No Changes Made Recently.</strong>
+                            </div>
+                        </apex:outputPanel>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <apex:outputPanel id="verificationCodeModal">
+            <apex:outputPanel rendered="{!renderVerificationModal}">
+                <div class="demo-only" >
+                    <div role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+                        <div class="slds-modal__container">
+                            <div class="slds-modal__header">
+                                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Send Verification Code To Client</h2>
+                            </div>
+                            <div class="slds-modal__content slds-p-around_medium" >
+                                <div style="font-size:18px;text-align: center;" class="slds-p-top_large"> 
+                                    <h3> Please select client prefered method </h3>
+                                    <input type="radio" name="validation" value="Email" checked="true" style="font-family: Raleway !important;"><span style="font-family: 'Salesforce Sans',Arial,sans-serif;">Send an Email to: <b>{!userInstance.PortalUserEmail__c} </b> </span></input> <br/>
+                                    
+                                    <div style="{!if(userInstance.MobilePhone != null, '' , 'display:none;')}">
+                                        <input type="radio" name="validation" value="Mobile" style="font-family: Raleway !important;"> <span style="font-family: 'Salesforce Sans',Arial,sans-serif;">Send an SMS to:  <b>{!userInstance.PortalUserMobile__c}</b> </span></input><br/>
+                                        <!-- <input type="radio" name="validation" value="Phone Call" style="font-family: Raleway !important;"> <span style="font-family: 'Salesforce Sans',Arial,sans-serif;">Receive a call to:  <b> {!userInstance.PortalUserMobile__c} </b></span></input><br/> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-modal__footer">
+                                <button class="slds-button slds-button_neutral" type="button" onclick="showHideVerificationModal()">Cancel</button>
+                                <button class="slds-button slds-button_brand" type="button" onclick="getSelectedMethod()">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-backdrop slds-backdrop_open"></div>
+                </div>
+            </apex:outputPanel>
+        </apex:outputPanel>
+        
+        <!--<apex:actionFunction name="loginCommunityUser" action="{!redirectToLoginCommunity}"  reRender="verificationCodeModal" />-->
+        <apex:actionFunction name="sendAction" action="{!sendVerificationCodeToClient}" reRender="portalFormId" oncomplete="showMessage_Toast('Verification code sent successfully', null);" >
+            <apex:param name="selctedMode" value="" />
+        </apex:actionFunction>
+        <apex:actionFunction name="showHideVerificationModal" action="{!showHideVerificationModal}" reRender="verificationCodeModal" />
+        <apex:actionFunction name="resendInvite" action="{!sendReInvitationToClient}" reRender="verificationCodeModal" oncomplete="showMessage_Toast('Re-Invitation was successfully sent to client', null);"/>
+        
+    </apex:form>
+    
+    <script type="text/javascript">
+        var selectedValue = '';
+        
+        function getSelectedMethod() {
+            let input = document.querySelector('input[name=validation]:checked');
+            if (input) {
+                
+                selctedValue = input.value;
+            }            
+            console.log('**** slectedValue', selctedValue);
+            sendAction(selctedValue);
+        }
+        
+        function redirectURL() {
+            let redirectURL = '/servlet/servlet.su?oid={!$Organization.Id}&retURL=/{!programInstance.nu_dse__Account__c}&sunetworkuserid={!programInstance.Client_Portal_User_Id__c}&sunetworkid={!networkId}';
+            window.open(redirectURL );
+        }
+    </script>
+    
+</apex:component>

@@ -1,0 +1,302 @@
+<apex:page controller="SFSPortal_DashboardMetricsController" action="{!updateUserAndRedirect}" standardStylesheets="false" showHeader="false" sidebar="false">
+    
+    <apex:slds />
+    
+    <style>
+        
+        @media screen and (max-width: 1100px) {
+            
+            
+        }
+        
+        @media screen and (min-width: 1100px) {
+            
+            
+        }
+        .custom-background {
+            background-size: cover;
+            min-height: 100%;
+            width: 100%;
+            position: absolute;
+            /* font-family: Raleway; */
+        }
+        
+        .body-content {
+            padding:1em;
+            text-align: left;
+            min-width: 280px;
+            max-width: 390px;
+            margin: auto;
+            display: inline-block;
+            position: relative;
+            font-family: Raleway;
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.8);
+            text-decoration: none;
+            vertical-align: middle;
+            z-index: 0;
+            background: #232526;  /* fallback for old browsers */
+            /* Commented on 05-22-2019 for removing button background */
+            background: -webkit-linear-gradient(to right, #414345E0, #232526E0);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #414345E0, #232526E0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            /* background: -webkit-linear-gradient(to right, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+            /* background: linear-gradient(to right, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            /* opacity:0.9; */
+            border-radius:6px;
+        }
+        /*
+        .slds-scope {
+            font-family:Raleway !important;
+        }
+        */
+        
+        .custom-button {
+        
+            width: 100%;
+            margin-top: 12px;
+            margin-bottom: 5px;
+            background-color: #0070d2;
+            border-color: #357ebd;
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            background-image: none;
+            border: none !important;
+            white-space: nowrap;
+            padding: 8px 10px;
+            font-weight: bold !important;
+            font-size: 18px !important;
+            color: white !important;
+            /* font-family: 'Salesforce Sans',Arial,sans-serif !important; */
+            border-radius: 8px!important;
+        }
+        
+        .fixed-header {
+        
+            width: 100%;
+            position: fixed;
+            z-index: 5;
+            top: 0;
+        }
+        
+        button:hover {
+            background-color:#3fdce6 !important;
+        }
+        
+        button:active {
+            background-color:#0f99a3 !important;
+        }
+        
+        .footer-text-color {
+        
+            color: darkorange;
+        }
+        
+        /* toast message css */
+        .messageClass-error {
+            
+            background-color : red !important;
+            color : white !important;
+        }
+        
+        .messageClass-success {
+            
+            background-color : green !important;
+            color : white !important;
+        }
+        
+        .messageClass-warning {
+            
+            background-color : #eaa754 !important;
+            color : white !important;
+        }
+        
+        .messageClass {
+            
+            background-color : black !important;
+        }
+        .minWidth-0 { 
+            min-width: 0px !important;
+        }
+        
+        /* End of toast message css */
+        
+    </style>
+    <apex:form id="loginForm">
+        
+        <div class="custom-background" style="{!if(wrapperInstance.uiInstance.Type__c == 'Background Color', ('background-color:' + wrapperInstance.uiInstance.Value__c), ('background: url(' + wrapperInstance.imageURLMap['backgroundImageURL'] + ') 50% 50%/cover no-repeat fixed #f4f4f4;background-color'))}">
+           
+           <div class="fixed-header">
+                <!-- <img src="{!wrapperInstance.companyLogoURL}"/> -->
+                <c:SFSPortal_unauthenticatedHeader uiInstance="{!wrapperInstance.uiInstance}" imageURLMap="{!wrapperInstance.imageURLMap}" />
+            </div>
+           
+            <div class="slds-grid slds-wrap">
+                
+                <br/>
+                <br/>
+                <div class="slds-size_1-of-1 body-content" style="margin-top:15rem;">
+                
+                    <apex:outputPanel rendered="{!actionString == 'modeSelection'}">
+                        <span class="slds-p-around_small" style="float:right;">
+                           <div style="color:orange;font-size:22px;text-align:center">For Your Security, we need to confirm your identity <br /> </div>
+                            <div style="color:white;font-size:18px;text-align: center;" class="slds-p-top_large"> 
+                                <div> Please select your prefered method </div>
+                                
+                                <apex:outputPanel rendered="{!userInstance.MobilePhone != null}">
+                                    <input type="radio" name="validation" value="Mobile" checked="true" style="font-family: Raleway !important;"> <span style="font-family: 'Salesforce Sans',Arial,sans-serif;">Send an SMS to: {!userInstance.PortalUserMobile__c} </span></input><br/>
+                                    <!-- <input type="radio" name="validation" value="Phone Call" style="font-family: Raleway !important;"> <span style="font-family: 'Salesforce Sans',Arial,sans-serif;">Receive a call to: {!userInstance.PortalUserMobile__c} </span></input><br/> -->
+                                    <input type="radio" name="validation" value="Email" style="font-family: Raleway !important;"><span style="font-family: 'Salesforce Sans',Arial,sans-serif;"> Send an Email to: {!userInstance.PortalUserEmail__c} </span></input> <br/>
+                                </apex:outputPanel>
+                                
+                                <apex:outputPanel rendered="{!userInstance.MobilePhone == null || userInstance.MobilePhone == ''}">
+                                    <input type="radio" name="validation" value="Email" checked="true" style="font-family: Raleway !important;"><span style="font-family: 'Salesforce Sans',Arial,sans-serif;"> Send an Email to: {!userInstance.PortalUserEmail__c} </span></input> <br/>
+                                </apex:outputPanel>
+                            </div>
+                        </span>
+                        
+                        <div align="center">
+                            <button class="slds-m-top_large custom-button" style="{!'background-color:' + wrapperInstance.uiInstance.Action_Button_Color__c}" type="button" onclick="getSelectedMethod()">Send Now</button>
+                        </div>
+                        <span style="color:orange;font-size:16px;text-align:center" class="slds-m-top_small">
+                            *carrier rates may apply
+                        </span>
+                        
+                        <div style="text-align:right" class="slds-p-top_medium">
+                            <a style="color:white;font-size:1.2em;" onclick="sendAction('agentSentCodeVerification')"> I have a code from the agent </a>
+                        </div>
+                        
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!actionString == 'codeVerification'}">
+                        <span class="slds-p-around_small" style="float:right;">
+                            <div style="color:orange;font-size:22px;text-align:center">Your verification code has been sent. <br /> </div>
+                            <div style="color:white;font-size:18px;text-align: center;" class="slds-p-top_large"> 
+                                
+                                <div> The code will be active for next 60 minutes </div>
+                                
+                                <div style="color:red;"> {!exceptionText} </div>
+                                
+                                <apex:inputText value="{!enteredText}" styleClass="slds-input" style="font-family: Raleway !important;color:black !important;"/>
+                                
+                            </div>
+                        </span>
+                        
+                        <div align="center" style="font-size:12px;">
+                            <button class="custom-button" style="{!'background-color:' + wrapperInstance.uiInstance.Action_Button_Color__c}" type="button" onclick="validateCode()">Enter</button>
+                        </div>
+                        
+                        <div style="color:white;font-size:18px;text-align: center;" class="slds-p-top_large"> 
+                            <div class="footer-text-color"> Haven&#39;t Received Your Code? </div>
+                            <div class="footer-text-color"> Please check your spam folder </div>
+                            
+                            <h5> <a href="javascript:void(null);" onclick="getSelectedMethod()">Resend My Code </a></h5>
+                        </div>
+                        
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!actionString == 'agentSentCodeVerification'}">
+                        <span class="slds-p-around_small" style="float:right;">
+                            <div style="color:orange;font-size:22px;text-align:center">Verification code has been sent by agent, enter code below <br /> </div>
+                            <div style="color:white;font-size:18px;text-align: center;" class="slds-p-top_large"> 
+                                
+                                <div> The code will be active for next 60 minutes </div>
+                                
+                                <div style="color:red;"> {!exceptionText} </div>
+                                
+                                <apex:inputText value="{!enteredText}" styleClass="slds-input" style="font-family: Raleway !important;color:black !important;"/>
+                                
+                            </div>
+                        </span>
+                        
+                        <div align="center" style="font-size:12px;">
+                            <button class="custom-button" style="{!'background-color:' + wrapperInstance.uiInstance.Action_Button_Color__c}" type="button" onclick="validateAgentCode()">Enter</button>
+                        </div>
+                        
+                        <div style="color:white;font-size:18px;text-align: center;" class="slds-p-top_large"> 
+                            <div class="footer-text-color"> Haven&#39;t Received Your Code? </div>
+                            <div class="footer-text-color"> Please check your spam folder </div>
+                        </div>
+                        
+                    </apex:outputPanel>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Toast message block -->
+        <div id="toastmessage_container" class="slds-notify_container" style="display:none;">
+            <div id="message_toast-theme" class="slds-notify slds-notify_toast" style="min-width: 0px" role="alert">
+                <span class="slds-assistive-text">success</span>
+                <a class="slds-button slds-notify__close slds-button--icon-inverse" onclick="hideMessage_Toast();" >
+                    <span style="font-family: Arial,Helvetica,sans-serif;">X</span>
+                </a>
+                <div id="toastmessage-content" class="slds-notify__content" style="font-family: Arial,Helvetica,sans-serif;min-width: 0px;"></div>
+            </div>
+        </div>
+        <!-- END OF Toast message block -->
+            
+        <apex:actionFunction name="sendAction" action="{!sendVerificationCodeToClient}" reRender="loginForm" oncomplete="rendertoastForEmail();" >
+            <apex:param name="selctedMode" value="" />
+        </apex:actionFunction>
+        <apex:actionFunction name="validateCode" action="{!validateCode}" reRender="loginForm" />
+        <apex:actionFunction name="validateAgentCode" action="{!validateAgentCode}" reRender="loginForm" />
+    </apex:form>
+    
+    <script type="text/javascript">
+        
+        var selectedValue = '';
+        function getSelectedMethod() {
+            let input = document.querySelector('input[name=validation]:checked');
+            if (input) {
+                
+                selctedValue = input.value;
+            }            
+            console.log('**** slectedValue', selctedValue);
+            sendAction(selctedValue);
+        }
+        
+        function rendertoastForEmail() {
+        
+            console.log('**** type', selctedValue);
+            if(selctedValue == 'Email') {
+            
+                showMessage_Toast('Thank You . Please check your spam folder if you do not see your email.', 'warning');
+            }
+        }
+        
+        /* Toast message script */
+        
+        function showMessage_Toast(message, type) {
+            
+            if(message) {
+                
+                var dafaultTheme = 'slds-theme_';
+                var dafaultTheme = 'messageClass-' + type;
+                
+                var messageContainer = document.getElementById('toastmessage_container');
+                var messageTheme = document.getElementById('message_toast-theme');
+                var messageContent = document.getElementById('toastmessage-content');
+                
+                messageContent.innerHTML = message;
+                messageContent.className = dafaultTheme;
+                messageTheme.className = 'slds-notify slds-notify_toast ' + dafaultTheme;
+                messageContainer.style.display = 'block';
+                setTimoutClose();
+                
+            }
+        }
+        
+        function hideMessage_Toast() {
+                
+            document.getElementById('toastmessage_container').style.display = 'none';
+        }
+        
+        function setTimoutClose() {
+            var timeId = window.setTimeout(function (){
+                hideMessage_Toast();
+            }, 5000);
+        }
+        
+        /* End of Toast message script */
+        
+    </script>
+    
+</apex:page>

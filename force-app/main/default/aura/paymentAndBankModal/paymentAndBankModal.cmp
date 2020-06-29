@@ -1,0 +1,181 @@
+<aura:component controller="SFSPortal_ADHOCPaymentController" 
+                implements="forceCommunity:availableForAllPageTypes" extends="c:abstractServer" 
+                access="public">
+    
+    <aura:attribute name="isModal" type="Boolean" default="false" access="public" />
+    <aura:attribute name="objectInfo" type="String" access="public" default=""/>   
+    <aura:attribute name="adhocPaymentWrapper" type="Map" access="public" />    
+    <aura:attribute name="toRenderModal" type="Map" access="public"  
+                    default="{ 'isModal':false, 'Name':'', 
+                             'HeaderName':'', 'Message':''}"/>    
+    <aura:attribute name="newGroupTaskInstance" type="Map" 
+                    default="{ 'sobjectType':'nu_dse__Group_Task__c'}"/>  
+    
+    <aura:if isTrue="{!v.isModal}">
+        <div id="testDiv">
+            <c:customModal header="{!if(equals(v.objectInfo,'Payment'), 'Add Additional Funds',
+                                   (if(equals(v.objectInfo,'Bank'), 'Change Bank Account','New')))}" 
+                           modalSize="slds-modal_small" showCrossBtn="true" isModal="{!v.isModal}">
+                 
+                <aura:set attribute="body">
+                    <aura:if isTrue="{!equals(v.objectInfo,'Payment')}">
+                        <lightning:recordViewForm recordId="{!v.adhocPaymentWrapper.activeBankAccount}" 
+                                                  density="comfy" objectApiName="nu_dse__Bank_Account__c">
+                            <lightning:layout class="slds-wrap custom-layout">
+                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" 
+                                                      largeDeviceSize="6">
+                                    <lightning:outputField fieldName="nu_dse__Bank_Name__c" />
+                                </lightning:layoutItem>
+                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" 
+                                                      largeDeviceSize="6">
+                                    <lightning:outputField fieldName="Bank_Account_Number_4digits__c" />
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                        </lightning:recordViewForm>
+                    </aura:if>
+                    <lightning:recordEditForm objectApiName="nu_dse__Group_Task__c" density="comfy">
+                     <lightning:layout class="slds-wrap add-funds-layout">
+                            <aura:if isTrue="{!equals(v.objectInfo,'Payment')}">
+                                
+                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" 
+                                                      largeDeviceSize="6" 
+                                                      class="slds-m-top_xx-small slds-p-around_xx-small 
+                                                             adjustHelpText">
+                                    <label>Draft Date</label>
+                                    <lightning:helptext  content="Date must be at least 3 days from today"/>
+                                    <lightning:input type="date" class="requiredField removedLabel" 
+                                                     aura:id="validation" 
+                                                     name="Ad_Hoc_Date__c" label="Date" value=""  
+                                                     min="{!v.adhocPaymentWrapper.setMinAndMaxDate.MinDate}" 
+                                                     max="{!v.adhocPaymentWrapper.setMinAndMaxDate.MaxDate}" 
+                                                     onchange="{!c.handleEvent}"/>
+                                </lightning:layoutItem>
+                            </aura:if>  
+                            <aura:if isTrue="{!equals(v.objectInfo,'Bank')}">
+                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" 
+                                                      largeDeviceSize="6" class="slds-m-top_xx-small 
+                                                                                 slds-p-around_xx-small 
+                                                                                 adjustHelpText">
+                                    <lightning:input pattern="[0-9]*" 
+                                               messageWhenPatternMismatch="Account Number should only 
+                                                                           contain numbers"  
+                                               name="input6" class="requiredField" 
+                                               value="{!v.newGroupTaskInstance.SFSPortal_Account_Number__c}" 
+                                               label="Account Number" maxlength="14" aura:id="validation" />
+                                </lightning:layoutItem>
+                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" 
+                                                      largeDeviceSize="6" 
+                                                      class="slds-m-top_xx-small slds-p-around_xx-small 
+                                                             adjustHelpText">
+                                    <lightning:input pattern="[0-9]*" 
+                                      messageWhenPatternMismatch="Re-Enter Account Number should only 
+                                                                  contain numbers" 
+                                      name="input6" class="requiredField" 
+                                      value="{!v.newGroupTaskInstance.SFSPortal_Re_Enter_Account_Number__c}" 
+                                      label="Re-Enter Account Number" maxlength="14" aura:id="validation"/>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" 
+                                                      largeDeviceSize="6" 
+                                                      class="slds-m-top_xx-small slds-p-around_xx-small 
+                                                             adjustHelpText">
+                                    <lightning:input pattern="[0-9]*" 
+                                               messageWhenPatternMismatch="Routing Number should only 
+                                                                           contain numbers" 
+                                               name="input6" class="requiredField" 
+                                               value="{!v.newGroupTaskInstance.SFSPortal_Routing_Number__c}" 
+                                               label="Routing Number" maxlength="10" aura:id="validation" 
+                                               onblur="{!c.validateRoutingNumber}" />
+                                </lightning:layoutItem>
+                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" 
+                                                      largeDeviceSize="6" 
+                                                      class="slds-m-top_xx-small slds-p-around_xx-small 
+                                                             adjustHelpText">
+                                    <lightning:input name="Bank Name" 
+                                                    value="{!v.newGroupTaskInstance.SFSPortal_Bank_Name__c}" 
+                                                    label="Bank Name" aura:id="validation"  />
+                                </lightning:layoutItem>
+                            </aura:if>
+                            <aura:iteration items="{!if(equals(v.objectInfo,'Payment'), 
+                                                   v.adhocPaymentWrapper.editPaymentFieldsList,
+                                                   (if(equals(v.objectInfo,'Bank'), 
+                                                   v.adhocPaymentWrapper.editBankInfoFieldsList , '[]')))}" 
+                                            var="field">
+                                <aura:if isTrue="{!notequals(field.fieldAPIName,'Ad_Hoc_Date__c')}">
+                                    <lightning:layoutItem size="12" class="slds-p-around_xx-small 
+                                                                           adjustHelpText" 
+                                                          smallDeviceSize="12" mediumDeviceSize="6" 
+                                                          largeDeviceSize="6">
+                                      <lightning:inputField class="{!(field.isRequired)?'requiredField':''}" 
+                                                              aura:id="validation" 
+                                                              fieldName="{!field.fieldAPIName}" 
+                                                              onchange="{!c.handleEvent}"/>
+                                    </lightning:layoutItem>
+                                </aura:if>
+                            </aura:iteration>
+                        </lightning:layout>
+                    </lightning:recordEditForm>
+                </aura:set>
+                <aura:set attribute="footer">
+                    <div class="slds-text-align_center slds-m-top_xx-small">
+                        <lightning:button aura:id="savebtn_adhocPayment" name="click" label="Submit" 
+                                          variant="brand" onclick="{!c.saveGroupTask}"/>
+                        <lightning:button aura:id="cancelbtn_adhocPayment" name="click" label="Cancel" 
+                                          variant="brand" onclick="{!c.cancelModal}"/>
+                    </div> </aura:set>
+            </c:customModal> 
+        </div>     
+    </aura:if> 
+    <aura:if isTrue="{!v.toRenderModal.Name != ''}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" 
+                 aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open modal1">
+            <div class="slds-modal__container" Style="overflow: hidden !important;">
+                <div class="slds-modal__content slds-p-around_medium modal1 modalBox" 
+                     id="modal-content-id-1">
+                    <!-- <lightning:icon class="iconColor" iconName="action:reject" alternativeText="reject" 
+							size="x-small" onclick="{!c.cancelConfirmationModal}" 
+							style="text-align:right !important"/> -->
+                    <lightning:button class="b3 " aura:id="nobtn_newTradeline" 
+                                      label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" 
+                                      title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"  
+                                      onclick="{!c.cancelConfirmationModal}" >
+                        <img src="{!$Resource.CloseIconSvg}" width="15" height="15" Style="align:right;"/>
+                    </lightning:button>
+                    <div class="slds-text-align_center slds-m-top_xx-small" 
+                         Style="font-family: 'Noto Serif KR', serif;font-size: 32px !important;
+                                color: #0A202D;font-weight:500;">
+                        {!v.toRenderModal.Name}<br/>
+                    </div>
+                    <div class="slds-text-align_center slds-m-top_xx-small" 
+                         style="font-family: NotoSans-Regular !important;font-size:16px;">
+                        {!v.toRenderModal.Message}<br/><br/>
+                    </div>
+                    <aura:if isTrue="{!v.toRenderModal.Name == 'Confirm'}">
+                        <div class="slds-text-align_center slds-m-top_xx-small">
+                            <lightning:button class="b2" aura:id="yesbtn_newTradeline" variant="brand" 
+                                              label="Yes" onclick="{!c.createGroupTask}" />
+                            &nbsp;&nbsp;&nbsp;
+                            <lightning:button class="b2" aura:id="nobtn_newTradeline" variant="brand" 
+                                              label="No" title="No" onclick="{!c.cancelConfirmationModal}"/>
+                        </div>
+                        <aura:set attribute="else">
+                            <div class="slds-text-align_center slds-m-top_xx-small">
+                                <!-- <lightning:button class="b1" aura:id="nobtn_newTradeline" 
+										label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X" 
+										title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X"  
+										onclick="{!c.cancelConfirmationModal}" />-->
+                                <lightning:button class="b1" aura:id="nobtn_newTradeline" 
+                                                  label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" 
+                                                  title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X"  
+                                                  onclick="{!c.cancelConfirmationModal}" >
+                                    Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <img src="{!$Resource.CloseIconSvg}" width="15" height="15"/>
+                                </lightning:button>
+                            </div>
+                        </aura:set>
+                    </aura:if>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>

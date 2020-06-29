@@ -1,0 +1,165 @@
+<aura:component extends="c:abstractServer" controller="SFSPortal_TradelineListController" 
+                implements="forceCommunity:availableForAllPageTypes" access="public">
+    
+    <aura:attribute name="columnHeaderMap" type="Map" access="public" default="{}" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Serif+KR:700" rel="stylesheet" />
+    
+    <aura:if isTrue="{!and(v.columnHeaderMap, v.columnHeaderMap.tradeLineWrapList.length 
+                     , v.columnHeaderMap.isTradelineListVisible)}">
+        <div>
+            <div style="border-width:2px;border-style:solid;border-color:#efefef;">
+                <lightning:layout class="slds-wrap" multipleRows="true">
+                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="12" 
+                                          padding="around-small">
+                        <aura:if isTrue="{!v.columnHeaderMap.isAddNewDebt}">
+                            <lightning:layout class="slds-wrap" multipleRows="true">
+                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" 
+                                                      largeDeviceSize="8" class="text-align_absolute-center" >
+                                    <span class="debt-settlement-status">
+                                        Do you have more debt you would like to enroll into your program?
+                                    </span>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="4" 
+                                                      class="slds-align_absolute-center" padding="around-small">
+                                    <lightning:button aura:id="addFundsbtn_dashboardMetrics" class="custom-addNewDebt-button" 
+                                                      name="New ADHOC"
+                                                      title="Add A New Debt"
+                                                      label="Add A New Debt" variant="brand"
+                                                      onclick="{!c.ShowNewDeptModal}" iconName="utility:add"
+                                                      iconPosition="left"/>
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                        </aura:if>
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </div>
+            <br/>
+        </div>
+
+        <div id="debtOverviewCmp" class="slds-grid slds-grid_align-spread slds-wrap slds-border_bottom">
+            <div class="slds-col slds-size_12-of-12 ">
+                <span class="custom-title_text">Enrolled Debt Status:</span>
+            </div>
+        </div>
+        <div style="margin-top:-15px;">
+            <br/>
+        </div>
+        <lightning:layout class="slds-wrap " multipleRows="true">
+            <aura:iteration items="{!v.columnHeaderMap.tradeLineWrapList}" var="debtInstance" indexVar="index">
+                <div style="width:100%">
+                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="12">
+                        <div class="debt-card">
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-align_absolute-center mobile-debt-status 
+                                            slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_4-of-12 
+                                            slds-large-size_2-of-12">
+                                    <lightning:layout class=" slds-wrap custom-layout">
+                                        <lightning:layoutItem class="slds-p-top_small" size="6" smallDeviceSize="6" 
+                                                              mediumDeviceSize="6" largeDeviceSize="6" >
+                                            <img src="{!debtInstance.creditCardName}" 
+                                                 style="height:4rem !important; padding-bottom:2px !important"/>
+                                        </lightning:layoutItem>
+                                        <lightning:layoutItem class="slds-p-top_small slds-p-left--xx-small" size="6"
+                                                              smallDeviceSize="6" mediumDeviceSize="6" 
+                                                              largeDeviceSize="6" >
+                                         <!--  <label style="font-family:NotoSansKR-Medium;font-size: 17px;color:#666666">
+                                                Credit Card
+                                            </label> -->
+                                            <label style="font-family:NotoSansKR-Medium;font-size: 17px;color:#666666">
+                                                {!debtInstance.originalDebtOwner}
+                                            </label>
+                                            <div style="font-family:NotoSansKR-Medium;font-size:20px;color:#000000;">
+                                                <b>
+                                                    <ui:outputText value="{!debtInstance.accountNumber}"/>
+                                                </b>
+                                            </div>
+                                        </lightning:layoutItem>
+                                    </lightning:layout>
+                                </div>
+                                <div class="slds-align_absolute-center mobile-debt-status slds-size_12-of-12 
+                                            slds-small-size_12-of-12 slds-medium-size_4-of-12 slds-large-size_2-of-12">
+                                    <div class="slds-form-element">
+                                        <label style="font-family:NotoSansKR-Medium;font-size: 17px;color:#666666">
+                                            Debt Balance
+                                        </label>
+                                        <div style="font-family:NotoSansKR-Medium;font-size: 20px;color:#000000;">
+                                            <span>
+                                                <b>
+                                                    <div class="slds-truncate">
+                                                        <ui:outputCurrency value="{!debtInstance.debtBalance}"/>
+                                                    </div>
+                                                </b>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-align_absolute-center mobile-debt-status slds-size_12-of-12 
+                                            slds-small-size_12-of-12 slds-medium-size_4-of-12 slds-large-size_2-of-12">
+                                    <div class="slds-form-element">
+                                        <label style="font-family:NotoSansKR-Medium;font-size: 17px;color:#666666">
+                                            Settlement Balance
+                                        </label>
+                                        <div style="font-family:NotoSansKR-Medium;font-size: 20px;color:#000000;">
+                                            <span>
+                                                <b>
+                                                    <aura:if isTrue="{!debtInstance.settlementBalance}">
+                                                        <div class="slds-truncate">
+                                                            <ui:outputCurrency value="{!debtInstance.settlementBalance}"/>
+                                                        </div>
+                                                        <aura:set attribute="else">
+                                                            <ui:outputText value="--"/>
+                                                        </aura:set>
+                                                    </aura:if> 
+                                                </b>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-align_absolute-center custom_margin_bottom slds-form-border__right 
+                                            slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_12-of-12 
+                                            slds-large-size_2-of-12"
+                                     style="{!debtInstance.statusColor ? 'background-color:'+debtInstance.statusColor
+                                            +';margin-left: 0px !important;margin-right: 0px !important ; '
+                                            + 'min-width: 18rem !important; min-height: 6.5rem!important;'
+                                            : 'background-color:#f1f1f1; '
+                                            + 'margin-left: 0px !important;margin-right: 0px !important ; '
+                                            + 'min-width: 18rem !important;min-height: 6.5rem!important;'}">
+                                    <div class="slds-grid slds-wrap ">
+                                        <div class="slds-size_12-of-12 slds-align_absolute-center">
+                                            <div class="slds-grid slds-wrap">
+                                                <div class="slds-size_12-of-12 slds-align_absolute-center">
+                                                    <label class="debt-status">
+                                                        <b>
+                                                            {!debtInstance.status}
+                                                        </b>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-size_12-of-12">
+                                            <div class="slds-align_absolute-center">
+                                                <label style="font-family:NotoSansKR-Medium; text-decoration:underline; 
+                                                              font-size: 15px;color:#046899">
+                                                    <a data-debtId = "{!debtInstance.tradelineId}" style="color: inherit;"
+                                                       onclick="{!c.openModel}" data-index = "{!index}"> See Details</a>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                </div>
+            </aura:iteration>
+        </lightning:layout>
+    </aura:if>
+    <aura:set attribute="else">
+        <aura:if isTrue="{!and(v.columnHeaderMap, v.columnHeaderMap.isTradelineListVisible)}">
+            <div style="font-family:Prompt;font-size: 17px;font-color:#2c2e33;" class="slds-p-around_medium">
+                No Debt Record(s) Found.
+            </div>
+        </aura:if>
+    </aura:set>
+</aura:component>

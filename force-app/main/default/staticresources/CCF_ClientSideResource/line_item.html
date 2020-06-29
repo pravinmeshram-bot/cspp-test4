@@ -1,0 +1,104 @@
+<!-- Form Line Item Start -->
+<form id="ccf_lineItem" class="formTable" ng-controller="checkCtrl">	
+	<div class="formTable_lineItem">
+		<div class="formTable_firstRow">
+			<h3 class="headingText">Line Item</h3>
+			<div class="buttonContainer">
+				<span ng-controller="addCollaboratorCtrl">
+					<button ng-click="addCollaboratorOpen()" class="addCollaborators_ccf">Add Collaborators</button>
+					<!-- Add collaborators pop-up start --> 
+					<div modal="addCollaboratorModal" close="cancel()" class="addCollaborator">
+						<div class="modal-header">
+							<h4>Assign Collaborator Group</h4>
+							<input type="button" ng-click="cancel()" class="close" value="Close"/>
+						</div>
+						<div class="addCollaborator_section modal-body">
+							<div class="addCollaborator_sectionText">
+								<label>Collaborator Group Name</label>
+								<select type="text" class="addCollaborator_searchOption">
+									<option selected="selected">Select</option>
+								</select>
+							</div>														
+						</div>
+						<div class="addCollaborator_button">
+							<button ng-click="cancel()" class="cancelCollaborator">Cancel</button>
+							<button class="assignCollaborator">Assign Collaborator</button>
+						</div>
+					</div>
+					<!-- Add collaborators pop-up end -->
+				</span>
+				<span><button class="addNewLine_ccf">Add New Line</button></span>
+				<span><button class="importLine_ccf">Import Line Data</button></span>
+				<span><button class="editShared_ccf">Edit Shared Data</button></span>
+			</div>
+		</div>
+		<div style="overflow-x: scroll;">
+			<div class="formTable_secondRow">
+				<div class="formHeaderText">
+					<input ng-click="toggleAll()" ng-model="isAllSelected" id="lineItem_checkbox" type="checkbox" name="checkbox" value="1" ><label for="checkbox">Check</label></input>
+				</div>
+				<div class="formHeaderText">Completed</div>
+				<div class="formHeaderText">Collaborator Group</div>
+				<div class="formHeaderText">Item Line Request Type</div>
+				<div class="formHeaderText">Item Line No.</div>
+				<div class="formHeaderText">SAP System</div>
+				<div class="formHeaderText">Item Type</div>
+			</div>
+			<div class="formTable_thirdRow" ng-repeat = "option in options">
+				<div class="formHeaderText">
+					<input ng-model="option.selected" ng-change="optionToggled()" id="lineItem_checkbox" type="checkbox" name="checkbox" value="1" ><label for="checkbox">Check</label></input>
+				</div>
+				<div class="formHeaderText"></div>
+				<div class="formHeaderText"></div>
+				<div class="formHeaderText"></div>
+				<div class="formHeaderText"></div>
+				<div class="formHeaderText"></div>
+				<div class="formHeaderText"></div>								
+			</div>
+		</div>		
+		<div class="formTable_fourthRow">
+			<div class="buttonContainer">
+				<span ng-controller="updateIncotermCtrl">
+					<button ng-click="updateIncotermOpen()" class="incoterms_ccf">Update Incoterms</button>
+					<!-- Update incoterm pop-up start --> 
+					<div modal="updateIncotermModal" close="cancel()" class="tableSearch">
+						<div class="modal-header">
+							<h4>Update Incoterms</h4>
+							<input type="button" ng-click="cancel()" class="close" value="Close"/>
+						</div>
+						<div class="tableSearch_section">
+							<div class="tableSearch_section_search">
+								<label>Incoterm Name</label>
+								<input type="text" class="tableSearch_searchOption"/>
+							</div>
+							<div class="tableSearch_section_search">
+								<label>Incoterm Location</label>
+								<input type="text" class="tableSearch_searchOption"/>
+							</div>
+							<div class="tableSearch_section_search">
+								<label>Deliovery Lead Time(Days)</label>
+								<input type="text" class="tableSearch_searchOption"/>
+							</div>
+							<div class="tableSearch_section_search">
+								<label>MOQ</label>
+								<input type="text" class="tableSearch_searchOption"/>
+							</div>
+							<div class="tableSearch_section_search">
+								<label>Supplier Name</label>
+								<input type="text" class="tableSearch_searchOption"/>
+							</div>							
+						</div>
+						<div class="tableSearch_button">
+							<button ng-click="cancel()" class="cancelSearch">Cancel</button>
+							<button class="saveSearch">Save</button>
+						</div>
+					</div>
+					<!-- Update incoterm pop-up end -->
+				</span>
+				<span><button class="paymentTerms_ccf">Update Payment Terms</button></span>
+				<span><button class="pricingTerms_ccf">Update Pricing Terms</button></span>
+			</div>
+		</div>
+	</div>	
+</form>						
+<!-- Form Line Item End -->

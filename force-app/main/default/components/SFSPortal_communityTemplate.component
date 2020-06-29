@@ -1,0 +1,444 @@
+<apex:component controller="SFSPortal_CommunityTemplateController" allowDML="true">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <apex:attribute name="actionType" assignTo="{!actionString}" description="Type of Action sending" type="String" required="true" />
+    
+    <apex:slds />
+    
+    <style>
+        
+        .custom-background {
+            background-size: cover;
+            min-height: 100%;
+            width: 100%;
+            position: absolute;
+        }
+        
+        @media screen and (max-width: 1100px) {
+            
+            .custom-background .maintenace-content {
+            
+                margin: 12rem 1rem 6rem 2rem !important;
+                width: 93%;
+            }
+            
+             .custom-background .change-password-content {
+                 
+                 margin-top: 24%!important;
+             }
+        }
+        
+        @media screen and (max-width: 30em) {
+            
+            .custom-background .horizontal-mobile-responsive .subheadingText {
+            
+                border-top: 1px solid lightgrey;
+                padding-top: 0.5rem;
+            }
+        }
+        
+        @media screen and (min-width: 1100px) {
+            
+            .custom-background .maintenace-content {
+            
+                margin: 15rem 8rem 10rem 8rem;
+                width: 80%;
+            }
+            
+             .custom-background .horizontal-mobile-responsive .subheadingText {
+            
+                border-top: none;
+                padding-top: 0;
+            }
+            
+        }   
+        
+        /* 
+        ##Device = Desktops
+        ##Screen = 1281px to higher resolution desktops
+        */
+        
+        @media (min-width: 1280px) {
+            
+            .custom-background .change-password-content {
+                 
+                 margin-top: 14%!important;
+            }
+        }
+        
+        /* 
+        ##Device = Laptops, Desktops
+        ##Screen = B/w 1025px to 1280px
+        */
+        
+        @media (min-width: 1025px) and (max-width: 1279px) {
+            
+            .custom-background .change-password-content {
+                 
+                 margin-top: 14%!important;
+            }
+        }
+        
+        /* 
+        ##Device = Tablets, Ipads (portrait)
+        ##Screen = B/w 768px to 1024px
+        */
+        
+        @media (min-width: 768px) and (max-width: 1024px) {
+            
+            .custom-background .change-password-content {
+                 
+                 margin-top: 14%!important;
+            }
+        }
+        
+        /* 
+        ##Device = Tablets, Ipads (landscape)
+        ##Screen = B/w 768px to 1024px
+        */
+        
+        @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+            
+            .custom-background .change-password-content {
+                 
+                 margin-top: 20%!important;
+            }
+        }
+        
+        /* 
+        ##Device = Low Resolution Tablets, Mobiles (Landscape)
+        ##Screen = B/w 481px to 767px
+        */
+        
+        @media (min-width: 481px) and (max-width: 767px) {
+            
+            .custom-background .change-password-content {
+                 
+                 margin-top: 30%!important;
+            }
+        }
+        
+        /* 
+        ##Device = Most of the Smartphones Mobiles (Portrait)
+        ##Screen = B/w 320px to 479px
+        */
+        
+        @media (min-width: 320px) and (max-width: 480px) {
+            
+            .custom-background .change-password-content {
+                 
+                 margin-top: 45%!important;
+            }
+        }
+        
+        .custom-background .horizontal {
+            
+            border-style: solid;
+            border-color: white;
+            border-width: 1px 0 0 0;
+            margin-top: 8px;
+        }
+        
+        .custom-background .maintenace-content {
+            background: linear-gradient(to right, #414345, #232526);
+            margin: 15rem 8rem 10rem 8rem;
+            padding: 1rem;
+            opacity:0.9;
+            border-radius:6px;
+            font-family: Raleway !important;
+            width: 80% !important
+        }
+        
+        .custom-background .change-password-content {
+            padding:1em;
+            text-align: left;
+            min-width: 280px;
+            max-width: 430px;
+            margin: auto;
+            display: inline-block;
+            position: relative;
+            font-family: Raleway !important;
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.8);
+            text-decoration: none;
+            vertical-align: middle;
+            z-index: 0;
+            background: #232526;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            opacity:0.9;
+            border-radius:6px;
+            margin-top: 14%;
+            margin-bottom: 4rem!important;
+        }
+        
+        .custom-background .footer-content {
+        
+            background: #232526;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            opacity:0.9;
+            padding:1.2rem; 
+            color:white !important;
+        }
+        
+        .custom-background a{
+            color:white !important;
+        }
+        
+        .custom-background .subheadingText{
+            color: #36b2c1;
+            font-size:17px;
+            
+        }
+        
+        .custom-background .footerleft {
+        
+            padding-right: 2rem!important; 
+        }
+        
+        .custom-background .submit-button {
+            background: transparent !important;
+            padding: .5rem !important;
+            border: 1px solid lightgrey !important;
+            border-radius: 4px !important;
+            color: #36b2c1 !important;
+        }
+        
+        .custom-background .change-password-button {
+        
+            width: 100%;
+            margin-top: 12px;
+            margin-bottom: 5px;
+            background-color: #0070d2;
+            border-color: #357ebd;
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            background-image: none;
+            border: none !important;
+            white-space: nowrap;
+            padding: 8px 10px;
+            font-weight: bold !important;
+            font-size: 18px !important;
+            color: white !important;
+            font-family:Raleway !important;
+            border-radius: 8px!important;
+        }
+        
+        .slds-scope {
+            font-family: 'Raleway' !important;
+        }
+        
+        .custom-background .fixed-header {
+            width: 100%;
+            position: fixed;
+            z-index: 5;
+            top: 0;
+        }
+        
+        .custom-background support-phone a:hover {
+            text-decoration:none !important;
+        }
+        
+    </style>
+    
+    <apex:form >
+        
+        <div class="custom-background" style="{!if(uiInstance.Type__c == 'Background Color', ('background-color:' + uiInstance.Value__c), ('background: url(' + imageURLMap['backgroundImageURL'] + ') 50% 50%/cover no-repeat fixed #f4f4f4;background-color'))}">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-size_1-of-1 fixed-header ">
+                    <c:SFSPortal_unauthenticatedHeader uiInstance="{!uiInstance}" imageURLMap="{!imageURLMap}" />
+                    <!-- <img src="{!imageURLMap['companyLogoURL']}"/> -->
+                </div>
+                <div class="{! 'slds-size_10-of-12 slds-small-size_12-of-12 ' + (if(actionType == 'InMaintenance', 'maintenace-content', 'change-password-content'))} ">
+                    <apex:outputPanel rendered="{!actionType == 'InMaintenance'}">
+                        <div >
+                            <p style="color:white;font-size:22px;text-align:center">We apologize, but our website is down for routine site maintenance. <br />
+                                It will be back up very shortly
+                            </p>
+                            <br />
+                            <br />
+                            <p style="color:white;font-size:22px;text-align:center">For urgent request, 
+                                please <a href="{!'tel:' + portfolioInstance.Support_Phone_Number__c}" style="font-size:22px !important;"> call us </a> or send us <a href="{!'mailto:' + portfolioInstance.Support_Email__c}" style="font-size:22px !important;"> an email </a>, <br />
+                                and we will be happy to assist you
+                            </p>
+                            
+                        </div>
+                    </apex:outputPanel>
+                   
+                    <apex:outputPanel rendered="{!actionType == 'ChangePassword'}" id="changePasswordModal">
+                        <div class="">
+                            <span class="slds-p-around_small" >
+                               <div style="text-align:center">
+                                   <span style="color:orange;font-size:22px;">Change Password <br /> </span>
+                               </div>
+                                <div style="color:white;font-size:18px;" class="slds-p-top_large"> 
+                                    
+                                    <div style="text-align:center;">
+                                        <h4 style="color:red;"> {!exceptionText} 
+                                        </h4>
+                                    </div>
+                                    
+                                    <div class="slds-form-element slds-m-around_small">
+                                        <span style="font-weight: bold;"> New Password  </span>
+                                        <div class="slds-form-element__control">
+                                            <apex:inputSecret value="{!passwordString}" styleClass="slds-input" style="line-height: 2.2rem;border-radius: 1rem;color: black;" />
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="slds-form-element slds-p-top_medium slds-m-around_small">
+                                        <span style="font-weight: bold;" >Confirm New Password</span>
+                                        <div class="slds-form-element__control">
+                                            <apex:inputSecret value="{!confirmPasswordString}" styleClass="slds-input" style="line-height: 2.2rem;border-radius: 1rem;color: black;" />
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="slds-p-top_medium">
+                                        <p style="color:orange;">*Password must contain a mix of alpha and numeric characters &amp; the length should be at-least 8 characters. </p>
+                                    </div>
+                                    
+                                </div>
+                            </span>
+                            
+                            <div align="center">
+                                <button class="slds-m-top_large change-password-button" style="{!'background-color:' + uiInstance.Action_Button_Color__c}" type="button" onclick="changeUserPasssword()">Change Password</button>
+                            </div>
+                        </div>
+                    </apex:outputPanel>
+                    
+                </div>
+                <!-- Footer -->
+                <div class="slds-col slds-size_1-of-1 footer-content" style="{!'background-color:' + (if(uiInstance.Footer_Background_Color__c != null, uiInstance.Footer_Background_Color__c, '#414345')) 
+                            + ' !important;color:' + (if(uiInstance.Footer_Text_Color__c != null, uiInstance.Footer_Text_Color__c,'white ')) +' !important' }">
+                    
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_2-of-12 slds-large-size_2-of-12">
+                            <div class="footerleft">
+                                <div class="slds-grid slds-wrap">
+                                     <div class="slds-size_12-of-12 slds-p-bottom_medium">
+                                        <h2><img src="{!imageURLMap['companyLogoURL']}" style="width:150px"/></h2>
+                                        <p style="font-size:14px;">{!portfolioInstance.Footer_Portfolio_Content__c}</p>
+                                    </div>
+                                    
+                                    <div class="slds-size_12-of-12">
+                                        <br/>
+                                        <a href="{!'mailto:' + portfolioInstance.Support_Email__c}" class=" slds-button submit-button">SUBMIT FEEDBACK</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_10-of-12 slds-large-size_10-of-12 ">
+                            <div > 
+                                
+                                <div class="slds-grid slds-wrap">
+                                    <!--
+                                    <div class="slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_4-of-12 slds-large-size_4-of-12 ">
+                                        <h3 class="subheadingText" style="font-size:22px;">Latest News</h3>
+                                        <ul class="pages" >
+                                            <apex:repeat value="{!latestNewsList}" var="latestNews"> 
+                                                <li class="slds-m-top--medium"><a href="{!latestNews.Article_URL__c}" >{!latestNews.Article_Label__c}</a></li>
+                                            </apex:repeat>
+                                        </ul>
+                                    </div>
+                                    -->
+                                    <div class="{!if((footerLinkList != null && footerLinkList.size > 0), 'slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_6-of-12 ', 'slds-hide')}">
+                                        <h3 class="subheadingText " style="font-size:22px;">{!portfolioInstance.Name}</h3>
+                                        <div class=" slds-grid slds-wrap">
+                                            <apex:repeat value="{!footerLinkList}" var="footerLink"> 
+                                                <div class="slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_4-of-12 slds-m-top_medium">
+                                                    <apex:outputPanel rendered="{!footerLink.Article_Label__c == 'Contact Us'}">
+                                                        <div>
+                                                            <a href="{!'mailto:' + portfolioInstance.Support_Email__c}" >Contact Us</a>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!footerLink.Article_Label__c != 'Contact Us'}">
+                                                        <div>
+                                                            <a href="{!footerLink.Article_URL__c}" target="__blank">{!footerLink.Article_Label__c}</a>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </div>
+                                            </apex:repeat>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="{!if((footerLinkList != null && footerLinkList.size > 0), 'slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_6-of-12 horizontal-mobile-responsive', 'slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_12-of-12 horizontal-mobile-responsive')}">
+                                        <h3 class="subheadingText " style="font-size:22px;">Business Hours</h3>
+                                        
+                                        <div class=" slds-grid slds-wrap ">
+                                            <div class="{!if((footerLinkList != null && footerLinkList.size > 0), 'slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_6-of-12 slds-m-top_medium', 'slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_3-of-12 slds-large-size_3-of-12 slds-m-top_medium')}">
+                                                <div class="slds-form-element ">
+                                                    <p><b>Monday-Friday</b></p>
+                                                    <div class="slds-form-element__control">
+                                                        <p>{!portfolioInstance.Business_Hours__c}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="{!if((footerLinkList != null && footerLinkList.size > 0), 'slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_6-of-12 slds-m-top_medium', 'slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_3-of-12 slds-large-size_3-of-12 slds-m-top_medium')}" >
+                                                <div class="slds-form-element ">
+                                                    <p>Call</p>
+                                                    <div class="slds-form-element__control">
+                                                        <span class="slds-p-left_xx-small support-phone">
+                                                            <a  href="{!'tel:' + portfolioInstance.Support_Phone_Number__c}">{!portfolioInstance.Support_Phone_Number__c}</a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="{!if((footerLinkList != null && footerLinkList.size > 0), 'slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_6-of-12 slds-m-top_medium slds-p-right_medium', 
+                                                        'slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_3-of-12 slds-large-size_3-of-12 slds-m-top_medium slds-p-right_medium')}">
+                                                <div class="slds-form-element ">
+                                                    <div class="slds-form-element__control">
+                                                        <span class="{!if(portfolioInstance.Address__c != null, 'slds-p-left_xx-small sans-serif', 'slds-hide')}">
+                                                            {!portfolioInstance.Address__c},
+                                                        </span>
+                                                        
+                                                        <span class="{!if(portfolioInstance.City__c != null, 'slds-p-left_xx-small sans-serif', 'slds-hide')}">
+                                                            {!portfolioInstance.City__c},
+                                                        </span>
+                                                        <span class="{!if(portfolioInstance.State__c != null, 'slds-p-left_xx-small sans-serif', 'slds-hide')}">
+                                                            {!portfolioInstance.State__c},
+                                                        </span>
+                                                        
+                                                        <span class="{!if(portfolioInstance.Zipcode__c != null, 'slds-p-left_xx-small sans-serif', 'slds-hide')}">
+                                                            {!portfolioInstance.Zipcode__c}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="{!if((footerLinkList != null && footerLinkList.size > 0), 'slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_6-of-12 slds-m-top_medium', 'slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_3-of-12 slds-large-size_3-of-12 slds-m-top_medium')}">
+                                                <div class="slds-form-element ">
+                                                    <p>Fax</p>
+                                                    <div class="slds-form-element__control">
+                                                        <span class="slds-p-left_xx-small support-phone">
+                                                            <a  href="{!'tel:' + portfolioInstance.Support_Fax_Number__c}">{!portfolioInstance.Support_Fax_Number__c}</a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="horizontal slds-p-bottom_small slds-m-top_medium"/>
+                                <p style="text-align: justify;font-size:14px;">
+                                    {!portfolioInstance.Footer_Contact_Content__c} 
+                                </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align:center;" class="slds-p-top_medium">
+                        
+                        <p style="font-size:14px;">{!portfolioInstance.Footer_Name__c} &nbsp;{!YEAR(TODAY())}. All rights reserved</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <apex:actionFunction action="{!changeUserPasssword}" name="changeUserPasssword" reRender="changePasswordModal"/>
+        
+    </apex:form>
+</apex:component>

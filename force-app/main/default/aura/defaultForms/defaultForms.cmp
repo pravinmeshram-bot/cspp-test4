@@ -1,0 +1,80 @@
+<aura:component controller="SFSPortal_DocumentsController" extends="c:abstractServer" implements="forceCommunity:availableForAllPageTypes">
+    <aura:attribute name="formList" type="List" access="public" default="[]" />
+    <aura:attribute name="documentWrapper" type="Map" access="public" default="{}" />
+    <aura:attribute name="showPreviewModal" type="Boolean" />
+    <aura:attribute name="closePreviewModel" type="Boolean" />
+    <aura:attribute name="documentIdToPreview" type="String" access="public"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <table class="slds-table slds-table_bordered slds-table_striped slds-table_cell-buffer slds-table_fixed-layout">
+        <thead>
+            <tr class="slds-text-heading_label">
+                <th scope="col"><div class="slds-truncate" title="ID">Title</div></th>
+                <th scope="col" class="responsive-default-forms"><div class="slds-truncate " style="text-align: center;" title="Type">File Type</div></th>
+                <th scope="col" class="responsive-default-forms"><div class="slds-truncate " title="Name">Description</div></th>
+                <th scope="col" class="responsive-default-forms-size slds-show_medium" >
+                    <div class="slds-truncate" title="Type" style="text-align: center;">Download</div>
+                </th>
+                <th scope="col" class="responsive-default-forms-size" >
+                     <div class="slds-truncate" title="Type" style="text-align: center;">View</div> 
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <aura:iteration items="{!v.documentWrapper.attachmentList1}" var="doc" indexVar="index">
+                <tr>
+                    <td>
+                        <div class="slds-truncate full-title" style="font-size:14px !important;" title="{!doc.Title}">{!doc.Title}</div>
+                    </td>
+                    <td class="responsive-default-forms"><div class="slds-truncate" style="font-size:14px !important;text-align: center;" title="{!doc.FileType}">{!doc.FileType}</div></td>
+                    <td class="responsive-default-forms"><div class="slds-truncate" style="font-size:14px !important;" title="{!doc.Description}">{!doc.Description}</div></td>
+                    <td class="slds-show_medium">
+                        <div class="slds-truncate" title="{!doc.id}" style="text-align: center;">
+                            <a aura:id="fileDownloadclck_defaultForms" target="_blank" data-index="{!index}" onclick="{!c.downloadDocument}">
+                                <lightning:icon iconName="utility:download" size="x-small" style="text-align: center;"/> 
+                            </a>
+                        </div>
+                    </td>
+                    <td >
+                        <div class="slds-truncate" title="{!doc.id}" style="text-align: center;">
+                            <!--a aura:id="fileDownloadclck_defaultForms" href="{!v.documentWrapper.urlKeyPrefix + '/servlet/servlet.FileDownload?file=' + doc.Id}" preview="{!doc.Name}" >
+                                <lightning:icon iconName="utility:preview" size="x-small" /> 
+                            </a-->
+                            <a aura:id="fileDownloadclck_defaultForms" target="_blank" data-index="{!index}" onclick="{!c.showDocumentPreview}">
+                               <!--view--> <lightning:icon iconName="utility:preview" size="x-small" style="text-align: center;"/>  
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </aura:iteration>
+            <aura:if isTrue="{!!v.documentWrapper.attachmentList1.length}">
+                <tr class="default-forms-col-span">
+                	<td colspan="2" style="text-align:center;">
+                        <span>No Record(s) Found</span>
+                    </td>
+                    <td colspan="4" style="text-align:center;">
+                        <span>No Record(s) Found</span>
+                    </td>
+                </tr>
+            </aura:if>
+        </tbody>
+    </table>
+    <aura:if isTrue="{!v.showPreviewModal}">
+        <lightning:layout class="slds-grid slds-wrap">
+                <lightning:layoutItem size="12" class="slds-p-bottom_x-small" smallDeviceSize="12" mediumDeviceSize="2" largeDeviceSize="2" >
+                        <section onclick="{!c.closePreviewModel}" role="dialog" aria-modal="true" class="slds-modal slds-fade-in-open">
+                            <div class="slds-modal__container">
+                                <div class="slds-modal__content slds-p-around_medium slds-text-align_center"
+                                     style="background: transparent;">
+                                    <div style="width: 30%; margin: 0 auto; text-align: center;">
+                                        <!--<lightning:fileCard> to preview file using content document Id -->
+                                        <lightning:fileCard fileId="{!v.documentIdToPreview}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <div class="slds-backdrop slds-backdrop_open"></div>
+            </lightning:layoutItem>
+        </lightning:layout>
+                    </aura:if>
+</aura:component>

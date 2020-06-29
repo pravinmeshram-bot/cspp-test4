@@ -1,0 +1,160 @@
+<!-- TradeLinesWithOffersAndPayments -->
+<apex:component controller="TradeLinesWithOffersPaymentsController" allowDML="true">
+   <apex:attribute name="recordId" assignTo="{!programId}" type="String" required="true" description="Record Id of the Program." />
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+   <!--Salesforce Lightning Design System Static Resource-->
+   <apex:stylesheet value="{!URLFOR($Resource.slds, 'assets/styles/salesforce-lightning-design-system-vf.min.css')}" />
+   <script>
+      var j$ = jQuery.noConflict();
+   </script>
+   <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <head>
+         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      </head>
+      <!--The Salesforce Lightning Design System Wrapping Div with Scoping Class -->
+      <div class="minerva18">
+         <fieldset class="slds-box slds-theme--default slds-container">
+            <!-- Single Section Wrapper With Three SLDS Sections, The Wrapper Div Class must be 'Minerva18SectionGroupSingle' -->
+            <div class="Minerva18SectionGroupSingle" >
+               <!--SLDS Section Start-->
+               <apex:repeat value="{!tradeLines}" var="tradeLine">
+                  <div class="slds-section">
+                     <h3 class="slds-section__title">
+                        <button class="slds-button slds-section__title-action">
+                           <svg aria-hidden="true" class="slds-section__title-action-icon slds-button__icon slds-button__icon--left">
+                              <use xlink:href="{!$Resource.slds}/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+                           </svg>
+                            Trade Line: <apex:outputLink value="/{!tradeLine.Id}" target="_blank"> {!tradeLine.Name}</apex:outputLink>
+                           
+                        </button>
+                     </h3>
+                    
+                      <apex:outputPanel rendered="{!isOfferAvalable}" id="thePanel">
+                     	<div class="slds-section__content slds-grid slds-wrap slds-p-around_large">
+                            <div class="slds-section__title slds-col slds-size_1-of-1"> <b>Offer Details: </b> </div>
+                            <div class="slds-col slds-size_1-of-2">
+                               <dl class="slds-list_horizontal slds-wrap">
+                                  <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-around_xx-small" title="Offer Number">Offer Number:</dt>
+                                  <dd class="slds-item_detail slds-p-around_xx-small">
+                                  	  <apex:outputLink value="/{!offersByTradelineId[tradeLine.Id].Id}" target="_blank"> {!offersByTradelineId[tradeLine.Id].Name}</apex:outputLink>   
+                                  </dd>
+                               </dl>
+                               <dl class="slds-list_horizontal slds-wrap">
+                                  <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-around_xx-small" title="Latest Offer">Latest Offer:</dt>
+                                  <dd class="slds-item_detail slds-p-around_xx-small">
+                                      <input type="checkbox" name="latestOffer" disabled="true" checked="{!offersByTradelineId[tradeLine.Id].Latest_Offer__c}"/>
+                                      
+                                  </dd>
+                               </dl>
+                               <dl class="slds-list_horizontal slds-wrap">
+                                  <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-around_xx-small" title="Account Name">Account Name:</dt>
+                                  <dd class="slds-item_detail slds-p-around_xx-small">
+                                     {!offersByTradelineId[tradeLine.Id].Account_Name__c}
+                                  </dd>
+                               </dl>
+                               <dl class="slds-list_horizontal slds-wrap">
+                                  <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-around_xx-small" title="NDS Creditor Info">NDS Creditor Info:</dt>
+                                  <dd class="slds-item_detail slds-p-around_xx-small">
+                                     {!offersByTradelineId[tradeLine.Id].NDS_Creditor_Info__c}
+                                  </dd>
+                               </dl>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                               <dl class="slds-list_horizontal slds-wrap">
+                                  <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-around_xx-small" title="Current Balance">Current Balance:</dt>
+                                  <dd class="slds-item_detail slds-p-around_xx-small">
+                                     {!offersByTradelineId[tradeLine.Id].Current_Balance__c}
+                                  </dd>
+                               </dl>
+                               <dl class="slds-list_horizontal slds-wrap">
+                                  <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-around_xx-small" title="Offer Amount">Offer Amount:</dt>
+                                  <dd class="slds-item_detail slds-p-around_xx-small">
+                                     {!offersByTradelineId[tradeLine.Id].nu_dse__Offer_Amount__c}
+                                  </dd>
+                               </dl>
+                               <dl class="slds-list_horizontal slds-wrap">
+                                  <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-around_xx-small" title="Current Balance %">Current Balance %:</dt>
+                                  <dd class="slds-item_detail slds-p-around_xx-small">
+                                     {!offersByTradelineId[tradeLine.Id].Current_Balance_Percentage__c}
+                                  </dd>
+                               </dl>
+                            </div>
+                            <div class="slds-section__title"> <b>Payments: </b> </div><br/>
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                               <thead>
+                                  <tr class="slds-line-height_reset">
+                                     <th class="" scope="col">
+                                        <div class="slds-truncate" title="Opportunity Name">Payment Name</div>
+                                     </th>
+                                     <th class="" scope="col">
+                                        <div class="slds-truncate" title="Schedule Date">Schedule Date</div>
+                                     </th>
+                                     <th class="" scope="col">
+                                        <div class="slds-truncate" title="Amount">Amount</div>
+                                     </th>
+                                     <th class="" scope="col">
+                                        <div class="slds-truncate" title="Transaction Status">Transaction Status</div>
+                                     </th>
+                                  </tr>
+                               </thead>
+                               <tbody>
+                                  <apex:repeat value="{!offersByTradelineId[tradeLine.Id].Id}" var="offerId">
+                                     <apex:repeat value="{!paymentsByOfferId[offerId]}" var="payment">
+                                        <tr class="slds-hint-parent">
+                                           <th data-label="Payment Name" scope="row">
+                                              <div class="slds-truncate" title="Payment Name">
+                                                  <apex:outputLink value="/{!payment.Id}" target="_blank"> {!payment.Name}</apex:outputLink>
+                                              </div>
+                                           </th>
+                                           <td data-label="Schedule Date">
+                                              <div class="slds-truncate" title="Schedule Date">{!payment.nu_dse__Schedule_Date__c}</div>
+                                           </td>
+                                           <td data-label="Amount">
+                                              <div class="slds-truncate" title="Amount">{!payment.nu_dse__Amount__c}</div>
+                                           </td>
+                                           <td data-label="Transaction Status">
+                                              <div class="slds-truncate" title="Transaction Status">{!payment.nu_dse__Transaction_Status__c}</div>
+                                           </td>
+                                        </tr>
+                                     </apex:repeat>
+                                  </apex:repeat>
+                               </tbody>
+                            </table>
+                         </div>
+                      </apex:outputPanel>
+                  </div>
+               </apex:repeat>
+            </div>
+            <!-- Single Section Wrapper End-->
+         </fieldset>
+      </div>
+      <script>
+         /*SLDS Sections*/
+         j$('.slds-section__content').hide();
+         j$('.slds-section__title').find('button').find('svg').css('transition', '0.3s');
+         j$('.slds-section__title').click(function(){
+             if(j$(this).parent().parent().hasClass('Minerva18SectionGroupSingle')){
+                 if(j$(this).parent().hasClass('slds-is-open')){
+                     j$(this).parent().removeClass('slds-is-open');
+                     j$(this).parent().find('.slds-section__content').hide();
+                 }
+                 else{
+                     j$(this).parent().parent().find('.slds-section').removeClass('slds-is-open');
+                     j$(this).parent().parent().find('.slds-section__content').hide();
+                     j$(this).parent().toggleClass('slds-is-open');
+                     j$(this).parent().find('.slds-section__content').show();
+                 }    
+             }
+             else{
+                 j$(this).parent().toggleClass('slds-is-open');
+                 if(j$(this).parent().hasClass('slds-is-open')){
+                     j$(this).parent().find('.slds-section__content').show();
+                 }else{
+                     j$(this).parent().find('.slds-section__content').hide();
+                 }
+             }
+         });
+         /*SLDS Sections*/
+      </script>
+   </html>
+</apex:component>

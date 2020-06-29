@@ -1,0 +1,104 @@
+<aura:component implements="force:appHostable,forceCommunity:availableForAllPageTypes" extends="c:abstractServer" controller="SFSPortal_ADHOCPaymentController" access="public">
+    
+    <aura:attribute name="errorMessage" type="String" required="false" description="" access="public"/>
+    <aura:attribute name="paymentId" type="String" access="public" />
+    <aura:attribute name="currentClickedPayment" type="Map" access="public" default="{}" />    
+    <aura:attribute name="showError" type="Boolean" required="true" description="" default="false" access="public"/>
+    <aura:attribute name="isModalOpen" type="Boolean" description="" default="false" access="public"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" access="public" />
+    
+    <div style="background: rgb(255, 255, 255);border-radius: 0.25rem;" aria-hidden="false">
+        <aura:if isTrue="{!v.showError}">
+            <div style="color:#FF0000;" class="slds-p-around_medium slds-align_absolute-center">
+                <ui:outputRichText value="{!v.errorMessage}"/>
+            </div>
+        </aura:if>
+        <!--<c:miniCalendar scope="False"/>-->
+        <aura:if isTrue="{!v.currentClickedPayment.id}">
+            <!--<div align="center" style="font-weight:bold;background:whitesmoke;">
+                <ui:outputText value="{!v.currentClickedPayment.name }"/>
+            </div>-->
+            <div style="background:white !important;">
+                <lightning:layout class="slds-wrap">
+                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                        <lightning:layout horizontalAlign="spread" class="slds-wrap">
+                            <lightning:layoutItem class="adjustHelpText" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6">
+                                <div class="header-column">
+                                    <!-- <label class="slds-form-element__label">Name</label>
+                                    <p><ui:outputText value="{!v.currentClickedPayment.name }"/></p> -->
+                                    <label class="slds-form-element__label">Bank Account Number</label>
+                                    <p>{!v.currentClickedPayment.helpTextMap.masked_bank_account_number }</p>
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem class="adjustHelpText" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6">
+                                <div class="header-column">
+                                    <label class="slds-form-element__label">Original Payment Date</label>
+                                  <!--  <aura:if isTrue="{!!empty(v.currentClickedPayment.helpTextMap.nu_dse__Schedule_Date__c)}">
+                                        <lightning:helptext content="{!v.currentClickedPayment.helpTextMap.nu_dse__Schedule_Date__c}"/>
+                                    </aura:if>  -->
+                                    <p><ui:outputDate value="{!v.currentClickedPayment.scheduleDate}" /></p>
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem class="adjustHelpText" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6">
+                                <div class="header-column">
+                                    <label class="slds-form-element__label">Payment Amount</label>
+                                  <!--  <aura:if isTrue="{!!empty(v.currentClickedPayment.helpTextMap.nu_dse__Amount__c)}">
+                                        <lightning:helptext content="{!v.currentClickedPayment.helpTextMap.nu_dse__Amount__c}"/>
+                                    </aura:if> -->
+                                    <p><ui:outputCurrency value="{!v.currentClickedPayment.amount}"/></p>
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem class="adjustHelpText" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6">
+                                <div class="header-column">
+                                    <label class="slds-form-element__label">Original Payment Status</label>
+                                   <!-- <aura:if isTrue="{!!empty(v.currentClickedPayment.helpTextMap.nu_dse__Transaction_Status__c)}">
+                                        <lightning:helptext content="{!v.currentClickedPayment.helpTextMap.nu_dse__Transaction_Status__c}"/>
+                                    </aura:if> -->
+                                    <p><ui:outputText value="{!v.currentClickedPayment.transactionStatus }"/></p>
+                                </div>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                        <aura:if isTrue="{!or(equals(v.currentClickedPayment.transactionStatus,'Cancelled'),
+                                         equals(v.currentClickedPayment.transactionStatus,'Failed'))}">
+                            <aura:if isTrue="{!v.currentClickedPayment.errorMessage}">
+                                <p padding="around-small" style="background:lightyellow;color:red;padding:4px;">{!v.currentClickedPayment.errorMessage}</p>
+                                <aura:set attribute="else">
+                                    <!-- <p padding="around-small" style="background:lightyellow;padding:4px;">Note: Your reschedule date must be at least 3 days from now and before your next draft date.</p> -->
+                                    <p padding="around-small" style="background:lightyellow;padding:4px;">
+                                        "Please allow 3 business days to reschedule your draft amount.Note if an active settlement payments is
+                                         scheduled to be paid to your creditors prior to the date you select this may cause a default on your 
+                                         settlement agreement. If you are unsure of your next creditor payment date please call us so you can select a draft date prior."      </p>
+                                    <lightning:layout horizontalAlign="spread">
+                                        <lightning:layoutItem padding="around-small"  class="reschedule-date-responsive">
+                                            <lightning:input aura:id="dateval_reschedule" type="date" name="input8" label="Select Reschedule Date" value=""  min="{!v.currentClickedPayment.minDate}" max="{!v.currentClickedPayment.maxDate}" />
+                                        </lightning:layoutItem>
+                                    </lightning:layout>
+                                    <lightning:layout horizontalAlign="spread" >
+                                        <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6" class="slds-align_absolute-center">
+                                            <lightning:button aura:id="cancelbtn_reschedule" variant="neutral" label="Cancel" title="Brand action" onclick="{! c.cancelReschedule }" />
+                                            <lightning:button aura:id="submitbtn_reschedule" variant="brand" label="Submit" title="Brand action" onclick="{! c.toOpenModal }" />
+                                        </lightning:layoutItem>
+                                    </lightning:layout>  
+                                </aura:set>
+                            </aura:if>
+                        </aura:if>
+                    </lightning:layoutItem>
+                </lightning:layout>          
+                <aura:if isTrue="{!v.isModalOpen}">
+                    <c:customModal header="Confirm" headerStyle="slds-theme_alert-texture slds-theme_warning">
+                        <aura:set attribute="body">
+                            <div class="slds-text-align_center slds-m-top_xx-large">Are you sure you need to reschedule the payment?</div>
+                        </aura:set>
+                        <aura:set attribute="footer">
+                            <lightning:button aura:id="yesbtn_reschedule" variant="brand" label="Yes" onclick="{!c.createNewNSFPayment}" />
+                            <lightning:button aura:id="nobtn_reschedule" variant="brand" label="No" title="No"  onclick="{!c.tocloseModal}" />
+                        </aura:set>
+                    </c:customModal>
+                </aura:if>    
+            </div>
+        </aura:if>
+    </div>
+</aura:component>

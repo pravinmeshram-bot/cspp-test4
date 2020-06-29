@@ -1,0 +1,28 @@
+<apex:page standardController="Account" tabStyle="Account" showHeader="true">
+
+    <apex:includeScript value="/support/console/39.0/integration.js"/><!-- you need to include this in your page for the new tag to work -->
+    <script type="text/javascript">
+       var callback = function (response) {
+           if (response.result) {
+              alert('Click to dial was enabled.');
+           } else {
+              alert('Click to dial was not enabled.');
+           }
+        };
+       function enableClickToDial() {
+           console.log('enableClickToDial called');
+           //Invokes API method
+           sforce.interaction.cti.enableClickToDial(callback);
+       }
+    </script>
+    <apex:pageBlock >
+        <apex:pageBlockSection title="Account Information">
+            <apex:outputField value="{!account.name}"/>             
+            <apex:outputField value="{!account.industry}"/>
+            <!-- may be we need to apply CSS to align this properly -->
+            Phone: <support:clickToDial number="{!account.phone}" entityId="{!account.Id}" />
+            <apex:outputLabel value="Phone"><support:clickToDial number="{!account.phone}" entityId="{!account.Id}" /> </apex:outputLabel>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    <button type="button" onclick="enableClickToDial();">Enable</button>
+</apex:page>

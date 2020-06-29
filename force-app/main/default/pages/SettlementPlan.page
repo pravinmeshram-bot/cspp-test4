@@ -1,0 +1,521 @@
+<apex:page showHeader="false" sidebar="false" controller="SettlementPlan" docType="html-5.0">
+    <apex:includeScript value="{!URLFOR($Resource.jQueryForPopup, '/jQuery/jquery-1.8.2.min.js')}"  />
+    <apex:includeScript value="{!URLFOR($Resource.jQueryForPopup, '/jQuery/ui/jquery-ui-1.9.1.custom.min.js')}"  />
+    <apex:includeScript value="{!URLFOR($Resource.jQueryForPopup, '/jQuery/postmessage/jquery.ba-postmessage.js')}"  />
+    <apex:includeScript value="{!URLFOR($Resource.jQueryForPopup, '/jQuery/bbq/jquery.ba-bbq.min.js')}"  />
+    <apex:stylesheet value="{!URLFOR($Resource.jQueryForPopup, '/jQuery/ui/css/ui-lightness/jquery-ui-1.9.1.custom.min.css')}"  />
+    <style>
+        .scheduledDate_Field {
+            border: 1px solid rgb(221, 219, 218)!important;
+            border-radius: .25rem!important;
+            width: 100%!important;
+            padding: 0 1rem 0 .75rem!important;
+            line-height: 1.875rem!important;
+        }
+        
+        .dueDate_Field {
+            border: 1px solid rgb(221, 219, 218)!important;
+            border-radius: .25rem!important;
+            width: 100%!important;
+            padding: 0 1rem 0 .75rem!important;
+            line-height: 1.875rem!important;
+        }
+        /* toast message css */
+        .required-true.fieldRequired, .required-true.error {
+            border: 2px solid rgb(255, 1, 13) !important;
+        }
+        
+        .requiredInput .errorMsg {
+            display: none !important;
+        }
+        .slds-scope .slds-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+        .slds-scope .slds-button__icon--stateful, .slds-scope .slds-button__icon_stateful {                
+                width: 1rem !important;
+                height: 1rem !important;
+        }
+        .required-true {            
+            border-left-color: red !important;
+            border-left-width: medium !important;
+        }
+        .messageClass-error {
+            
+            background-color : rgb(194, 57, 52) !important;
+            color : white !important;
+        }
+        
+        .messageClass-success {
+            
+            background-color : green !important;
+            color : white !important;
+        }
+        
+        .messageClass {
+            
+            background-color : black !important;
+        }
+        
+        /* End of toast message css */
+    </style>
+    
+    <apex:slds />
+    <apex:form id="settlemetTableId">
+        <apex:outputPanel rendered="{!IF(paymentList.size != 0, True, False)}">
+            
+            <div class="slds-card">
+                <div class="slds-card__header slds-grid slds-assistive-text">
+                      
+                </div>
+                <div class="slds-card__body slds-card__body_inner">
+                
+                    <div>
+                        <div id="fullSpinner" class="slds-spinner_container" style="display:none;">
+                            <div class="slds-spinner--brand slds-spinner slds-spinner--medium" role="alert">
+                                <span class="slds-assistive-text">Loading</span>
+                                <div class="slds-spinner__dot-a"></div>
+                                <div class="slds-spinner__dot-b"></div>
+                            </div>
+                        </div>
+                    </div>
+                   <!-- Toast message block -->
+                    <div id="toastmessage_container" class="slds-notify_container" style="display:none;">
+                        <div id="message_toast-theme" class="slds-notify slds-notify_toast " role="alert">
+                            <span class="slds-assistive-text">success</span>
+                            <button class="slds-button slds-notify__close slds-button--icon-inverse" onclick="hideMessage_Toast();" type="button">
+                                <span style="font-family: Arial,Helvetica,sans-serif;">X</span>
+                            </button>
+                            <div id="toastmessage-content" class="slds-notify__content" style="font-family: Arial,Helvetica,sans-serif;"></div>
+                        </div>
+                    </div>
+                    <!-- END OF Toast message block -->
+                    
+                    <div style="height: 24rem; overflow: auto;" id="settlementTableId">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Name">Name</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Processor">Processor</div>
+                                    </th>
+                                    <!-- Commented by Praveen as per Akash inputs
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Payment Type">Type</div>
+                                    </th> -->
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Transaction Status">Status</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Due Date">Due Date</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Schduled Date">Schduled Date</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Amount">Amount</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Total Amount">Total Amount</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="RecordType">Record Type</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Action">Action</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class ="slds-scrollable" style="overflow-y: scroll;">
+                                <apex:variable var="index" value="{!0}" />
+                                <apex:repeat value="{!paymentList}" var="payment">
+                                    <tr class="slds-hint-parent">
+                                        <td data-label="Name">
+                                            <div class="slds-truncate" >
+                                                <apex:outputField value="{!payment.Name}"/>
+                                            </div>
+                                        </td>
+                                        <td data-label="Processor">
+                                            <div class="slds-truncate" >
+                                                <apex:outputField value="{!payment.Processor__c}"/>
+                                            </div>
+                                        </td>
+                                        <!-- Commented by Praveen as per Akash inputs
+                                        <td data-label="STATUS">
+                                            <div class="slds-truncate" >
+                                                <apex:outputField value="{!payment.nu_dse__Payment_Type__c }"/>
+                                            </div>
+                                        </td> -->
+                                        <td data-label="STATUS">
+                                            <div class="slds-truncate" >
+                                                <apex:outputField value="{!payment.nu_dse__Transaction_Status__c}"/>
+                                            </div>
+                                        </td>
+                                        <td data-label="Due Date">
+                                            <apex:outputPanel rendered="{!(payment.nu_dse__Transaction_Status__c == 'Pending' 
+                                            || payment.nu_dse__Transaction_Status__c == 'Tentative' || payment.nu_dse__Transaction_Status__c == 'Scheduled')
+                                            && (offerList != null && (offerList[0].nu_dse__Status__c != 'Canceled')) &&  
+                                            ((payment.nu_dse__Offer__r.DNL_Status__c != 'Pre-TILA Signed' && offerList != null && offerList[0].nu_dse__Status__c != 'Accepted') || (payment.nu_dse__Offer__r.DNL_Status__c == 'Pre-TILA Signed' && payment.nu_dse__Schedule_Date__c > today() && isModify_Flag)) }">
+                                           <!--<apex:outputPanel rendered="{!((payment.nu_dse__Transaction_Status__c == 'Pending' 
+                                            || payment.nu_dse__Transaction_Status__c == 'Tentative' || payment.nu_dse__Transaction_Status__c == 'Scheduled')
+                                            && (offerList != null && offerList[0].nu_dse__Status__c != 'Canceled' ) && (payment.nu_dse__Transaction_Status__c != 'Completed' || payment.nu_dse__Transaction_Status__c != 'Cancelled' )) 
+                                            || (payment.nu_dse__Offer__r.DNL_Status__c != '  Pre-TILA Signed' && payment.nu_dse__Schedule_Date__c > today()) }">--> <!-- ND-390 Uchit -->
+                                                <div class="slds-truncate" >
+                                                    <!--<apex:inputField styleClass="slds-input required-true datePicker" value="{!payment.nu_dse__Schedule_Date__c}" showDatePicker="true" />-->
+                                                    <input id="{!index}--due-date" type="date" class="form-control required-false dueDate_Field" data-toggle="datepicker" 
+                                                    value="{!paymentWrapperList[index].duedate}" placeholder="Enter duedate" 
+                                                    pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" 
+                                                    onchange="changedueDate({!index}+'--due-date', {!index})" />
+                                                    <!--<apex:input type="date" value="{!paymentWrapperList[index].dat}"/>
+                                                    <apex:inputText id="inputFieldId" size="12" value="{!paymentWrapperList[index].scheduledDate}" style="width:72px;text-align:center;" onclick="DatePicker.pickDate(false, this, false);" onfocus="DatePicker.pickDate(false, this, false);"/> --> 
+                                                </div>
+                                            </apex:outputPanel> 
+                                            <apex:outputPanel rendered="{!((payment.nu_dse__Transaction_Status__c != 'Pending' && payment.nu_dse__Transaction_Status__c != 'Tentative' 
+                                            && payment.nu_dse__Transaction_Status__c != 'Scheduled') || (offerList != null && offerList[0].nu_dse__Status__c == 'Canceled')) || (payment.nu_dse__Offer__r.DNL_Status__c != 'Pre-TILA Signed' && offerList != null && offerList[0].nu_dse__Status__c == 'Accepted')
+                                            || (payment.nu_dse__Schedule_Date__c <= today()) || (payment.nu_dse__Offer__r.DNL_Status__c == 'Pre-TILA Signed' && !isModify_Flag)}"> <!-- ND-390 Uchit -->
+                                                <div class="slds-truncate" >
+                                                    <apex:outputField styleClass="slds-input" value="{!payment.Due_Date__c}" />
+                                                </div>
+                                            </apex:outputPanel>
+                                            
+                                        </td>
+                                        <td data-label="Schduled Date">
+                                            
+                                            <apex:outputPanel rendered="{!(payment.nu_dse__Transaction_Status__c == 'Pending' 
+                                            || payment.nu_dse__Transaction_Status__c == 'Tentative' || payment.nu_dse__Transaction_Status__c == 'Scheduled')
+                                            && (offerList != null && (offerList[0].nu_dse__Status__c != 'Canceled')) &&  
+                                            ((payment.nu_dse__Offer__r.DNL_Status__c != 'Pre-TILA Signed' && offerList != null && offerList[0].nu_dse__Status__c != 'Accepted') || (payment.nu_dse__Offer__r.DNL_Status__c == 'Pre-TILA Signed' && payment.nu_dse__Schedule_Date__c > today() && isModify_Flag)) }"> <!-- ND-390 Uchit -->
+                                                <div class="slds-truncate" >
+                                                    <!--<apex:inputField styleClass="slds-input required-true datePicker" value="{!payment.nu_dse__Schedule_Date__c}" showDatePicker="true" />-->
+                                                    <input id="{!index}--date" type="date" class="form-control required-true scheduledDate_Field" data-toggle="datepicker" 
+                                                    value="{!paymentWrapperList[index].scheduledDate}" placeholder="Enter scheduled date" 
+                                                    pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" 
+                                                    onchange="changeDate({!index}+'--date', {!index})" />
+                                                    <!--<apex:input type="date" value="{!paymentWrapperList[index].dat}"/>
+                                                    <apex:inputText id="inputFieldId" size="12" value="{!paymentWrapperList[index].scheduledDate}" style="width:72px;text-align:center;" onclick="DatePicker.pickDate(false, this, false);" onfocus="DatePicker.pickDate(false, this, false);"/> --> 
+                                                </div>
+                                            </apex:outputPanel> 
+                                            <apex:outputPanel rendered="{!((payment.nu_dse__Transaction_Status__c != 'Pending' && payment.nu_dse__Transaction_Status__c != 'Tentative' 
+                                            && payment.nu_dse__Transaction_Status__c != 'Scheduled') || (offerList != null && offerList[0].nu_dse__Status__c == 'Canceled')) || (payment.nu_dse__Offer__r.DNL_Status__c != 'Pre-TILA Signed' && offerList != null && offerList[0].nu_dse__Status__c == 'Accepted')
+                                            || (payment.nu_dse__Schedule_Date__c <= today()) || (payment.nu_dse__Offer__r.DNL_Status__c == 'Pre-TILA Signed' && !isModify_Flag)}"> <!-- ND-390 Uchit -->
+                                                <div class="slds-truncate" >
+                                                    <apex:outputField styleClass="slds-input" value="{!payment.nu_dse__Schedule_Date__c}" />
+                                                </div>
+                                            </apex:outputPanel>
+                                        </td>
+                                        <td data-label="Amount">
+                                            <apex:outputPanel rendered="{!(payment.nu_dse__Transaction_Status__c == 'Pending' 
+                                            || payment.nu_dse__Transaction_Status__c == 'Tentative' || payment.nu_dse__Transaction_Status__c == 'Scheduled')
+                                            && (offerList != null && (offerList[0].nu_dse__Status__c != 'Canceled')) &&  
+                                            ((payment.nu_dse__Offer__r.DNL_Status__c != 'Pre-TILA Signed' && offerList != null && offerList[0].nu_dse__Status__c != 'Accepted') || (payment.nu_dse__Offer__r.DNL_Status__c == 'Pre-TILA Signed' && payment.nu_dse__Schedule_Date__c > today() && isModify_Flag)) }"> <!-- ND-390 Uchit -->
+                                                <div class="slds-truncate" > 
+                                                    <apex:inputField styleClass="slds-input required-true" value="{!payment.nu_dse__Amount__c}" onchange="showFullSpinner(); autoPaymentAdjustment();"/>
+                                                </div>
+                                                    
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!((payment.nu_dse__Transaction_Status__c != 'Pending' && payment.nu_dse__Transaction_Status__c != 'Tentative' 
+                                            && payment.nu_dse__Transaction_Status__c != 'Scheduled') || (offerList != null && offerList[0].nu_dse__Status__c == 'Canceled')) || (payment.nu_dse__Offer__r.DNL_Status__c != 'Pre-TILA Signed' && offerList != null && offerList[0].nu_dse__Status__c == 'Accepted')
+                                            || (payment.nu_dse__Schedule_Date__c <= today()) || (payment.nu_dse__Offer__r.DNL_Status__c == 'Pre-TILA Signed' && !isModify_Flag)}" > <!-- ND-390 Uchit -->
+                                                <div class="slds-truncate" >
+                                                    <apex:outputField styleClass="slds-input" value="{!payment.nu_dse__Amount__c}"/>
+                                                </div>
+                                            </apex:outputPanel>
+                                        </td>
+                                        <td data-label="Total Amount">
+                                            <div class="slds-truncate" >
+                                                <apex:outputField value="{!payment.nu_dse__Total_Amount__c}" rendered="{!payment.Name != null}" />
+                                            </div>
+                                        </td>
+                                        <td data-label="RecordType">
+                                            {!recordTypeMap[payment.RecordTypeId]}
+                                        </td >
+                                        <td data-label="Action">
+                                            <apex:outputPanel rendered="{!payment.Name == null}">
+                                                <!--div class="slds-icon_container slds-icon_container_circle slds-icon-action-description" title="Delete"  onclick ="showFullSpinner();">
+                                                    <svg class="slds-icon" aria-hidden="true">
+                                                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS,'/assets/icons/action-sprite/svg/symbols.svg#delete')}"></use>
+                                                    </svg>
+                                                    <span class="slds-assistive-text">Delete</span>
+                                                </div>-->
+                                                <apex:commandLink onclick="TodeletePayments('{!index}');" reRender="none">Delete</apex:commandLink>
+                                            </apex:outputPanel>
+                                        </td>
+                                    </tr>
+                                    <apex:variable var="index" value="{!index+ 1}"/>
+                                </apex:repeat>   
+                                <tr class="slds-hint-parent">
+                                    <td class="" scope="col"></td>
+                                    <td class="" scope="col"></td>
+                                    <td class="" scope="col"></td>
+                                    <td class="" scope="col"></td>
+                                    <td class="" scope="col">
+                                        <div style="text-align: right" >Total Settlement Amount : </div>
+                                        <apex:outputPanel rendered="{!offerList[0].Portfolio_Name__c == 'Timberline' || offerList[0].Portfolio_Name__c == 'Royal'}">
+                                            <div style="text-align: right" >Total Fee Amount : </div>
+                                        </apex:outputPanel>
+                                    </td>
+                                    <td class="" scope="col">
+                                        <apex:outputPanel rendered="{!autoAdjustmentSettlmentamount == 0 || autoAdjustmentSettlmentamount == offerAmount}">
+                                            <div class="slds-align_absolute-center" >{!offerAmount}</div>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!autoAdjustmentSettlmentamount != 0}">
+                                            <apex:outputPanel rendered="{!autoAdjustmentSettlmentamount > offerAmount}">
+                                                <div class="slds-align_absolute-center" style="color: red;">{!autoAdjustmentSettlmentamount}</div>
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!autoAdjustmentSettlmentamount < offerAmount}">
+                                                <div class="slds-align_absolute-center" style="color: green;">{!autoAdjustmentSettlmentamount}</div>
+                                            </apex:outputPanel>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!offerList[0].Portfolio_Name__c == 'Timberline' || offerList[0].Portfolio_Name__c == 'Royal'}">
+                                            <apex:outputPanel rendered="{!autoAdjustmentFeeamount == 0 || autoAdjustmentFeeamount == offerFeeAmount}">
+                                                <div class="slds-align_absolute-center" >{!autoAdjustmentFeeamount }</div>
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!autoAdjustmentFeeamount != 0}">
+                                                <apex:outputPanel rendered="{!autoAdjustmentFeeamount > offerFeeAmount}">
+                                                    <div class="slds-align_absolute-center" style="color: red;">{!autoAdjustmentFeeamount }</div>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!autoAdjustmentFeeamount < offerFeeAmount}">
+                                                    <div class="slds-align_absolute-center" style="color: green;">{!autoAdjustmentFeeamount }</div>
+                                                </apex:outputPanel>
+                                            </apex:outputPanel>
+                                        </apex:outputPanel>
+                                    </td>
+                                    <td class="" scope="col">
+                                        <div class="slds-align_absolute-center" >
+                                            <apex:commandButton styleClass="slds-button slds-button_brand" title="Add Settlement" action="{!addNewSettlementPayment}" 
+                                                immediate="true" reRender="settlemetTableId" value="Add" 
+                                                rendered="{!autoAdjustmentSettlmentamount < offerAmount && autoAdjustmentSettlmentamount > 0}">
+                                                <apex:param value="Settlement" name="paymentType" assignTo="{!recordType}" /> 
+                                            </apex:commandButton>
+                                            
+                                            <apex:commandButton styleClass="slds-button slds-button_brand" title="Add Fee" action="{!addNewSettlementPayment}" 
+                                                immediate="true" reRender="settlemetTableId" value="Add Fee" style="width: 6rem;"
+                                                rendered="{!autoAdjustmentFeeamount < offerFeeAmount && autoAdjustmentFeeamount > 0}">
+                                                <apex:param value="Fee" name="paymentType" assignTo="{!recordType}"/> 
+                                            </apex:commandButton>
+                                        </div>
+                                    </td>
+                                    <td class="" scope="col"></td>
+                                </tr>                                     
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="slds-form-element">
+                        <div class="slds-form-element__control font-weight-bold " style="font-weight: bold;">
+                            Offer Amount :  ${!offerAmount}
+                        </div>
+                        <apex:outputPanel rendered="{!offerList[0].Portfolio_Name__c == 'Timberline' || offerList[0].Portfolio_Name__c == 'Royal'}">
+                            <div class="slds-form-element__control font-weight-bold " style="font-weight: bold;">
+                                Program Fee :  ${!offerFeeAmount }
+                            </div>
+                        </apex:outputPanel>
+                    </div>
+                </div>
+                <div class="slds-card__footer">
+                    <div class="slds-card__footer-action" >
+                        <apex:commandButton styleClass=" slds-button slds-button_brand" value="Save" title="Save" onclick="saveSettlementPayments();" reRender="none"/>
+                        <apex:commandButton styleClass=" slds-button slds-button_brand" value="Cancel" title="Cancel" onclick="tocloseTheModal();" />
+                    </div>
+                </div>
+            </div>
+        </apex:outputPanel>
+        
+        <apex:actionFunction name="autoPaymentAdjustment" action="{!autoPaymentAdjustments}" oncomplete="hideFullSpinner();" reRender="settlemetTableId"/>
+        <apex:actionFunction name="toSavePayments" immediate="true" action="{!SavePayments}" oncomplete="hideFullSpinner(); showMessage_Toast('{!errorMessage}','{!isError}','{!isSucess}');tosaveTheModal('{!isSucess}');" reRender="settlemetTableId"/>
+        
+        <apex:actionFunction action="{!deletePayment}" name="TodeleteSettlements" rerender="settlemetTableId" oncomplete="hideFullSpinner();">
+            <apex:param value="" name="index" assignTo="{!indexVar}"/> 
+        </apex:actionFunction>
+        
+        <apex:actionFunction action="{!updateScheduleDate}" name="ToUpdateDate" rerender="settlemetTableId" oncomplete="hideFullSpinner();">
+            <apex:param value="" name="scheduledate" /> 
+            <apex:param value="" name="index" /> 
+        </apex:actionFunction>
+        
+          <apex:actionFunction action="{!updateDueDate}" name="ToUpdatedueDate" rerender="settlemetTableId" oncomplete="hideFullSpinner();">
+            <apex:param value="" name="duedate" /> 
+            <apex:param value="" name="index" /> 
+        </apex:actionFunction>
+        
+        <apex:outputPanel rendered="{!IF(paymentList.size = 0, True, False)}">
+            <div class="demo-only" style="height:4rem">
+                <div class="slds-notify_container slds-is-relative">
+                    <div class="slds-notify slds-notify_toast slds-theme_error" role="status">
+                        <div class="slds-notify__content">
+                            <h2 class="slds-text-heading_small ">There is no settlement payments available</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </apex:outputPanel>
+    </apex:form>
+    <script>
+        var j$ = jQuery.noConflict();
+        
+        function TodeletePayments(index) {
+            
+            showFullSpinner();
+            TodeleteSettlements(index);
+        }
+        
+        var adjustDatePicker = function(e){
+        
+             e.preventDefault();
+             var picker = document.getElementById('datePicker');
+             var scrollContainer = document.getElementById('settlementTableId');
+
+             console.log(picker.style.top);
+             picker.style.top = (parseInt(picker.style.top) - scrollContainer.scrollTop) + 'px';
+             console.log(picker.style.top);
+         };
+        
+        function saveSettlementPayments() {
+            
+            console.log('$$$$$$');
+            
+            if(isFormValidate_ScriptSettings('settlementTableId')) {
+                
+                showFullSpinner();
+                toSavePayments();
+                
+            } else {
+                 
+                 hideFullSpinner();
+                 showMessage_Toast('Populate the Required field value', true, false);
+            }
+        }
+        
+        function isFormValidate_ScriptSettings(panelIdToCheck) {
+                
+            var parentElement = document.querySelector('#'+panelIdToCheck);
+            var requiredFieldsCount = parentElement.querySelectorAll(".required-true");
+            var returnElement = true;
+            for(var fieldCount = 0; fieldCount < requiredFieldsCount.length; fieldCount++) {
+                
+                var formElement = requiredFieldsCount[fieldCount];
+                console.log('****** fieldCount',fieldCount );
+                console.log('****** formElement ',formElement.value );
+                if(!formElement.value || formElement.value == null || formElement.value == '' || formElement.value < 0 || formElement.value == 0.00) {
+                    
+                    formElement.className += ' fieldRequired';
+                    console.log('****** formElement.className ',formElement.className );
+                    returnElement = false;
+                } else if(formElement.classList.contains('fieldRequired')) {
+                    
+                    formElement.className = ' required-true';
+                }
+            }
+            console.log('****** returnElement',returnElement);
+            return returnElement;
+        }
+        
+        function tosaveTheModal(isSucess) {
+        
+            console.log('******* isSucess',isSucess);
+            if (isSucess == 'true') {
+            
+                tocloseTheModal();
+            }
+        }
+        function tocloseTheModal() {
+            
+            var baseURL = '{!baseURL}';
+            console.log('******* baseURL ',baseURL );
+            var urlToSend = {
+                'OfferId': '{!offerId}',
+                'ComponentName': 'SettlementPlan'
+            };
+            parent.postMessage(urlToSend, baseURL);
+        }
+        
+        
+        /* full spinner script */        
+        function showFullSpinner() {
+        
+            var spinner = document.getElementById('fullSpinner');
+            if(spinner && spinner.style.setProperty) {
+            
+                spinner.style.setProperty('display', 'block');
+            } else {
+            
+                spinner.style.display = 'block';
+            }
+        }
+        
+        function hideFullSpinner() {
+        
+            var spinner = document.getElementById('fullSpinner');
+            if(spinner && spinner.style.setProperty) {
+            
+                spinner.style.setProperty('display', 'none');
+            } else {
+            
+                spinner.style.display = 'none';
+            }
+        }
+        
+        /* End of full spinner script */
+        
+        /* Toast message script */
+        
+        function showMessage_Toast(message, type, issuccess) {
+            
+            if(message) {
+                
+                var dafaultTheme = 'slds-theme_';
+                var dafaultTheme = 'messageClass';
+                
+                if(type) {
+                    
+                    dafaultTheme += '-error';
+                }  else if (issuccess) {
+                
+                    dafaultTheme += '-success';
+                }
+                var messageContainer = document.getElementById('toastmessage_container');
+                var messageTheme = document.getElementById('message_toast-theme');
+                var messageContent = document.getElementById('toastmessage-content');
+                
+                messageContent.innerHTML = message;
+                messageContent.className = dafaultTheme;
+                messageTheme.className = 'slds-notify slds-notify_toast ' + dafaultTheme;
+                messageContainer.style.display = 'block';
+                setTimoutClose();
+            }
+        }
+        
+        function hideMessage_Toast() {
+                
+            document.getElementById('toastmessage_container').style.display = 'none';
+        }
+        
+        function setTimoutClose() {
+            var timeId = window.setTimeout(function (){
+                hideMessage_Toast();
+            }, 5000);
+        }
+        /* End of Toast message script */
+        
+        function changeDate(scheduleDateId, index) {
+            
+            console.log('scheduleDate--->',scheduleDateId);
+            
+            var scheduleDate = document.getElementById(scheduleDateId).value;
+            console.log('scheduleDate --->',scheduleDate );
+            showFullSpinner();
+            ToUpdateDate(scheduleDate, index);
+        }
+    
+     function changedueDate(DueDateId, index) {
+            
+            console.log('dueDate--->',DueDateId);
+            
+            var dueDate = document.getElementById(DueDateId).value;
+            console.log('dueDate --->',dueDate );
+            showFullSpinner();
+            ToUpdatedueDate(dueDate, index);
+        }
+    </script>
+</apex:page>

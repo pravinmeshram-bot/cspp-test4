@@ -1,0 +1,113 @@
+<apex:component controller="StickyNotesController">
+    <apex:attribute name="recordId" type="String" description="Parent record Id" required="true" />
+
+    <apex:slds />
+    
+    <style>
+        /*.note-item {
+            display: inline-block;
+            height: 150px;
+            width: 150px;
+            padding: 4px;
+            margin: 15px;
+            border: 1px solid #e3e3e3;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, .4);
+        }
+        
+        .note-subject {
+            font-weight: bolder;
+            font-size: 12px;
+        }
+        
+        .note-description {
+            padding: 4px;
+        }*/
+        
+        #notePanel {
+            overflow:hidden;
+            _padding:3em;
+        }
+        #notePanel .note-item .note-subject{
+            text-decoration:none;
+        }
+        #notePanel .note-item {
+            margin:1em;
+            float:left;
+            box-shadow: 5px 5px 10px -2px rgba(33,33,33,.3);
+            color:#000;
+            background:#ffc;
+            display:block;
+            height:12em;
+            width:12em;
+            padding:1em;
+        }
+        
+        #notePanel .note-item h2{
+          font-size: 14px;
+          font-weight:bold;
+          padding-bottom:10px;
+          font-family: cursive;
+        }
+        #notePanel .note-item p{
+          font-family:"Reenie Beanie",arial,sans-serif;
+          font-size:12px;
+          font-family: cursive;
+          color: #777;
+        }
+        
+    </style>
+    
+    
+    <ul id="notePanel">
+    
+    </ul>
+    
+    <script>
+        (function() {
+        
+            function init() {
+                StickyNotesController.getNotes('{!recordId}', function(response, event) {
+                    if(event.status) {
+                        console.log('StickyNotesController', response);
+                        createNoteList(response);
+                    } else {
+                        console.log('Erro StickyNotesController', event.error);
+                    }
+                });
+            }    
+            
+                function createNoteList(noteList) {
+                    var markup = '';
+                    var notePanel = document.getElementById('notePanel');
+                    if(notePanel) {
+                        for(var i = 0; i < noteList.length; i++) {
+                            markup += createNote(noteList[i]);
+                        }
+                        notePanel.innerHTML = markup;
+                    }
+                }
+                
+                function createNote(note) {
+                    var markup = '';
+                    if(note) {
+                        markup =  '<li class="note-item">'
+                                + '<span class="note-subject"><h2>'
+                                + note.subject
+                                + '</h2></span>'
+                                + '<p class="note-description">'
+                                + getText(note.description)
+                                + '</p>'
+                                + '</li >';
+                    }
+                    return markup;
+                }
+                
+                function getText(text) {
+                    return text || '';
+                }
+                
+            init();
+            
+        })()
+    </script>
+</apex:component>

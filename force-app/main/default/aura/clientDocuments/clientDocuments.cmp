@@ -1,0 +1,51 @@
+<aura:component controller="SFSPortal_ClientDocumentsController" implements="forceCommunity:availableForAllPageTypes" extends="c:abstractServer" access="global">
+    <aura:attribute name="folderList" type="List" access="public" default="[]" />
+    <aura:attribute name="folderPathList" type="List" access="public" default="[]" />
+    
+    <aura:attribute name="foldersAndSubFoldersMap" type="Map" access="public" default="{}" />
+    <aura:attribute name="currentFileDetails" type="Map" access="public" default="{}" />
+    
+    <aura:attribute name="isModalOpened" type="Boolean" default="false" access="public" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <aura:if isTrue="{!v.folderPathList.length}" >
+        <lightning:breadcrumbs class="slds-m-top_medium">
+            <aura:iteration items="{!v.folderPathList}" var="folderPath" indexVar="index">
+                <lightning:breadcrumb onclick="{!c.renderFolderAndSubFolders}" name="{!folderPath.id}" class="{!index}" label="{!folderPath.name}" />
+            </aura:iteration>
+        </lightning:breadcrumbs>
+    </aura:if>
+    
+    <lightning:layout class=" slds-wrap slds-m-top_medium">
+        <aura:iteration items="{!v.folderList}" var="folderName" indexVar="index">
+            <lightning:layoutItem size="6" largeDeviceSize="2" mediumDeviceSize="2" smallDeviceSize="6">
+                <a class="slds-hyphenate" style="text-align:center;" title="{!folderName.name}" data-folderId="{!folderName.id}" data-index="{!index}" onclick="{!c.getSubFolderDetails}">
+                    <div style="text-align: center;">
+                        <lightning:icon iconName="{!equals(folderName.type, 'folder') ? 'doctype:folder' : 'doctype:unknown'}" size="large" alternativeText="Folder"/> 
+                    </div>
+                    <!-- class="slds-truncate"-->
+                    <div  style="text-align: center;">{!folderName.name}</div>
+                </a>
+            </lightning:layoutItem>
+        </aura:iteration>
+        <aura:if isTrue="{!!v.folderList.length}">
+        	<div style="min-height:10rem;text-align:center;width:100%">
+            	<div style="margin-top:10%;"><b>There are no items in this folder.</b></div>
+            </div>
+        </aura:if>
+        
+    </lightning:layout>
+    
+    <aura:if isTrue="{!v.isModalOpened}">
+    	<c:customModal header="{!'Preview - ' + v.currentFileDetails.name}" modalSize="slds-modal_large">
+        	<aura:set attribute="body">
+                <iframe width="100%" style="border:none !important;height:40rem;" src="{!'/apex/BoxPreview?folderId=' + v.currentFileDetails.id}"/>
+            </aura:set>
+            <aura:set attribute="footer">
+                <lightning:button aura:id="cancelbtn_clientDocuments" label="Cancel" variant="brand" onclick="{!c.cancelModal}" />
+            </aura:set>
+        </c:customModal>
+    </aura:if>
+    
+</aura:component>

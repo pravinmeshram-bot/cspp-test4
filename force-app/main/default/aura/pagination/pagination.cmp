@@ -1,0 +1,28 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes" access="global" >
+    <aura:attribute name="data" type="Map" access="public"/>
+    <aura:attribute name="allData" type="List" access="public"/>
+    <aura:attribute name="currentPageNumber" type="Integer" default="1" access="public"/>
+    <aura:attribute name="pageSize" type="Integer" default="10" access="public"/>
+    <aura:attribute name="totalPages" type="Integer" default="false" access="public"/>
+    <aura:attribute name="pageList" type="List" default="1" access="public"/>
+    <aura:attribute name="startIndex" type="Integer" access="public" />
+    <aura:attribute name="endIndex" type="Integer" access="public" />
+    <aura:registerEvent name="faqEvent" type="c:selectedRecordEvt"/>
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    <aura:if isTrue="{!greaterthan(v.allData.length, v.pageSize)}">
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_1-of-2">
+                <div class="slds-float_left slds-m-around_x-small">
+                    Showing {!add(v.startIndex, 1)} to {!v.endIndex} of {!v.allData.length} records
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+                <div class="slds-float_right slds-m-right_small">
+                    <lightning:button aura:id="prevbtn_pagination" variant="" iconName="utility:left" onclick="{! c.onPrev }" disabled="{!!greaterthan(v.currentPageNumber,1) }" />
+                    <lightning:badge style="vertical-align: middle !important;" label="{! v.currentPageNumber +'/'+ v.totalPages }" />
+                    <lightning:button aura:id="nextbtn_pagination" variant="" iconName="utility:right"  iconPosition="right" onclick="{! c.onNext }"  disabled="{!!lessthan(v.currentPageNumber,v.totalPages) }"/>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+</aura:component>

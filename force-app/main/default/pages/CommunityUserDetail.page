@@ -1,0 +1,11 @@
+<apex:page showHeader="false" sidebar="false" controller="SFSPortal_CommunityUserDetailController" action="{!updateEmailAddress}">
+<apex:slds />
+    <div style = "text-align: center;">
+        <div style="font-weight: bold;font-size:18px; margin-top: 10%"> Your Email Address is Verified Successfully</div>
+        <span class="slds-icon_container slds-icon_container_circle slds-icon-action-description slds-icon_medium" title="Description of icon when needed" style="text-align: center; margin-top: 3%;">
+            <svg class="slds-icon" aria-hidden="true" style="width: 7rem; height: 7rem;">
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.slds,'/assets/icons/action-sprite/svg/symbols.svg#approval')}"></use>
+            </svg>
+        </span>
+    </div>
+</apex:page>

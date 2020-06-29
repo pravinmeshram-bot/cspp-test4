@@ -1,0 +1,224 @@
+@font-face {
+    font-family: NotoSansKR-Medium;
+    src: url("/s/sfsites/c/resource/NewCustomFont_1/NotoSansKR-Medium.otf");
+}
+.THIS .verticalAlign-middle {
+    vertical-align: middle;
+}
+.THIS .custom-title_text {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 30px !important;
+    color: #0A202D;
+    font-weight:500;
+}
+.THIS .custom-column-label{
+    font-family:NotoSansKR-Medium;
+    font-size: 17px !important;
+    color: #464646 !important;
+    background-color: #f2f0f0;
+    font-weight:500;
+    padding-left:5px;
+}
+.THIS .custom-add-fund-button:hover {
+    background-color : #0E7AAE !important;
+}
+.THIS .portalStatus_value{
+    font-family: NotoSansKR-Black !important;
+}
+.THIS .custom-column-value{
+    font-family: NotoSansKR-Medium !important;
+    text-align:right;
+    font-size: 17px !important;
+    color: #000000 !important;
+    background-color: #e5e2e2;
+}
+.THIS .removedLabel .slds-form-element__label {
+    display : none !important;
+}
+.THIS .requiredField input,
+.THIS .requiredField textarea
+.THIS .requiredField select {
+    border-left-color:red;
+    border-left-width:3px;
+}
+
+.THIS .slds-button_brand.button__custom{
+    background-color:#3385ff;
+    color:white;
+    min-height: 4.5rem;
+    width:100%;
+}
+.THIS .custom-add-fund-button{
+    background-color:#0A202D;
+    font-family:NotoSansKR-Medium;
+    font-size: 23px!important;
+    font-color:#ffffff;
+    display: block;
+    border-color:#046899;
+    width: 100%;
+    min-width: 140px;
+    max-width:255px!important;
+    height:50px!important;
+    overflow:hidden;
+    margin-left: auto;
+    margin-right: auto; 
+    cursor: pointer;
+    padding: 5px;
+    border-radius: .50rem;
+}
+.THIS .slds-icon-text-default {
+    fill: white;
+}
+.THIS .ms-help-popup-in-header {
+    display: inline-block;
+    position: relative !important;
+    top: -10px !important;
+    left: 55px !important;
+    margin-left: -1rem !important;
+    max-width: 24rem !important;
+    overflow: visible !important;
+    text-transform: none !important;
+    background-color:white !important;;
+    color:black !important;
+}
+.THIS .ms-help-popup-body {
+    white-space: unset !important;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    width: 260px;
+    color:black !important;
+}
+
+.THIS .sub-heading-overview {
+    padding-left: 0px;
+    font-size: 23px;
+    font-family:NotoSansKR-Medium;
+    font-color:#0A202D;
+}
+
+.THIS .draft-amount{
+    display:inline-block;
+    padding-top:2.5rem;
+    padding-bottom:0.5rem;
+    font-family:NotoSansKR-Medium !important;
+    font-size:26px !important;
+    text-align : center;
+}
+@media (min-width: 320px) and (max-width: 568px) {
+    .THIS .custom-title_text {
+        font-size: 22px!important;
+    }
+    
+    .THIS .sub-heading-overview {
+        font-size: 19px;
+    }
+}
+
+@media (min-width: 375px) and (max-width: 812px) {
+    .THIS .custom-title_text {
+        font-size: 24px!important;
+    }
+    
+    .THIS .sub-heading-overview {
+        font-size: 23px;
+    }
+    
+}
+@media (min-width: 1024px) and (max-width: 1200px) {
+    
+    .THIS .sub-heading-overview {
+        font-size: 18px;
+    }
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen 
+    and (min-device-width : 768px) 
+    and (max-device-width : 1024px) {
+    /* Styles */
+    .THIS .responsive-modal{
+        margin: 200px !important;
+        max-width: 700px !important;
+    }
+    
+    .THIS .sub-heading-overview {
+        padding-left: 20px;
+        font-size: 20px;
+    }
+}
+
+/* iPads (landscape) ----------- */
+@media only screen 
+    and (min-device-width : 768px) 
+    and (max-device-width : 1024px) 
+    and (orientation : landscape) {
+    /* Styles */
+    .THIS .responsive-modal{
+        margin: 200px !important;
+        max-width: 700px !important;
+    }
+    .THIS .sub-heading-overview {
+        padding-left: 20px;
+        font-size: 20px;
+    }
+}
+
+/* iPads (portrait) ----------- */
+@media only screen 
+    and (min-device-width : 768px) 
+    and (max-device-width : 1024px) 
+    and (orientation : portrait) {
+    /* Styles */
+    .THIS .responsive-modal{
+        margin:  200px  !important;
+        max-width: 700px !important;
+    }
+}
+
+/* iPads (portrait) ----------- */
+@media screen and (min-width : 1024px) 
+    {
+    /* Styles */
+    .THIS .draft-amount{       
+        font-size:17px !important;
+    }
+    
+    .THIS .draft-amount-container{
+        text-align:center;
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    /* Styles */
+    .THIS .draft-amount{       
+        font-size:20px !important;
+    }
+    .THIS .draft-amount-container{
+        text-align:center;
+    }
+}
+@media screen and (min-width: 1600px) {
+    .THIS .draft-amount{       
+        font-size:26px !important;
+    }
+}
+
+.THIS .adjustHelpText .slds-form-element__icon {
+    padding : 0px !important;
+}
+
+.THIS.hideDashboard{
+    display : none !important;
+}
+.THIS.showDashboard {
+    display : block !important;
+}
+.THIS .dashboard-card {
+    text-align: center;
+    margin: 5px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #efefef;
+    border-radius: 0.25rem;
+    padding:1.5rem;
+}

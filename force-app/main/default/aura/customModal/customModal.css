@@ -1,0 +1,61 @@
+.THIS .slds-file-selector__dropzone {
+	padding:3rem !important;
+}
+
+/*
+.THIS.custom-modal .slds-modal__container {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.THIS.custom-modal .slds-modal__container {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+@media (min-width: 48em) {
+    .THIS.custom-modal .slds-modal__container {
+        
+        margin: 0 auto !important;
+        padding: 3rem 0 !important;
+    }
+} */
+
+/* 
+##Device = Tablets, Ipads (portrait)
+##Screen = B/w 768px to 900px
+*/
+
+@media (min-width: 768px) and (max-width: 900px) {
+    .THIS .slds-modal__container.responsive-modal-view {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+}
+
+
+/* 
+##Device = Low Resolution Tablets, Mobiles (Landscape)
+##Screen = B/w 481px to 767px
+*/
+
+@media (min-width: 481px) and (max-width: 767px) {
+    .THIS .slds-modal__container.responsive-modal-view {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+}
+
+/* 
+##Device = Most of the Smartphones Mobiles (Portrait)
+##Screen = B/w 320px to 479px
+*/
+
+@media (min-width: 320px) and (max-width: 480px) {
+    .THIS .slds-modal__container.responsive-modal-view {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}

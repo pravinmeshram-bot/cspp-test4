@@ -1,0 +1,120 @@
+<aura:component extends="c:abstractServer" controller="SFSPortal_DashboardMetricsController" implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="faqList" type="List" access="public" default="[]" />
+    <aura:attribute name="faqListOriginal" type="List" access="public" default="[]" />
+    <aura:attribute name="faqListToDisplay" type="List" access="public" default="[]" />
+    
+    <aura:attribute name="searchInput" type="String" access="public" default="" />
+    
+    <aura:attribute name="isExpanded" type="Boolean" access="public" default="false"/>
+    <aura:attribute name="isDoInitFired" type="Boolean" access="public" default="false" />
+    
+    <aura:attribute name="currentQuestion" type="Map" access="public" default="{}" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="faqEvent" event="c:selectedRecordEvt" action="{!c.defaultRecord}"/>
+    <aura:if isTrue="{!v.isDoInitFired}">
+        <lightning:layout class="slds-wrap">
+            <lightning:layoutItem class="slds-p-top_small" size="12" smallDeviceSize="12" mediumDeviceSize="9" largeDeviceSize="9" >
+                <lightning:input aura:id="searchInput_FAQ"
+                                 name="searchInput"
+                                 label="Search"
+                                 class="removedLabel"
+                                 placeholder="Type here to search..."
+                                 value="{!v.searchInput}"
+                                 />
+            </lightning:layoutItem>
+            <lightning:layoutItem size="12" class="slds-align_absolute-center" smallDeviceSize="12" mediumDeviceSize="3" largeDeviceSize="3" padding="around-small">
+                <lightning:button aura:id="searchbtn_FAQ" name="" label="Search" onclick="{!c.onSearch}" variant="brand"/>
+                <lightning:button aura:id="resetbtn_FAQ" name="" label="Reset" onclick="{!c.onReset}" variant="brand"/>
+            </lightning:layoutItem>
+        </lightning:layout>
+        <lightning:card title="Frequently Asked Questions" class="slds-theme_shade">
+            <aura:if isTrue="{!not(empty(v.faqList))}">
+                <!-- for mobile view -->
+                <lightning:layout class="slds-wrap tab-layout faq-mobile-layout">
+                    <lightning:layoutItem size="12" class="mobile-layout-border">
+                        <aura:if isTrue="{!!v.isExpanded}">
+                            <aura:iteration items="{!v.faqListToDisplay}" var="faq" indexVar="idx" >
+                                <a class="slds-vertical-tabs__link mobile-view-link" style="text-decoration: unset;" 
+                                   onclick="{!c.toggleSection}" data-index="{!idx}" aria-selected="true" 
+                                   aria-controls="slds-vertical-tabs-0" 
+                                   id="slds-vertical-tabs-0__nav" aura:id="itemclck_FAQ">
+                                    {!faq.Question__c}
+                                    <!-- {!v.currentQuestion.Answer__c} -->
+                                </a>
+                            </aura:iteration>
+                            <aura:set attribute="else">
+                                <div class="slds-vertical-tabs__content ">
+                                    <div>
+                                        <div class="slds-m-bottom_small ">
+                                            <a onclick="{!c.hideExpandedSection}" aura:id="toggleclck_FAQ">
+                                                <lightning:icon iconName="action:back" size="xx-small"/>
+                                            </a>
+                                        </div>
+                                        <span>
+                                            <h3 class="slds-text-heading_medium slds-text-title_bold">
+                                                <ui:outputRichText class="slds-text-longform" value="{!v.currentQuestion.Question__c}"/>
+                                            </h3>
+                                        </span>
+                                    </div>
+                                    <p class="slds-p-top_small">
+                                        <ui:outputRichText class="slds-text-longform" value="{!v.currentQuestion.Answer__c}"/>
+                                    </p>
+                                </div>
+                            </aura:set>
+                        </aura:if>
+                    </lightning:layoutItem>
+                </lightning:layout>
+                <!-- for desktop and tablets -->
+                <lightning:layout class="slds-wrap tab-layout faq-non-mobile-layout">
+                    <div class="slds-vertical-tabs" style="width:100%">
+                        
+                        <lightning:layoutItem size="5" >
+                            <ul class="slds-vertical-tabs__nav" role="tablist" aria-orientation="vertical" >
+                                <aura:iteration items="{!v.faqListToDisplay}" var="faq" indexVar="idx" >
+                                    <li class="{!if(faq.expanded, 'slds-vertical-tabs__nav-item slds-is-active', 'slds-vertical-tabs__nav-item')}" 
+                                        title="{!faq.Question__c}" role="presentation">
+                                        <a class="slds-vertical-tabs__link" href="javascript:void(0)" style="text-decoration: unset;" 
+                                           onclick="{!c.onExpand}" data-index="{!idx}" aria-selected="true" 
+                                           aria-controls="slds-vertical-tabs-0" 
+                                           id="slds-vertical-tabs-0__nav" aura:id="desktopItemclck_FAQ">
+                                            {!faq.Question__c}
+                                        </a>
+                                    </li>
+                                </aura:iteration>
+                            </ul>
+                        </lightning:layoutItem>
+                        
+                        
+                        <div class="slds-vertical-tabs__content slds-show">
+                            <div class="slds-text-longform">
+                                <!-- <aura:iteration items="{!v.faqListToDisplay}" var="faq" indexVar="idx">
+                                            {!faq.Question__c} == {!faq.Answer__c} == {!faq.expanded}
+                                            <aura:if isTrue="{!(faq.expanded)}"> -->
+                                <h3 class="slds-text-heading_medium slds-text-title_bold">
+                                    {!v.currentQuestion.Question__c}
+                                </h3>
+                                <div  
+                                     id="slds-vertical-tabs-0" role="tabpanel">
+                                    <p >{!v.currentQuestion.Answer__c}</p>
+                                </div>
+                                <!-- </aura:if>
+                                        </aura:iteration> -->
+                            </div>
+                        </div>
+                    </div>
+                </lightning:layout>
+                
+                <div class="{!!v.isExpanded ? '' : 'slds-hide'}">
+                    <c:pagination allData="{!v.faqList}" data="{!v.faqListToDisplay}" pageSize="15"/>
+                </div>
+                
+                <aura:set attribute="else">
+                    <div class="slds_no_record">
+                        No Record(s) Found
+                    </div>
+                </aura:set>  
+            </aura:if>
+        </lightning:card>
+    </aura:if>
+</aura:component>

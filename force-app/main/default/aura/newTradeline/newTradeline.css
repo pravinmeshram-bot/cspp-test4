@@ -1,0 +1,220 @@
+@font-face {
+    font-family: NotoSansKR-Bold;
+    src: url(/resource/NotoSansKRBold);
+}
+@font-face {
+    font-family: NotoSans-Regular;
+    src: url(/resource/NotoSansRegular);
+}
+@font-face {
+    font-family: NotoSansKR-Regular;
+    src: url(/resource/NotoSansKRRegular);
+}
+.THIS .slds-modal__content:last-child{
+    box-shadow:none !important;
+}
+
+.THIS .tradeline-layout input[type=number]::-webkit-inner-spin-button, 
+.THIS .tradeline-layout input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+
+.THIS .slds-form-element__label{
+    font-weight:bold;
+    font-size:14px;
+}
+
+.THIS .slds-form-element{
+    margin-bottom:4px;
+}
+
+.THIS .requiredField input{
+    border-left-color:red;
+    border-left-width:3px;
+}
+.THIS .requiredField textarea{
+    border-left-color:red;
+    border-left-width:3px;
+}
+
+.THIS .slds-card__header {
+    padding: .2rem 1rem 0;
+    margin: 0 0 .2rem;
+}
+
+.THIS .slds-card__body {
+    margin-bottom: 0px !important;
+}
+
+
+.THIS .slds-file-selector__dropzone{
+    padding:4rem !important;
+}
+
+.THIS .adjustHelpText .slds-form-element__icon {
+    padding : 0px !important;
+}
+.THIS .addError {
+    border-color : rgb(194, 57, 52) !important;
+    border-width : 3px;
+}
+.THIS.new-tradeline-success .slds-icon-text-default {
+    fill: white !important;
+}
+.THIS .custom-upload .slds-file-selector__button.slds-button.slds-button_neutral{
+    max-height: 3.625rem !important;
+}
+.THIS .slds-modal__footer {
+    padding:0rem;
+    border-top:0px;
+}
+.THIS .slds-modal__header {
+    padding:0rem;
+    border-bottom:0px;
+}
+.THIS .slds-modal__content {
+    background: linear-gradient(to top, #ffffff -50%, #d7d7d7 200%);
+    text-align: right !important;
+    font-family: NotoSans-Regular;
+    /*margin-bottom: 150px;*/
+}
+
+.THIS .b1{
+    margin-top:1rem;
+    background-color:White !important;
+    border-color:Black !important;
+    color:black;
+    padding-left:4rem;
+    padding-right:1rem;
+    padding-top:0.1rem;
+    padding-bottom:0.2rem;
+    text-align: center !important;
+    border-radius: 5px;
+}
+.THIS .b1:hover{
+    cursor: pointer;
+    background-color:#ff9666 !important;
+    border-color:#282828 !important;
+    filter: invert(1);
+}
+.THIS .b2 {
+    font-family: NotoSans-Regular;
+    margin-top:1rem;
+    background-color:White !important;
+    color:black;
+    padding-left: 7.75 px !important;
+    padding-right: 7.75 px !important;
+    text-align: right !important;
+    border-radius: 35%;
+    
+}
+.THIS .b2:hover{
+    cursor: pointer;
+    border-color:#282828 !important;
+    background-color:#ff9666 !important;
+    filter: invert(1);
+}
+.THIS .b1 {
+    font-family: NotoSansKR-Regular;
+    font-size:23px;
+    
+}
+.THIS .headerText{
+    font-family: 'Noto Serif KR', serif;
+    font-size: 32px !important;
+    color: #0A202D;
+    font-weight:500;
+}
+.THIS .iconColor{
+    text-align:right !important;
+    background:#ffffff !important;
+    color:black;
+    border-radius: 5px;
+    border: 1px solid rgb(217, 219, 221);
+}
+.THIS .iconColor:hover{
+    background-color:#006999 !important;
+}
+.THIS .slds-icon {
+    fill: black;
+}
+.THIS .slds-button_neutral, .THIS .b3{
+    padding-left: 0.7 rem !important;
+    padding-right: 0.7 rem !important;
+}
+.THIS .b3{
+    background-color:#ffffff !important;
+    border-radius: 5px;
+    border-color: black !important;
+    padding-bottom: 9px;
+    padding-top: 9px;
+    padding-left: 9px;
+    padding-right: 9px;
+}
+.THIS .b3:hover{
+    background-color:#ff9666 !important;
+    border-color:#282828 !important;
+    filter: invert(1);
+}
+@media (max-width: 900px) and (min-width: 768px){
+    .THIS .slds-modal__content {
+        margin-left: 120px;
+        text-align:center;
+       /* margin-bottom: 330px;*/
+    }
+    .THIS .iconColor{
+        text-align:right !important;
+        background:#ffffff;
+        color:black;
+        border-radius: 5px;
+        border: 1px solid rgb(217, 219, 221);
+    }
+    .THIS .iconColor:hover{
+        background-color:#ff9666 !important;
+        border-color:#282828 !important;
+        filter: invert(1);}
+    .THIS .b1:hover{
+        background-color:#ff9666 !important;
+        border-color:#282828 !important;
+        filter: invert(1);}
+    .THIS .b2:hover{
+        background-color:#ff9666 !important;
+        border-color:#282828 !important;
+        filter: invert(1);}
+    .THIS .b3:hover{
+        background-color:#ff9666 !important;
+        border-color:#282828 !important;
+        filter: invert(1);}
+}
+@media (max-width: 767px) and (min-width: 320px){
+    .THIS .slds-modal__content {
+        margin-left: 30px;
+        margin-right: 30px;
+        text-align:center;
+       /* margin-bottom: 330px;*/
+    }
+    .THIS .iconColor{
+        text-align:right !important;
+        background:#ffffff !important;
+        color:black;
+        border-radius: 5px;
+        border: 1px solid rgb(217, 219, 221);
+    }
+    .THIS .iconColor:hover{
+        background-color:#ff9666 !important;
+        border-color:#282828 !important;
+        filter: invert(1);} 
+    .THIS .b1:hover{
+        background-color:#ff9666 !important;
+        border-color:#282828 !important;
+        filter: invert(1);}
+    .THIS .b2:hover{
+        background-color:#ff9666 !important;
+        border-color:#282828 !important;
+        filter: invert(1);}
+    .THIS .b3:hover{
+        background-color:#ff9666 !important;
+        border-color:#282828 !important;
+        filter: invert(1);}
+}

@@ -1,0 +1,90 @@
+<aura:component controller="SFSPortal_OfferListController" implements="forceCommunity:availableForAllPageTypes,force:hasRecordId" extends="c:abstractServer" access="public">
+    
+    <aura:attribute name="offerInfo" type="Map" access="public"/>
+    <aura:attribute name="status" type="String" access="public" />
+    <aura:attribute name="toRenderModal" type="Boolean" access="public" default="false"/>
+    <aura:attribute name="offerId" type="String" access="public" />
+    <aura:attribute name="successMessageString" type="String" access="public" default="" />
+    <aura:attribute name="errorMessageString" type="String" access="public" default="" />
+    <aura:attribute name="isModalOpen" type="Boolean" access="public"/>
+    <aura:attribute name="isModalOpen1" type="Boolean" access="public"/>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Serif+KR:400" rel="stylesheet" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:if isTrue="{!v.offerInfo}">    
+        <lightning:card title="{!v.offerInfo.offerList[0].Name}" aura:id="cardview">
+            <div class="slds-panel" aria-hidden="false">
+                <div class="slds-panel__body">
+                    <lightning:recordViewForm recordId="{!v.offerInfo.offerList[0].Id}" objectApiName="nu_dse__Offer__c" density="comfy">
+                        <lightning:layout class="slds-wrap">
+                            <aura:iteration items="{!v.offerInfo.detailFields}" var="field">
+                                <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6">
+                                    <lightning:outputField fieldName="{!field}" />
+                                    <div class="horizontalLine" />
+                                </lightning:layoutItem>
+                            </aura:iteration>
+                        </lightning:layout>
+                    </lightning:recordViewForm>
+                </div>
+            </div>
+            <div class="slds-p-around_x-small">
+                Terms &amp; Conditions
+            </div>
+            <div class="slds-panel" style="max-height:15rem" aria-hidden="false">
+                <div class="slds-panel__body">
+                    <lightning:formattedRichText value="{!v.offerInfo.offerList[0].nu_dse__Program__r.Portfolio__r.Offer_Disclaimer__c}" />
+                    <br />
+                    <lightning:input aura:id="termscb_approvalDetail" class="slds-m-top_medium" type="checkbox" checked="{!v.offerInfo.offerList[0].Is_Terms_Conditions_Checked__c}" label="Accept Terms &amp; Conditions" />
+                </div>
+            </div>
+            <div class="slds-align_absolute-center slds-p-top_medium slds-p-bottom_medium" >
+                <lightning:button aura:id="acceptbtn_approvalDetail" variant="brand" Aura:id="Accept" label="Accept" title="Accept" onclick="{!c.showToast}" disabled="{!!v.offerInfo.offerList[0].Is_Terms_Conditions_Checked__c}" />
+                <lightning:button aura:id="declinebtn_approvalDetail" variant="brand" Aura:id="Decline" label="Decline" title="Decline" onclick="{!c.showToast}" />
+                <lightning:button aura:id="closebtn_approvalDetail" label="Close" variant="brand" onclick="{!c.cancelModel}"/>
+            </div>
+        </lightning:card>
+        <aura:if isTrue="{!v.toRenderModal == 'Alert'}">
+            <c:customModal>
+                <aura:set attribute="body">
+                    <lightning:button class="b3 " aura:id="nobtn_newTradeline" label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"  onclick="{!c.closeModel}" >
+                        <img src="{!$Resource.CloseIconSvg}" width="15" height="15" Style="align:right;"/>
+                    </lightning:button>
+                    <div class="slds-text-align_center " Style="font-size:32px;font-family: 'Noto Serif KR', serif;font-size: 30px !important;color: #0A202D;font-weight:500;">
+                        Confirm<br/>
+                    </div>
+                    <div class="slds-text-align_center slds-m-top_xx-small">
+                        <div class="modalContentCls">
+                            Are you sure you want to {!v.status}?
+                        </div>
+                        <br/>
+                        <div style="text-align:center;">
+                            <lightning:button class="b1" aura:id="yesbtn_approvalDetail" label="Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" onclick="{!c.updateStatus}" />
+                            <lightning:button class="b1" aura:id="nobtn_newTradeline" label="No &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" onclick="{!c.closeModel}" />
+                        </div>
+                    </div>
+                </aura:set>
+                <aura:set attribute="footer">
+                </aura:set>
+            </c:customModal>
+        </aura:if>
+    </aura:if>
+    <aura:if isTrue="{!v.isModalOpen1}">
+        <c:customModal>
+            <aura:set attribute="body">
+                <lightning:button class="b3 " aura:id="nobtn_newTradeline" label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"  onclick="{!c.cancelModel}" >
+                    <img src="{!$Resource.CloseIconSvg}" width="15" height="15" Style="align:right;"/>
+                </lightning:button>
+                <div class="slds-text-align_center " Style="font-size:32px;font-family: 'Noto Serif KR', serif;font-size: 30px !important;color: #0A202D;font-weight:500;">
+                    Your request has been received.<br/>
+                </div>
+                <div class="slds-text-align_center slds-m-top_xx-small">{!v.successMessageString}<br/><br/>
+                    <lightning:button class="b1" aura:id="nobtn_newTradeline" label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"  onclick="{!c.cancelModel}" >
+                        Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="{!$Resource.CloseIconSvg}" width="15" height="15"/>
+                    </lightning:button>     
+                </div> 
+            </aura:set>
+            <aura:set attribute="footer">
+            </aura:set>
+        </c:customModal>
+    </aura:if>
+</aura:component>

@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xml:lang='en' lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+	<head>
+		<title>:: CCF FORM ::</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+		<meta name="description" content=""/>
+		<meta name="keywords" content=""/>
+		<meta name="robots" content="all" />
+		<link rel="stylesheet" href="css/style.css" type="text/css" />
+		<link rel="stylesheet" href="css/jquery-ui.css" type="text/css">
+		<link rel="stylesheet" href="css/bootstrap.css">
+		<link rel="stylesheet" href="js/Zebra_Datepicker-master/public/css/default.css" type="text/css">
+	</head>
+	<body ng-app="ccfApp">
+		<!-- header start--> 
+		<header class="preHeader">
+			<div class="header">
+				<div class="ccf_logo">
+					<a href="#" title=""><img alt="" width="89" height="44" src="images/logo.png" /></a>
+				</div>
+				<div class="ccf_user">
+					<div class="ccf_userArrow"><img alt="" width="15" height="10" src="images/arrow_down.png" /></div>
+					<div class="ccf_userName">Luke Cassidy</div>
+					<div class="ccf_userImage"><img alt="" width="28" height="25" src="images/icon_myaccount.png" /></div>
+				</div>
+			</div>
+		</header>
+		<!-- header end --> 
+		<!-- body start --> 
+		<div class="ccf_formContent">
+			<div class="mainWrapper">
+				<div class="tablePreHeader">
+					<nav>
+						<ul>
+							<li><a>Home</a></li>
+							<li class="active">Edit CCF Form</li>
+						</ul>
+					</nav>
+					<div class="buttonContainer">
+						<button class="saveClose_ccf">Save and Close</button>
+						<button class="submitCpmo_ccf">Submit to CPMO</button>
+					</div>
+				</div>
+				<div class="tableMainContent">
+					<div class="tableHeader">
+						<div class="tableHeader_firstColumn">
+							<h1>Wheat Flour-Maize 2H 2016 - SA</h1>
+							<h2>Pioneer Foods Ltd</h2>
+							<ul>
+								<li>Hub</li>
+								<li>Africa</li>
+								<li>Valid:<span class="from_date">01/06/2016</span>-<span class="to_date">31/12/2016</span></li>
+							</ul>
+						</div>
+						<div class="tableHeader_secondColumn">
+							<button class="validate_ccf">Validate</button>
+							<div class="lineItem_section">
+								<label>Line Item</label>
+								<div class="lineItem_section_value">15%</div>
+								<div type="text" class="lineItem_section_input">
+									<span class="lineItem_section_value_over" style="width: 15%;"></span>
+								</div>
+							</div>
+							<div class="header_section">
+								<label>Header</label>
+								<div class="header_section_value">20%</div>
+								<div type="text" class="header_section_input">
+									<span class="header_section_value_over" style="width: 20%;"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="formContainer">
+						<ul class="formHeader" ng-controller="navCtrl">
+							<li class="formHeaderText" ng-repeat="navLink in navLinks" ng-class="navClass('{{navLink.Title}}')">
+								<a href="#/{{navLink.Title}}">{{navLink.LinkText}}</a>
+							</li>
+						</ul>
+						<!-- Other page container start --> 
+						<div ng-view></div>
+						<!-- Other page container end --> 
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- body end --> 
+		<!-- footer start --> 
+		<footer class="footer">
+
+		</footer>
+		<!-- footer end --> 
+		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+		<script type="text/javascript" src="js/jquery-ui.js"></script>
+		<script type="text/javascript" src="js/Zebra_Datepicker-master/public/javascript/zebra_datepicker.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<script type="text/javascript" src="js/angular-route.min.js"></script>
+		<script type="text/javascript" src="js/ui-bootstrap-tpls-2.5.0.min.js"></script>
+		<script type="text/javascript" src="js/angular-ui-bootstrap-modal.js"></script>
+		<script type="text/javascript" src="js/script.js"></script>
+	</body>
+</html>

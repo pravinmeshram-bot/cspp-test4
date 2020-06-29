@@ -1,0 +1,166 @@
+<apex:component controller="TaskViewController">
+    <apex:attribute name="recordId" type="String" description="Parent Id." required="true" />
+    <apex:slds />
+    
+    <style>
+        
+        .task-type {
+            background-color: #F3F3F3;
+        }
+    
+        .task-due {
+            background-color: #FFDF32;
+        }
+        
+        .task-over-due {
+            background-color: #FFE5E5;
+        }
+        
+        .task-this-week-today {
+            background-color: #FFFFE0;
+        }
+        
+        .task-next-week {
+            background-color: #E5E5FF;
+        }
+        
+    </style>
+    
+    <div>
+        <div id="taskTable" class="task-list">
+            
+        </div>
+    </div>
+    
+    
+    <script>
+        var parentId = '{!recordId}';
+        console.log('recordId', );
+        
+        var action = {};
+        var allTasks = null;
+        
+        action.sortTasks = function(taskList) {
+            var tasks = {};
+            
+            for(var i = 0; i < taskList.length; i++) {
+                if(taskList[i].callType) {
+                    if(!tasks[taskList[i].callType]) {
+                        tasks[taskList[i].callType] = [];
+                    }
+                    tasks[taskList[i].callType].push(taskList[i]);
+                }
+            }
+            return tasks;
+           
+        }
+        
+        action.renderTable = function(taskList) {
+            var table = '';
+            table = '<table class="slds-table slds-table slds-table_bordered slds-table_fixed-layout">'
+                    + '<thead>'
+                    + '<tr>'
+                    + '<th>Subject</th>'
+                    + '<th>Due Date</th>'
+                    + '<th>Action</th>'
+                    + '</tr>'
+                    + '</thead>'
+                    + action.renderTBody(taskList)
+                    + '</table>';
+                    
+            console.log(table);
+                    
+            document.getElementById('taskTable').innerHTML = table;
+        }
+        
+        action.renderTBody = function(taskList) {
+            var tbody = '<tbody>'
+            console.log('tBody', taskList);
+            if(taskList && getCount(taskList)) {
+                for (var type in taskList) {
+                    if (taskList.hasOwnProperty(type)) {
+                        tbody += action.renderGroupRow(type, 3);
+                        for(var i = 0; i < taskList[type].length; i++) {
+                            console.log(taskList[type][i]);
+                            tbody += action.renderRow(taskList[type][i]);
+                        }
+                    }
+                }
+            } else {
+                tbody += '<tr><td colspan="3"><strong>No Tasks Found</strong></td></tr>'
+            }
+                 
+            tbody += '</tbody>';
+            console.log(tbody);
+            return tbody;
+        }
+        
+        function getCount(obj) {
+            var count = 0;
+            for(var type in obj) {
+                count += obj[type].length;
+            }
+            return count;
+        }
+        
+        action.renderGroupRow = function(name, size) {
+            return '<tr class="task-type"><td colspan="' + size + '"><strong>' + name + '</strong></td></tr>';
+        }
+        
+        action.renderRow = function(task) {
+            
+            var tr = '<tr id="row' + task.taskId + '" class="task-' + task.color + '">'
+                   + '<td>' + task.subject + '</td>'
+                   + '<td>' + task.dueDate + '</td>'
+                   + '<td><button type="button" class="slds-button slds-button--brand" onClick="closeTask(\'' + task.taskId + '\')">Close</button></td>'
+                   + '</tr>'
+           console.log(tr);
+           return tr;
+        }
+        
+        window.closeTask = function(taskId) {
+            TaskViewController.closeTask(taskId, function(response, event) {
+                if(event.status) {
+                    action.removeRow(taskId);
+                } else {
+                    console.log(event.message);
+                }
+            });
+        }
+        
+        action.removeRow = function(taskId) {
+            var taskRow = document.getElementById('row' + taskId);
+            for(var i = 0; i < allTasks.length; i++) {
+                if(taskId == allTasks[i].taskId) {
+                    allTasks.splice(i, 1);
+                    action.renderTable(action.sortTasks(allTasks));
+                }
+            }
+            taskRow.remove();
+            
+        }
+        
+        action.getAllTasks = function(parentId) {
+            console.log(TaskViewController, parentId);
+            TaskViewController.getTaskList(parentId, function(response, event) {
+                if(event.status) {
+                    console.log('response', response);
+                    allTasks = response;
+                    action.renderTable(action.sortTasks(response));
+                } else {
+                    console.log(event.message);
+                }
+            });
+        }
+        
+        function init() {
+            window.setTimeout(function() {
+                action.getAllTasks(parentId);
+            }, 1);
+        }
+        
+        init();
+        
+    </script>
+    
+</apex:component>

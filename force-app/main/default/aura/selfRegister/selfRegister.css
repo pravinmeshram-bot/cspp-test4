@@ -1,0 +1,221 @@
+.THIS #sfdc_username_container, .THIS #sfdc_ssn_container {
+    margin-bottom:10px;
+    padding: 8px;
+    background-color:white;
+    border: 1px solid #CCC;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+.THIS #sfdc_dob_container {
+    margin-bottom:10px;
+    padding: 2px;
+    background-color:white;
+    border: 1px solid #CCC;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+.THIS #sfdc_nickname_container{
+    margin-bottom:10px;
+    padding: 8px;
+    background-color:white;
+    border: 1px solid #CCC;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+
+.THIS #sfdc_email_container{
+    margin-bottom:10px;
+    padding: 8px;
+    background-color:white;
+    border: 1px solid #CCC;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+
+.THIS #sfdc_extrafield_container{
+    margin-bottom:10px;
+    padding: 8px;
+    background-color:white;
+    border: 1px solid #CCC;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+
+.THIS #sfdc_user{
+    float:left;
+    width:23px;
+    height:25px;
+    padding-top:1px;
+    padding-left:2px;
+    margin:0px;
+
+}
+
+.THIS #sfdc_lock{
+    float:left;
+    width:23px;
+    height:25px;
+    padding-top:1px;
+    padding-left:2px;
+    margin:0px;
+}
+
+.THIS  .login-icon {
+    color:#ccc;font-size:22px;
+}
+
+.THIS #sfdc_password_container{
+    margin-bottom:10px;
+    padding: 8px;
+    background-color:white;
+    border: 1px solid #CCC;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+
+.THIS #sfdc_confirm_password_container{
+    padding: 8px;
+    background-color:white;
+    border: 1px solid #CCC;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+
+.THIS  button.sfdc_button {
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    color: #ffffff;
+    cursor: pointer;
+    background-color: rgb(88, 187, 202);
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 10px 12px;
+    font-size: 16px;
+    /*font-family: Lato;*/
+    font-weight: 700;
+    line-height: 1.42857143;
+    border-radius: 5px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    outline: none;
+    text-shadow:none;
+}
+
+.THIS .uiButton--default .label {
+    color:white !important;
+}
+
+/*
+.THIS  button:hover {
+    background-color:#3276b1;
+    border-color:#285e8e;
+    cursor:pointer;
+} */
+
+.THIS  button:hover {
+    background-color:#3fdce6 !important;
+}
+
+.THIS  button:active {
+    background-color:#0f99a3 !important;
+}
+
+.THIS  input {
+    margin-left:10px;
+    margin-top: 3px;
+    border: 0px solid transparent;
+    width: 90%;
+    -webkit-appearance: none;
+    font-size: 16px;
+    outline: none;
+}
+
+.THIS #sfdc_forgot{
+    /*font-family: 'Open Sans', 'sans-serif';*/
+    font-weight:300;
+    font-size: 16px;
+    margin-top: 10px
+}
+
+.THIS  #error {
+    
+    text-align: center;
+    color:White;
+    background:red;
+    font-size:16px;
+}
+
+.THIS  a {
+    color:white;
+    text-decoration: none;
+    font-size:16px;
+}
+.THIS  a:hover {
+    color:white;
+    text-decoration: underline;
+}
+
+.THIS input[type="checkbox"] {
+    appearance: none;
+    border: 1px solid white;
+    height: 22px;
+    width: 22px;
+    vertical-align: middle;
+}
+
+.THIS input[type="checkbox"]:checked {
+    border: 1px solid ;
+}
+
+.THIS input[type="checkbox"]:checked:after {
+    display: block;
+    position: relative;
+    content: '';
+    left: 3px;
+    top: 3px;
+    height: 6px;
+    width: 10px;
+    border-bottom: 4px solid /*#354452*/ white;
+    border-left: 4px solid /*#354452*/ white;
+    transform:rotate(-45deg);
+}
+
+.THIS input[type="checkbox"].disabled {
+    opacity: 0.35;
+}
+
+.THIS .removeLabel .slds-form-element__label{
+    display:none !important;
+    padding: 4px !important;
+}
+
+.THIS input[type="checkbox"] + label {
+    vertical-align: middle;
+}
+
+.THIS #input-2-error {
+    display:none !important;
+}
+
+.THIS .dob-input input{
+    padding-left: 0rem !important;
+    border-radius: 1rem !important;
+}
+
+.THIS .dob-input button {
+    margin-left: -0.3rem !important;
+}

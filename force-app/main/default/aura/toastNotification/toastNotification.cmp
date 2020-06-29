@@ -1,0 +1,31 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" extends="c:abstractServer" controller="SFSPortal_DashboardMetricsController" access="global">
+    <aura:attribute name="notificationMap" type="Map" access="public" default="{'isRender' : 'false',
+                                                                               'message' : 'test toast message 123',
+                                                                               'iconName' : 'utility:error',
+                                                                               'type' : 'error'}" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:handler event="c:showToastMessageEvt" action="{!c.renderToastMessage}"/>
+    <aura:if isTrue="{!v.notificationMap.isRender}">
+        <div class="slds-align_absolute-center">
+            <div class="slds-notify_container slds-is-fixed slds-align_absolute-center">
+                <div class="{!'slds-notify slds-notify_toast slds-theme_' + v.notificationMap.type}" role="status">
+                    <span class="slds-icon_container slds-icon-utility-success slds-m-right_small slds-no-flex slds-align-top" >
+                        <lightning:icon iconName="{!v.notificationMap.iconName}" class="slds-custom-icon" />
+                    </span>
+                    <div class="slds-notify__content slds-align_absolute-center">
+                        <span class="slds-text-heading_small ">{!v.notificationMap.message}</span>
+                    </div>
+                    <div class="slds-notify__close slds-align_absolute-center">
+                        <a onclick="{!c.closeNotifierAction}">
+                            <lightning:icon iconName="utility:close" class="slds-custom-icon" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <aura:if isTrue="{!equals(v.notificationMap.type, 'error')}">
+                <div class="custom-div" />
+            </aura:if>
+        </div>
+    </aura:if>
+</aura:component>

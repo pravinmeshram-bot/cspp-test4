@@ -1,0 +1,208 @@
+.THIS .custom-_text_m_dark{
+    font-family: 'Noto Sans KR', 18 MED;
+    font-size: 16px;
+    color: #0A202D;
+    font-weight:600;
+}
+.THIS .custom-_text_m_light{
+    font-family: 'Noto Sans KR', 16 MED;
+    font-size: 16px;
+    color: #666;
+    font-weight:500;
+}
+
+.THIS .boxwrap {
+    background-color: #c0c9cb;  
+    text-align: center; 
+    position: relative;
+}
+
+.THIS .sideSpace {
+    padding-right: 12%; 
+    font-size: 16px
+}
+
+.THIS .b3{
+    background-color:#ffffff !important;
+    border-radius: 5px;
+    border-color: black !important;
+    /* padding-bottom:3px; */
+    padding-bottom: 9px;
+    padding-top: 9px;
+    padding-left: 9px;
+    padding-right: 9px;
+    
+}
+.THIS .b3:hover{
+    /*  background-color:#006999 !important;*/
+    border-color:#282828 !important;
+    background-color:#ff9666 !important;
+    filter: invert(1);
+}
+.THIS .b1{
+    margin-top:1rem;
+    background-color:White !important;
+    color:black;
+    /*padding-left:4rem;*/
+    padding-right:1rem;
+    text-align: center !important;
+    font-size:23px;
+    border-radius: 5px;
+    border-color: black !important;
+    padding-top:0.1rem;
+    padding-bottom:0.2rem;
+    font-family: NotoSansKR-Regular !important;
+}
+.THIS .b1:hover{
+    cursor: pointer;
+    /* background-color:#006999 !important;*/
+    border-color:#282828 !important;
+    background-color:#ff9666 !important;
+    filter: invert(1);
+}
+.THIS .headerText{
+    /*font-family: NotoSansKR-Bold;*/
+    font-family: 'Noto Serif KR', serif;
+    font-size: 32px !important;
+    color: #0A202D;
+    font-weight:500;
+}
+.THIS .slds-modal__footer {
+    padding:0rem;
+    border-top:0px;
+}
+.THIS .slds-modal__header {
+    padding:0rem;
+    border-bottom:0px;
+}
+.THIS .slds-modal__content {
+    background: linear-gradient(to top, #ffffff -50%, #d7d7d7 200%);
+    /*background: linear-gradient(to bottom, #ffffff 50%, #d7d7d7 100%);*/
+    text-align: right !important;
+    font-family: NotoSans-Regular;
+    font-size:16px;
+     margin-bottom: 150px;
+}
+
+
+.THIS .droppableArea {
+    position: absolute; 
+    left: 5%; 
+    top: 30%;
+}
+
+.THIS .droppableArea img {
+    width: 75%;
+    opacity: 50%;
+    /* margin-top: 5%; */
+}
+
+.THIS .dropZone {
+    z-index: +10;
+    position: relative
+}
+
+
+.THIS .acceptedFiles {
+    font-size: 12px !important;
+    text-align: left;
+    padding: 0% 5% 5% 5%;
+}
+
+
+/*----------------------------------------------------------------------*/
+
+.THIS .slds-file-selector__dropzone{
+    width: 120%;
+    height: 200px;
+    border: transparent;
+}
+
+.THIS .slds-file-selector__dropzone .slds-file-selector__body {
+    width: 280px;
+    height: 200px;
+}
+
+.THIS .slds-file-selector__dropzone .slds-file-selector__text{
+    display: none;
+}
+
+.THIS .slds-file-selector__dropzone .slds-button__icon{
+    display: none;
+}
+
+
+.THIS .slds-file-selector__dropzone .slds-file-selector__button{
+    font-size: 0;
+    content: '';
+    height: 0px;
+    border: none;
+    background: none;
+    top: -40%;
+    left: 10%;
+}
+
+
+.THIS .slds-file-selector__dropzone .slds-file-selector__button:after{
+    content: '+ Upload Documents';
+    font-size: 18px;
+    color: white;
+    background-color: #258ca6;
+    border-radius: 0px;
+    padding: 5px 2px 5px 2px;
+    width: 190px;
+    box-shadow: 0px 5px #70a9b7;
+    cursor: pointer;
+}
+
+
+.THIS .slds-file-selector__dropzone .slds-file-selector__button:active:after{
+    box-shadow: none;
+    transform: translateY(4px);
+    background-color: #236f82;
+    border: none;
+}
+
+/*----------------------------------------*/
+
+
+@media screen and (max-width: 750px) {
+    .THIS .slds-file-selector__dropzone .slds-file-selector__body {
+        height: 0px;
+    }
+
+    .THIS .slds-file-selector__dropzone{
+        height: 0px;
+    }
+
+    .THIS .slds-file-selector__dropzone .slds-file-selector__button:after{
+        margin-top: 0px;
+        margin-left: 0px;
+    }
+
+    .THIS .notForPhone {
+        display: none;
+    }
+    
+    .THIS .boxwrap {
+        background-color: transparent;
+        margin-bottom: 30px;
+    }
+
+}
+
+
+@media only screen and (min-width: 1020px) and (max-width: 1200px) { 
+
+    .THIS .slds-file-selector__dropzone .slds-file-selector__button{
+        left: 0;
+    }
+
+    .THIS .droppableArea {
+        font-size: 16px;
+    }
+    
+    .THIS .sideSpace {
+        padding-right: 5%; 
+    }
+}

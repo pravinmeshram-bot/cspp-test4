@@ -1,0 +1,10 @@
+.THIS.dynamic-row {
+    height:580px;
+}
+
+.THIS .fixed-header {
+    background-color: rgb(255, 255, 255);
+    position: absolute;
+    top: 0;
+    min-width: 3rem;
+}

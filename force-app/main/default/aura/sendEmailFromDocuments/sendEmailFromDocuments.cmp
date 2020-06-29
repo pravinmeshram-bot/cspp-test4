@@ -1,0 +1,295 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SFSPortal_DocumentsController" extends="c:abstractServer" access="public">
+    <aura:attribute name="newContentDocumentList" type="List" access="public" />
+    <aura:attribute name="contentDocumentList" type="List" access="public" />
+    
+    <aura:attribute name="newEmail" type="EmailMessage" default="{ 'sobjectType': 'EmailMessage' }" access="public" />
+    <aura:attribute name="defaultValueMap" type="Map" access="public" default="{}" /> 
+    <aura:attribute name="documentWrapper" type="Map" access="public" default="{}" />
+    <aura:attribute name="documentIdToPreview" type="String" access="public"/>
+    <aura:attribute name="downloadDocument" type="Boolean" default="true" access="public" />
+
+    <aura:attribute name="isInit" type="Boolean" default="false" access="public" />
+    <aura:attribute name="isDocumentHistoryExpanded" type="Boolean" default="false" access="public" />
+    <aura:attribute name="isModal" type="Boolean" default="false" access="public" />
+       
+    <aura:attribute name="showPreviewModal" type="Boolean" />
+
+    <aura:attribute name="hideUpload" type="Boolean" default="false" access="public" />
+    <aura:attribute name="isModalOpen1" type="Boolean" access="public"/>
+    <aura:attribute name="isModalOpen2" type="Boolean" access="public"/>
+    
+    <aura:attribute name="successMessageString" type="String" access="public" default="" /> 
+    <aura:attribute name="errorMessageString" type="String" access="public" default="" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" access="public" />
+    
+   <!-- <aura:if isTrue="{!v.hideUpload}">
+        <div class="demo-only" style="height: 4rem;">
+            <div class="slds-notify_container slds-is-relative">
+                <div class="slds-notify slds-notify_toast slds-theme_success" role="status">
+                    <span class="slds-icon_container slds-icon-utility-success slds-m-right_small slds-no-flex slds-align-top" title="Description of icon when needed">
+                        <lightning:icon class="icon" size="small" iconName="utility:success"/>
+                    </span>
+                    <div class="slds-notify__content">
+                        <h2 class="slds-text-heading_small slds-m-left_x-large">
+                            File Upload Request Sent Successfully. 
+                        </h2>
+                        <div style="text-align:center !important;">
+                            <h2 class="slds-text-heading_small"><a onclick="{!c.flipView}">Upload more</a></h2>
+                        </div>
+                    </div>
+                    <div class="slds-notify__close">
+                        <a onclick="{!c.closeToast}">
+                            <lightning:icon class="icon" size="small" iconName="utility:close" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aura:if> -->
+    <aura:if isTrue="{!!v.hideUpload}">
+        <div class="slds-p-top_medium ">
+            <lightning:layout class="slds-wrap custom-layout ">
+                <lightning:layoutItem size="12" class="slds-p-bottom_x-small adjustHelpText" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6">
+                    <!--   <div> Any documents uploaded here will be available under my documents after the document have been reviewed by internal team.</div>  -->
+                    <div class="slds-m-top_small">
+                        <label class="slds-p-bottom_xx-small">Subject</label>
+                        <aura:if isTrue="{!!empty(v.defaultValueMap.helpTextMap.Request_Subject__c)}">
+                            <lightning:helpText class="slds-p-left_x-small adjustHelpText" content="{!v.defaultValueMap.helpTextMap.Request_Subject__c}"/>
+                        </aura:if>
+                        <lightning:select class="removedLabel" name="Document Title" label="Document Title" aura:id="validation_sendEmailFromDoc" value="{!v.newEmail.Subject}" required="true">
+                            <option value="">--None--</option>
+                            <option value="1099-c">1099-c</option>
+                            <option value="Bank Form">Bank Form</option>
+                            <option value="Collection Notice">Collection Notice</option>
+                            <option value="Collection Offer">Collection Offer</option>
+                            <option value="Creditor Statement">Creditor Statement</option>
+                            <option value="Legal Judgement">Legal Judgement</option>
+                            <option value="Legal Judgement">Legal Document</option>
+                            <option value="Legal Summons">Legal Summons</option>
+                            <option value="Power of Attorney">Power of Attorney</option>
+                            <option value="Other">Other</option>
+                        </lightning:select>
+                    </div>
+                    <div class="slds-m-top_small">
+                        <aura:if isTrue="{!equals(v.newEmail.Subject, 'Other')}">
+                            <label class="slds-p-bottom_xx-small">Comment</label>
+                            <aura:if isTrue="{!!empty(v.defaultValueMap.helpTextMap.TextBody)}">
+                                <lightning:helpText class="slds-p-left_x-small adjustHelpText" content="{!v.defaultValueMap.helpTextMap.TextBody}"/>
+                            </aura:if>
+                            <lightning:textarea class="removedLabel" aura:id="validation_sendEmailFromDoc" name="Comment" label="Comment" value="{!v.newEmail.TextBody}" placeholder="Enter the document description and the reason for upload...." />
+                        </aura:if>
+                    </div>
+                </lightning:layoutItem>
+                
+                <lightning:layoutItem size="12" class="slds-p-bottom_x-small" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="6">
+                    <div class="slds-align_absolute-center" id="uploader">
+                        <lightning:fileUpload aura:id="fileUpload_sendEmailFromDoc" label="Upload Attachment" multiple="true" name="fileUploader" 
+                                              recordId="{!v.defaultValueMap.accountId}" accept="{!v.supportedFileTypes}" 
+                                              onuploadfinished="{!c.handleUploadFinished}" 
+                                              title="{!'Only ' + v.supportedFileTypes  + ' type files can be uploaded'}"/>
+                    </div>
+                    <!-- Only .pdf, .jpg, .jpeg, .tiff, .png, .xls, .xlsx, .doc, .docx, .csv  type files can be uploaded -->
+                    <div align="center" style="color:grey;padding-left:2.9rem;padding-right:2.9rem;">{!'Only ' + v.supportedFileTypes  + ' type files can be uploaded'}</div>
+                </lightning:layoutItem>
+                
+                
+                <lightning:layoutItem size="12" class="slds-p-bottom_x-small" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="12">
+                    <div class="slds-p-top_medium slds-p-bottom_medium">
+                        <aura:if isTrue="{!not(empty(v.contentDocumentList))}">
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout slds-no-row-hover">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <div class="slds-truncate" title="File Name">
+                                                File Name
+                                            </div>
+                                        </th>
+                                        <th style="width:30%">
+                                            <div class="slds-truncate" title="Action">
+                                                Action
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <aura:iteration items="{!v.contentDocumentList}" var="contentPath" indexVar="index">
+                                        <tr>
+                                            <td>
+                                                <div class="slds-truncate" title="{!contentPath.name}">
+                                                    {!contentPath.name}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate" title="Action">
+                                                    <a onclick="{!c.deleteContentDocument}" data-index="{!index}">
+                                                        <lightning:icon iconName="action:delete" size="xx-small" />
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </aura:iteration>
+                                </tbody>
+                            </table>
+                        </aura:if>
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+            <div align="center">
+                <lightning:button aura:id="senduploadbtn_sendEmailFromDoc" label="Upload" variant="Brand" onclick="{!c.sendMail}" />
+            </div>
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.isInit}">
+        <br />
+        <lightning:card class="setHeaderColor">
+            <aura:set attribute="title" >
+                <a aura:id="documentToggle_adhocPayment"  onclick="{!c.toggleSection}">
+                    <lightning:icon iconName="{!v.isDocumentHistoryExpanded ? 'utility:chevrondown' : 'utility:chevronright'}"  size="x-small"/>
+                    <span class="slds-p-left_small override-paymentsCss">Documents Uploaded</span>
+                </a>
+            </aura:set>
+        <!--  <lightning:layoutItem size="12" class="slds-p-bottom_x-small" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="12">-->
+            <div class="{!v.isDocumentHistoryExpanded ? '' : 'slds-hide'}">
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout slds-no-row-hover" style="table-layout: auto !important;">
+                    <thead>
+                        <tr>
+                            <th style="width: 30rem;">
+                                <div class="slds-truncate" title="Subject">
+                                    Subject
+                                </div>
+                            </th>
+                            <th>
+                                <div class="slds-truncate slds-max-small-hide" title="View" style="text-align: center;">
+                                  <!-- View | Download --> Documents
+                                </div>
+                                <div class="slds-truncate slds-x-small-show-only" title="View" style="text-align: center;">
+                                   View  <!--lightning:icon iconName="utility:download" size="x-small" /--> 
+                                </div> 
+                                <div class="slds-truncate slds-small-show-only" title="View" style="text-align: center;">
+                                  <!-- View | Download--> Documents
+                                </div>
+                            </th>
+                             <th>
+                                <div class="slds-truncate slds-max-small-hide" title="Action" style="text-align: center;">
+                                    Date Uploaded
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <aura:if isTrue="{!v.defaultValueMap.contentDocWrapList}">
+                            <aura:iteration items="{!v.newContentDocumentList}" var="contentPath" indexVar="index">
+                                <tr>
+                                    <td>
+                                        <div class="slds-truncate" data-index="{!index}" title="{!contentPath.Subject}">
+                                            {!contentPath.Subject}
+                                        </div>
+                                    </td>
+                                     <td>
+                                        <div class="slds-truncate slds-max-small-hide"  style="text-align: center;">
+                                            <a target="_blank" data-index="{!index}" onclick="{!c.showDocumentPreview}" >
+                                                View
+                                            </a> | 
+                                             <a target="_blank" data-index="{!index}" onclick="{!c.downloadDocument}" >
+                                                 Download
+                                              <!--  <lightning:icon iconName="utility:download" size="x-small" /> -->
+                                            </a>
+                                        </div>
+                                        <div class="slds-truncate slds-x-small-show-only" size="3" style="text-align: center;">
+                                            <a target="_blank" data-index="{!index}" onclick="{!c.showDocumentPreview}" >
+                                              <!--  View -->
+                                               <lightning:icon iconName="utility:preview" size="x-small" /> 
+                                            </a>
+                                             <!--a target="_blank" data-index="{!index}" onclick="{!c.downloadDocument}" >
+                                               <lightning:icon iconName="utility:download" size="x-small" /> 
+                                            </a-->
+                                        </div>
+                                        <div class="slds-truncate slds-small-show-only" size="3" style="text-align: center;">
+                                            <a target="_blank" data-index="{!index}" onclick="{!c.showDocumentPreview}" >
+                                              <!--  View -->
+                                                <lightning:icon iconName="utility:preview" size="x-small" />
+                                            </a>
+                                             <a target="_blank" data-index="{!index}" onclick="{!c.downloadDocument}" style="text-align: center;">
+                                               <lightning:icon iconName="utility:download" size="x-small" /> 
+                                            </a>
+                                        </div>
+                                    </td> 
+                                    <td>
+                                        <div class="slds-truncate slds-max-small-hide"  style="text-align: center;">
+                                            <ui:outputDateTime value="{!contentPath.createdDate}" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                            <aura:set attribute="else">
+                                <tr>
+                                    <td colspan="2" style="font-weight:bold;text-align:center;">
+                                        No Record(s) Found.
+                                    </td>
+                                </tr>
+                            </aura:set>
+                        </aura:if>
+                    </tbody>
+                </table>   
+                <aura:if isTrue="{!not(empty(v.defaultValueMap.contentDocWrapList))}"> 
+                    <div class="ContentDocumentpagination">
+                        <c:pagination allData="{!v.defaultValueMap.contentDocWrapList}" 
+                                      data="{!v.newContentDocumentList}" pageSize="5"/>
+                    </div>
+                </aura:if>
+            </div>
+     <!-- </lightning:layoutItem>  -->
+        </lightning:card>
+    </aura:if>
+     <aura:if isTrue="{!v.isModalOpen1}">
+        <c:customModal>
+            <aura:set attribute="body">
+               <!-- <lightning:icon class="iconColor" iconName="action:reject" alternativeText="reject" size="x-small" onclick="{!c.doInit}" style="text-align:right !important"/> -->
+                <lightning:button class="b3 " aura:id="nobtn_newTradeline" label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"  onclick="{!c.doInit}" >
+                    <img src="{!$Resource.CloseIconSvg}" width="15" height="15" Style="align:right;"/>
+                </lightning:button>
+                <div class="slds-text-align_center headerText" Style="font-size:32px;">Your request has been received.<br/></div>
+                <div class="slds-text-align_center slds-m-top_xx-small">{!v.successMessageString}<br/>
+                   <!-- <lightning:button class="b1" aura:id="nobtn_newTradeline" label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"  onclick="{!c.doInit}" /> -->
+                    <lightning:button class="b1" aura:id="nobtn_newTradeline" label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"  onclick="{!c.doInit}" >
+                     Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="{!$Resource.CloseIconSvg}" width="15" height="15"/>
+                    </lightning:button> 
+                </div>
+            </aura:set>
+        </c:customModal>
+         <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>  
+    <aura:if isTrue="{!v.isModalOpen2}">
+        <c:customModal>
+            <aura:set attribute="body">
+               <!-- <lightning:icon class="iconColor" iconName="action:reject" alternativeText="reject" size="x-small" onclick="{!c.doInit}" style="text-align:right !important"/> -->
+                <lightning:button class="b3 " aura:id="nobtn_newTradeline" label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"  onclick="{!c.doInit}" >
+                    <img src="{!$Resource.CloseIconSvg}" width="15" height="15" Style="align:right;"/>
+                </lightning:button>
+                <div class="slds-text-align_center slds-m-top_xx-small headerText" Style="font-size:32px;">Alert<br/></div>
+                <div class="slds-text-align_center slds-m-top_x-small">{!v.errorMessageString}<br/>
+                    <!--<lightning:button class="b1" aura:id="nobtn_newTradeline" label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X" title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X"  onclick="{!c.doInit}" />-->
+                    <lightning:button class="b1" aura:id="nobtn_newTradeline" label="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" title="Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"  onclick="{!c.doInit}" >
+                     Close &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="{!$Resource.CloseIconSvg}" width="15" height="15"/>
+                    </lightning:button>
+                </div>
+            </aura:set>
+        </c:customModal>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if> 
+     <aura:if isTrue="{!v.showPreviewModal}">
+                        <section onclick="{!c.closePreviewModel}" role="dialog" aria-modal="true" class="slds-modal slds-fade-in-open">
+                            <div class="slds-modal__container">
+                                <div class="slds-modal__content1 slds-p-around_medium slds-text-align_center"
+                                     style="background: transparent;">
+                                    <div style="width: 50%; margin: 0 auto; text-align: left">
+                                        <!--<lightning:fileCard> to preview file using content document Id -->
+                                        <lightning:fileCard fileId="{!v.documentIdToPreview}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <div class="slds-backdrop slds-backdrop_open"></div>
+                    </aura:if>
+</aura:component>
